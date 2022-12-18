@@ -1,7 +1,8 @@
 import './home.css'
 import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import { useLocation } from 'react-router-dom'
+// import { useHistory } from 'react-router-dom'
+// import { useLocation } from 'react-router-dom'
+import { NavLink } from "react-router-dom";
 
 function Home() {
     // const history = useHistory();
@@ -22,7 +23,33 @@ function Home() {
                 display ?
                     <div className='admin-panel'>
                         <div className='admin-cont'>
-                            Smart farming and retail
+                            <div className='container'>
+                                <div className='row'><div className='col1'>
+                                        <h1>Log in As</h1>
+                                    </div></div>
+                                    <div className='row'><div className='col2'>
+                                   
+                                    <NavLink className="navbar-brand" to="/admin">
+                                    Admin</NavLink>
+                                    </div></div>
+                                    <div className='row'><div className='col3'>
+
+                                    <NavLink className="navbar-brand" to="/admin">
+                                    Tester </NavLink>                                    </div></div>
+                                    
+                                    <div className='row'><div className='col4'>
+                                    <NavLink className="navbar-brand" to="/admin">
+                                        Farmer</NavLink>                                     </div></div>
+                                    <div className='row'><div className='col5'>
+                                    <NavLink className="navbar-brand" to="/admin">
+                                        Importer</NavLink></div></div>
+                                    <div className='row'><div className='col6'>
+                                    <NavLink className="navbar-brand" to="/admin">
+                                        Exporter</NavLink>                      </div></div>
+                                    <div className='row'><div className='col7'>
+                                    <NavLink className="navbar-brand" to="/admin">
+                                    Processor</NavLink> </div></div>
+                            </div>
                         </div>
                     </div> : ''
             }
