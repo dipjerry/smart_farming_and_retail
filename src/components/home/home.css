@@ -1,7 +1,7 @@
 .admin-panel{
     height: 100vh;
     width: 100%;
-    background-color: black;
+    background-color:azure;
 }
 .admin-cont{
     height: 100vh;
@@ -9,14 +9,14 @@
 }
 .container{
 
-    background-color: darkseagreen;
+    background-color:azure;
     font-family: monospace;
 }
 .row{ 
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     height: 25mm;
 }
-.btn{
+.navbar-brand{
     background-color: #4CAF50; /* Green */
   border: none;
   width: 10cm;
