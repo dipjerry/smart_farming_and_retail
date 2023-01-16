@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
-import {admindashboard} from './admindashboard';
 
-
-function AdminLogin() {
+function UserLogin() {
   const [error, setError] = useState('');
 
   const handleSubmit = (event) => {
@@ -26,16 +24,15 @@ function AdminLogin() {
             <Form.Group>
               <Form.Control type="password" placeholder="Password" name="password" required />
             </Form.Group>
-            <Button type="submit" variant="info" block href="/admin_dashboard">Login</Button>
+            <Button type="submit" variant="info" block href="/user_dashboard">Login</Button>
             <div className="form-group text-center m-t-20">
               <a href="/">Go Back</a>
             </div>
           </Form>
         </div>
       </div>
-      
-     </section>
+    </section>
   );
 }
 
-export default AdminLogin;
+export default UserLogin;

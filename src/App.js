@@ -5,10 +5,13 @@ import './assets/css/style.css';
 import {ToastContainer} from "react-toastify";
 // import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter as Router, Route , Routes } from "react-router-dom";
-import Login from "./components/Admin/admin_auth";
+import AdminLogin from "./components/Admin/admin_auth";
+import UserLogin from "./components/User/user_auth";
 import Signup from "./components/Admin/signup";
 import Form from "./components/Admin/form";
 import Preview from "./components/supply_chain/batchprogress";
+import AdminDashboard from "./components/Admin/admin_dashboard";
+import UserDashboard from "./components/User/user_dashboard";
 import Home from "./components/home/home";
 import React,{useEffect} from "react";
 
@@ -25,10 +28,11 @@ function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/admin_auth" element={<Login />} />
-      <Route path="/admin_auth" element={<admindashboard />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/form" element={<Form />} />
       <Route path="/preview" element={<Preview />} />
+      <Route path="/admin_dashboard" element={<AdminDashboard />} />
+      <Route path="/user_dashboard" element={<UserDashboard />} />
     </Routes>
   </Router>,
             <ToastContainer
