@@ -31,6 +31,11 @@ const WelcomePage = () => {
                 <Link to='/user_auth'>User Login</Link>
               </Button>
             </Col>
+            <Col xs={6} className="p-b-20">
+              <Button variant="info" block>
+                <Link to='/preview'>Sample Preview</Link>
+              </Button>
+            </Col>
           </div>
         </div>
       </div>
