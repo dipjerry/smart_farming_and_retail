@@ -35,7 +35,7 @@ function App() {
       <Route path="/preview" element={<Preview />} />
       <Route path="/admin_dashboard" element={<AdminDashboard />} />
       <Route path="/user_dashboard" element={<UserDashboard />} />
-    </Routes>
+    </Routes>   
   </Router>
   </Provider>
             <ToastContainer
