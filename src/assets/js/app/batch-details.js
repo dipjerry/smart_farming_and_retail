@@ -208,14 +208,14 @@ function buildCultivationBlock(result)
 
 function buildFarmInspectionBlock(result){
 	var farmInspactorData = {};
-	var coffeeFamily      = result.coffeeFamily;
+	var strawberryFamily      = result.strawberryFamily;
 	var typeOfSeed        = result.typeOfSeed;
 	var fertilizerUsed    = result.fertilizerUsed;	
 
-	if(coffeeFamily!='' && typeOfSeed!='' && fertilizerUsed!=''){
+	if(strawberryFamily!='' && typeOfSeed!='' && fertilizerUsed!=''){
 		farmInspactorData.html =  `<tr>
-                                    <td><b>Coffee Family:</b></td>
-                                    <td>`+coffeeFamily+` <i class="fa fa-check-circle verified_info"></i></td>
+                                    <td><b>strawberry Family:</b></td>
+                                    <td>`+strawberryFamily+` <i class="fa fa-check-circle verified_info"></i></td>
                                   </tr>
                                   <tr>
                                     <td><b>Type of Seeds:</b></td>

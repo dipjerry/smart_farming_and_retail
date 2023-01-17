@@ -1,9 +1,9 @@
 	var globIcoAddress = {
-		/*'old-CoffeeMain': "0xfA171Cda184d815D20a318fCe9920AafdC04934e",
-		'old-CoffeeUser': "0x26d723acFe39f93A9702592dD9371851f81cF59F",*/
+		/*'old-strawberryMain': "0xfA171Cda184d815D20a318fCe9920AafdC04934e",
+		'old-strawberryUser': "0x26d723acFe39f93A9702592dD9371851f81cF59F",*/
 		
-		'CoffeeMain': "0x8b8d530a2dc78092fb2275d8c5cdf97c3e46120e",
-		'CoffeeUser': "0xe4e7bce4bdaf8cebddd76ccb0ab9fce2fc706e62",
+		'strawberryMain': "0x8b8d530a2dc78092fb2275d8c5cdf97c3e46120e",
+		'strawberryUser': "0xe4e7bce4bdaf8cebddd76ccb0ab9fce2fc706e62",
 		'Storage': "0x4b1d9f8be5347ae962b62b1f7499c50a6a598331"
 	};
 
@@ -17,8 +17,8 @@
 	window.addEventListener('load', function() 
 	{  
 		$("#storageContractAddress").html(globIcoAddress.Storage);
-		$("#coffeeSupplychainContractAddress").html(globIcoAddress.CoffeeMain);
-		$("#userContractAddress").html(globIcoAddress.CoffeeUser);
+		$("#strawberrySupplychainContractAddress").html(globIcoAddress.strawberryMain);
+		$("#userContractAddress").html(globIcoAddress.strawberryUser);
 
 
 		if (typeof web3 !== 'undefined') 
@@ -55,10 +55,10 @@
 
 	function initContract()
 	{
-		globMainContract = new web3.eth.Contract(CoffeeSupplyChainAbi,globIcoAddress.CoffeeMain);	
+		globMainContract = new web3.eth.Contract(strawberrySupplyChainAbi,globIcoAddress.strawberryMain);	
 		$(window).trigger("mainContractReady");
 
-		globUserContract = new web3.eth.Contract(SupplyChainUserAbi,globIcoAddress.CoffeeUser);	
+		globUserContract = new web3.eth.Contract(SupplyChainUserAbi,globIcoAddress.strawberryUser);	
 		$(window).trigger("userContractReady");
 	}
 

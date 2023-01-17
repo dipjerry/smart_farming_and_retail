@@ -166,7 +166,7 @@ $("#updateFarmInspection").on('click',function(){
     {
       var data = {
         batchNo : globCurrentEditingBatchNo,
-        coffeeFamily : $("#coffeeFamily").val().trim(),
+        strawberryFamily : $("#strawberryFamily").val().trim(),
         typeOfSeed : $("#typeOfSeed").val().trim(),
         fertilizerUsed : $("#fertilizerUsed").val().trim(),
       };    
@@ -178,7 +178,7 @@ $("#updateFarmInspection").on('click',function(){
 function updateFarmInspection(contractRef,data)
 {
   //contractRef.methods.updateUser("Swapnali","9578774787","HARVESTER",true,"0x74657374")
-  contractRef.methods.updateFarmInspectorData(data.batchNo, data.coffeeFamily,data.typeOfSeed, data.fertilizerUsed)
+  contractRef.methods.updateFarmInspectorData(data.batchNo, data.strawberryFamily,data.typeOfSeed, data.fertilizerUsed)
   .send({from:globCoinbase,to:contractRef.address})
   .on('transactionHash',function(hash)
         {

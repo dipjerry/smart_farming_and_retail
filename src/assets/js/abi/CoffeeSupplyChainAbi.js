@@ -1,4 +1,4 @@
-var CoffeeSupplyChainAbi = [
+var strawberrySupplyChainAbi = [
 	{
 		"constant": false,
 		"inputs": [
@@ -206,7 +206,7 @@ var CoffeeSupplyChainAbi = [
 		"name": "getFarmInspectorData",
 		"outputs": [
 			{
-				"name": "coffeeFamily",
+				"name": "strawberryFamily",
 				"type": "string"
 			},
 			{
@@ -230,7 +230,7 @@ var CoffeeSupplyChainAbi = [
 				"type": "address"
 			},
 			{
-				"name": "_coffeeFamily",
+				"name": "_strawberryFamily",
 				"type": "string"
 			},
 			{

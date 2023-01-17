@@ -100,7 +100,7 @@ var SupplyChainStorageAbi = [
 				"type": "address"
 			},
 			{
-				"name": "_coffeeFamily",
+				"name": "_strawberryFamily",
 				"type": "string"
 			},
 			{
@@ -343,7 +343,7 @@ var SupplyChainStorageAbi = [
 		"name": "getFarmInspectorData",
 		"outputs": [
 			{
-				"name": "coffeeFamily",
+				"name": "strawberryFamily",
 				"type": "string"
 			},
 			{

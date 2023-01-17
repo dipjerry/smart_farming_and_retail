@@ -10,7 +10,7 @@ $( document ).ready(function() {
    
    axios({
         method: 'get',
-        url: 'http://localhost:3000/api/com.coffeesupplychain.system.BatchAsset',
+        url: 'http://localhost:3000/api/com.strawberrysupplychain.system.BatchAsset',
         responseType: 'json',
         timeout: 60000,
         })
