@@ -14,10 +14,8 @@ import AdminDashboard from "./components/Admin/admin_dashboard";
 import UserDashboard from "./components/User/user_dashboard";
 import Home from "./components/home/home";
 import React,{useEffect} from "react";
-// import {ToastContainer, toast } from 'react-toastify'; 
-// import 'react-toastify/dist/ReactToastify.css';
-
-
+import { Provider } from 'react-redux';
+import store from './helper/store';
 
 
 function App() {
@@ -25,8 +23,8 @@ function App() {
 
     return (
         <div className="App">
+             <Provider store={store}>
              <Router>
-
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/admin_auth" element={<AdminLogin />} />
@@ -36,7 +34,8 @@ function App() {
       <Route path="/admin_dashboard" element={<AdminDashboard />} />
       <Route path="/user_dashboard" element={<UserDashboard />} />
     </Routes>
-  </Router>,
+  </Router>
+  </Provider>
             <ToastContainer
                 position="top-right"
                 autoClose={5000}
