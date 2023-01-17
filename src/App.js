@@ -28,12 +28,13 @@ function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/admin_auth" element={<AdminLogin />} />
+      <Route path="/user_auth" element={<UserLogin />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/form" element={<Form />} />
       <Route path="/preview" element={<Preview />} />
       <Route path="/admin_dashboard" element={<AdminDashboard />} />
       <Route path="/user_dashboard" element={<UserDashboard />} />
-    </Routes>
+    </Routes>   
   </Router>
   </Provider>
             <ToastContainer
