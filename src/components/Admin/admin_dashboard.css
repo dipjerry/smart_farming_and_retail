@@ -1,0 +1,16 @@
+.justify-content-md-center{
+    padding-left:30px;
+    width: 100%;
+    padding-right:30px;
+    margin-left:30px;
+    margin-right:30px;
+    color: rgb(223, 25, 19);
+    /* background-color: rgb(129, 127, 127); */
+    height: 100px;
+}
+.rc{
+    border-radius: 5px;
+  }
+  .form{
+    width: 50%;
+  }

@@ -14,6 +14,8 @@ import AdminDashboard from "./components/Admin/admin_dashboard";
 import UserDashboard from "./components/User/user_dashboard";
 import Home from "./components/home/home";
 import React,{useEffect} from "react";
+// import {ToastContainer, toast } from 'react-toastify'; 
+// import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -27,7 +29,7 @@ function App() {
 
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/admin_auth" element={<Login />} />
+      <Route path="/admin_auth" element={<AdminLogin />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/form" element={<Form />} />
       <Route path="/preview" element={<Preview />} />
