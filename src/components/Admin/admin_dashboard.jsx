@@ -7,6 +7,19 @@ import './admin_dashboard.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
+// import {
+//   MDBBtn,
+//   MDBContainer,
+//   MDBRow,
+//   MDBCol,
+//   MDBCard,
+//   MDBCardBody,
+//   MDBCardImage,
+//   MDBInput,
+//   MDBIcon,
+//   MDBCheckbox
+// }
+// from 'mdb-react-ui-kit';
 // import Form  from "react-bootstrap/Form";
 
 function AdminDashboard() {
@@ -47,10 +60,10 @@ function AdminDashboard() {
           {/* </Nav> */}
         </Container>
       {/* </Navbar> */}
-      <br />
-      <br />
+      {/* <br /> */}
+      {/* <div class='batch'> */}
     <h1>batches</h1>
-    <a href="./createbatch">CreateBatch</a>
+    <a href="./createbatch" className='cb'>CreateBatch</a>
     <Table striped bordered hover>
       <thead>
         <tr>
@@ -89,6 +102,7 @@ function AdminDashboard() {
         
       </tbody>
     </Table>
+    {/* </div> */}
     <Form.Select aria-label="Default select example" className='form'>
       <option>User Roles</option>
       <option value="1">Admin</option>
@@ -135,6 +149,14 @@ function AdminDashboard() {
         
       {/* </div> */}
     {/* // </section> */} 
+    <Container className='cu'>  
+    <Row className="bg-secondary mt-5 p-5">  
+      <Col>
+      <h1 >Create User</h1>
+      <a class="btn btn-primary" href="./createuser.html" role="button">Register</a>
+      </Col>  
+    </Row>  
+  </Container>  
     </>
   );
 }

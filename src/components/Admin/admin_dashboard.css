@@ -14,3 +14,18 @@
   .form{
     width: 50%;
   }
+  .cb{
+    /* position: relative; */
+    text-align: end;
+  /* top: 8px;
+  right: 16px; */
+  }
+  .cu{
+    width: 20%;
+    height: 20%;
+    position: fixed;
+    left: 80px;
+    text-align: start;
+    color: white;
+    border-radius: 10px;
+  }
