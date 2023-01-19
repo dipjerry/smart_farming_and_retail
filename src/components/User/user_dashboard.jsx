@@ -27,12 +27,12 @@ function UserDashboard() {
 
 
 const [firstModalOpen, setFirstModalOpen] = useState(false);
-
-  // State for second modal
-  const [secondModalOpen, setSecondModalOpen] = useState(false);
-
-  // State for third modal
+ const [secondModalOpen, setSecondModalOpen] = useState(false);
   const [thirdModalOpen, setThirdModalOpen] = useState(false);
+const [forthModalOpen, setForthModalOpen] = useState(false);
+ const [fifthModalOpen, setFifthModalOpen] = useState(false);
+  const [sixthModalOpen, setSixthModalOpen] = useState(false);
+  const [seventhModalOpen, setSeventhModalOpen] = useState(false);
 
   return (
     <Container fluid>
@@ -100,12 +100,12 @@ const [firstModalOpen, setFirstModalOpen] = useState(false);
         <tr>
                    <td>3kmsdj3</td>
                    
-                    <td><span className="label label-success font-weight-100">Completed</span></td>
-                    <td><span className="label label-success font-weight-100">Completed</span></td>
-                    <td><span className="label label-success font-weight-100">Completed</span></td>
-                    <td><span className="label label-warning font-weight-100">Processing</span> </td>
-                    <td><span className="label label-danger font-weight-100">Not Available</span> </td>
-                    <td><span className="label label-danger font-weight-100">Not Available</span> </td>
+                    <td><span className="label label-success font-weight-100" >Completed</span></td>
+                    <td><span className="label label-success font-weight-100" onClick={() => setSecondModalOpen(true)}>Completed</span></td>
+                    <td><span className="label label-success font-weight-100" onClick={() => setThirdModalOpen(true)}>Completed</span></td>
+                    <td><span className="label label-warning font-weight-100"onClick={() => setForthModalOpen(true)}>Processing</span> </td>
+                    <td><span className="label label-danger font-weight-100" onClick={() => setFifthModalOpen(true)}>Not Available</span> </td>
+                    <td><span className="label label-danger font-weight-100" onClick={() => setSixthModalOpen(true)}>Not Available</span> </td>
                      <td><a href='/preview' onClick="view('` + batchid + `')"><FontAwesomeIcon icon={faEye} /></a></td>
                      {/* <td><FontAwesomeIcon icon={faEye} /></td> */}
                     </tr>
@@ -170,7 +170,7 @@ const [firstModalOpen, setFirstModalOpen] = useState(false);
     </form>
   </Modal.Body>
   <Modal.Footer>
-    <Button variant="secondary" toggle={() => setSecondModalOpen(false)}>
+    <Button variant="secondary" toggle={() => setThirdModalOpen(false)}>
       Close
     </Button>
     <Button variant="primary" type="submit" form="farmInspectionForm" >
@@ -178,6 +178,133 @@ const [firstModalOpen, setFirstModalOpen] = useState(false);
     </Button>
   </Modal.Footer>
 </Modal>
+
+      <Modal show={thirdModalOpen} toggle={() => setThirdModalOpen(false)} >
+  <Modal.Header closeButton>
+    <Modal.Title id="farmerModelTitle">Farmer</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <form id="farmerForm">
+    {/* your form fields here */}
+    </form>
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" toggle={() => setThirdModalOpen(false)}>
+      Close
+    </Button>
+    <Button variant="primary" type="submit" form="farmInspectionForm" >
+      Save
+    </Button>
+  </Modal.Footer>
+</Modal>
+{/* // Forth Modal */}
+<Modal show={forthModalOpen} toggle={() => setForthModalOpen(false)} >
+  <Modal.Header closeButton>
+    <Modal.Title id="forthModalTitle"> Farmer</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+
+    <form id="harvestorForm">
+							{/* <fieldset style="border:0;"> */}
+								<div class="form-group">
+									<input type="hidden" class="form-control" id="BatchId" name="BatchId"
+										placeholder="Batch Id" data-parsley-required="true" />
+								</div>
+								<div class="form-group">
+									<input type="hidden" class="form-control" id="previoushandler"
+										name="previoushandler" placeholder="Previous Handler"
+										data-parsley-required="true" />
+								</div>
+								<div class="form-group">
+									<input type="hidden" class="form-control" id="currenthandler" name="currenthandler"
+										placeholder="Current Handler" data-parsley-required="true" />
+								</div>
+								<div class="form-group">
+									<label class="control-label" for="Strawberryvariety">Strawberry Variety</label>
+									<input type="text" class="form-control" id="Strawberryvariety" name="Strawberryvariety"
+										placeholder="Strawberryvariety" data-parsley-required="true" />
+								</div>
+								<div class="form-group">
+									<label class="control-label" for="temprature">Temprature</label>
+									<input type="text" class="form-control" id="temprature" name="temprature"
+										placeholder="Temprature" data-parsley-required="true" />
+								</div>
+								<div class="form-group">
+									<label class="control-label" for="humidity">Humidity</label>
+									<input type="text" class="form-control" id="humidity" name="Humidity"
+										placeholder="Humidity" data-parsley-required="true" />
+								</div>
+    </form>
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" toggle={() => setForthModalOpen(false)}>
+      Close
+    </Button>
+    <Button variant="primary" type="submit" form="ForthModalForm" >
+      Save
+    </Button>
+  </Modal.Footer>
+</Modal>
+{/* // Fifth Modal */}
+<Modal show={fifthModalOpen} toggle={() => setFifthModalOpen(false)} >
+  <Modal.Header closeButton>
+    <Modal.Title id="fifthModalTitle">Fifth Modal</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <form id="fifthModalForm">
+    {/* your form fields here */}
+    </form>
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" toggle={() => setFifthModalOpen(false)}>
+      Close
+    </Button>
+    <Button variant="primary" type="submit" form="fifthModalForm" >
+      Save
+    </Button>
+  </Modal.Footer>
+</Modal>
+
+{/* // Sixth Modal */}
+<Modal show={sixthModalOpen} toggle={() => setSixthModalOpen(false)} >
+  <Modal.Header closeButton>
+    <Modal.Title id="sixthModalTitle">Importer</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <form id="sixthModalForm">
+    {/* your form fields here */}
+    </form>
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" toggle={() => setSixthModalOpen(false)}>
+      Close
+    </Button>
+    <Button variant="primary" type="submit" form="sixthModalForm" >
+      Save
+    </Button>
+  </Modal.Footer>
+</Modal>
+
+{/* // Seventh Modal */}
+<Modal show={seventhModalOpen} toggle={() => setSeventhModalOpen(false)} >
+  <Modal.Header closeButton>
+    <Modal.Title id="seventhModalTitle">Exporter</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+  <form id="seventhModalForm">
+    {/* your form fields here */}
+    </form>
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" toggle={() => setSeventhModalOpen(false)}>
+      Close
+    </Button>
+    <Button variant="primary" type="submit" form="sixthModalForm" >
+      Save
+    </Button>
+  </Modal.Footer>
+</Modal>
+
 
                   </Container>
   );
