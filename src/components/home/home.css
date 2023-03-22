@@ -1,8 +1,19 @@
-.admin-panel{
-    height: 100vh;
-    width: 100%;
-}
-.admin-cont{
-    height: 100vh;
-    display: flex;
-}
+
+  .glassmorphism {
+    /* display: flex;
+  align-items: center;
+  justify-content: center; */
+    
+    background: linear-gradient(to right, #fffeff, #e0d6d7);
+    /* background-image: url("glass-texture.png"); */
+    background-size:auto;
+    padding: 2px;
+    background-blend-mode: multiply;
+    
+   /* width: fit-content; */
+    padding: 20px;
+    /* height: fit-content;
+    width: fit-content;  */
+    /* border-radius: 10px; */
+    border-color: red;
+  }
