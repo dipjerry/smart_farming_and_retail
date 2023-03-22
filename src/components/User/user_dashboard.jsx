@@ -55,11 +55,11 @@ const [forthModalOpen, setForthModalOpen] = useState(false);
         <Col md={12} xs={12}>
           <Card className="white-box">
             <div className="user-bg">
-              <Image src="../../assets/plugins/images/heading-bg/slide3.jpg" alt="user" fluid />
+              <Image src={require("../../assets/plugins/images/heading-bg/slide3.jpg")} alt="user" fluid />
               <div className="overlay-box">
                 <div className="user-content">
                   {/* <a href="javascript:void(0)"> */}
-                    <Image src="" id="userImage" className="thumb-lg img-circle" alt="img" />
+                    <Image src={require("../../assets/plugins/images/users/user1.jpg")} id="userImage" className="thumb-lg img-circle" alt="img" />
                   {/* </a> */}
                   <h4 className="text-white" id="userName">--</h4>
                   <h5 className="text-white" id="currentUserAddress">--</h5>

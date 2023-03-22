@@ -1,0 +1,10 @@
+{
+    "$class": "com.strawberrysupplychain.participant.SystemUser",
+    "Role": "ADMIN",
+    "Status": "ACTIVE",
+    "UserId": "0328",
+    "FirstName": "dip",
+    "LastName": "kashyap",
+    "ContactNo": "7002394356",
+    "Address": "jec"
+  }

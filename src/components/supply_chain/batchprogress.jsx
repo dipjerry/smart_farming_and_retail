@@ -1,15 +1,84 @@
 import React, { useState, useEffect } from 'react';
 import './batchprogress.css';
+import myData from './data.json';
+import userData from './udata.json';
 // import '../../assets/css/style.css';
 
 const BatchProgress = () => {
-  const [batchNo, setBatchNo] = useState('');
-
+  const [batchStatus, setBatchStatus] = useState(null);
+  const [batchNo, setBatchNo] = useState(null);
+  const [BatchId, setBatchId] = useState(null);
+  const [CultivatorIntime, setCultivatorIntime] = useState(null);
+  const [FarmInspectorIntime, setFarmInspectorIntime] = useState(null);
+  const [ProcessorIntime, setUser] = useState(null);
+  const [StrawberryFamily, setStrawberryFamily] = useState(null);
+  const [FertilizerUsed, setFertilizerUsed] = useState(null);
+    
   useEffect(() => {
-    setBatchNo(() => {
-      return new URLSearchParams(window.location.search).get('batchNo');
-    });
-  }, []);
+    // setBatchNo(() => {
+    //   return new URLSearchParams(window.location.search).get('batchNo');
+    // });
+  
+    // loadData();
+
+    // .then(response => response.json())
+    // .then(data => {
+    //   console.log(data);
+    //   populate(data);
+    // });
+
+    populate()
+
+
+ 
+
+  });
+
+
+  // const loadData = () => {
+  //   // perform your data loading logic here
+    console.log(myData.Status);
+  //   alert("Data Loaded");
+  // };
+
+  const populate = ()=>{
+    var Batch_array = myData;
+    if (Batch_array.Status == "ADMIN") {
+      buildCultivatorData(Batch_array);
+    } else if (Batch_array.Status == "FARMINSPECTOR") {
+      buildInspectorData(Batch_array);
+    } else if (Batch_array.Status == "HARVESTOR") {
+      // buildHarvestorData(Batch_array);
+    } else if (Batch_array.Status == "EXPORTOR") {
+      // buildExportorData(Batch_array);
+    } else if (Batch_array.Status == "IMPORTOR") {
+      // buildImportorData(Batch_array);
+    } else if (Batch_array.Status == "PROCESSOR") {
+      // buildImportorData(Batch_array);
+    } else if (Batch_array.Status == "COMPLETE") {
+      // buildProcessorData(Batch_array);
+    }
+  }
+
+
+
+  async function buildCultivatorData(batchinfo) {
+      setBatchId(batchinfo.BatchId);
+      setCultivatorIntime(batchinfo.CultivatorIntime);
+      setBatchStatus(batchinfo.Status);
+  }
+
+  async function buildInspectorData(batchinfo) {
+
+    await buildCultivatorData(batchinfo);
+    setFarmInspectorIntime(batchinfo.FarmInspectorIntime)
+    setStrawberryFamily(batchinfo.StrawberryFamily)
+    setFertilizerUsed(batchinfo.FertilizerUsed)
+    setBatchStatus(batchinfo.Status);
+  }
+
+
+
 
   return (
     <div className="container-fluid">
@@ -29,7 +98,7 @@ const BatchProgress = () => {
             <ul className="timeline">
                 <li>
                       <div className="timeline-badge danger">
-                        <i className="fa fa-check"></i>
+                        <i className={batchStatus==="ADMIN"||batchStatus==="FARMINSPECTOR"?"fa fa-check":"fa fa-times"}></i>
                       </div>
                       <div className="timeline-panel" id="cultivationSection">
                         <div className="timeline-heading">
@@ -39,11 +108,18 @@ const BatchProgress = () => {
                         </div>
                         <div className="timeline-body">
                           <table className="table activityData table-responsive" id="cultivatorTable">
-                            <tr>
-                              <td colSpan="2">
-                                <p>Information Not Available</p>
-                              </td>
-                            </tr>
+                          {batchStatus==="ADMIN"||batchStatus==="FARMINSPECTOR"?(<>
+                            <tr><td>batchId: {BatchId} </td></tr>
+    <tr><td>Cultivated Time:{CultivatorIntime}</td></tr>
+    <tr><td><img src = {require("../../assets/plugins/images/verified.jpg")} className="img-circle pull-left" alt="Verified"/></td></tr>
+        </>):(
+                   
+                   <tr>
+                      <td colSpan="2">
+                        <p>Information Not Available</p>
+                      </td>
+                    </tr>)}                  
+
                           </table>
                         </div>
                         <div className="verifiedImg"></div>
@@ -51,7 +127,7 @@ const BatchProgress = () => {
                     </li>
                     <li className="timeline-inverted">
                       <div className="timeline-badge danger">
-                        <i className="fa fa-times"></i>
+                        <i className={batchStatus==="FARMINSPECTOR"?"fa fa-check":"fa fa-times"}></i>
                       </div>
                       <div className="timeline-panel" id="farmInspectionSection">
                 <div className="timeline-heading">
@@ -61,11 +137,18 @@ const BatchProgress = () => {
                 </div>
                 <div className="timeline-body">
                   <table className="table activityData table-responsive" id="inspectorTable">
-                    <tr>
+                   {batchStatus==="FARMINSPECTOR"?(<>
+                    <tr><td>Inspector In Time:{FarmInspectorIntime}</td></tr>
+    <tr><td>StrawberryFamily: {StrawberryFamily}</td></tr>
+    <tr><td>Fertilizer Used : {FertilizerUsed}</td></tr>
+    <tr><td><img src = {require("../../assets/plugins/images/verified.jpg")} className="img-circle pull-left" alt="Verified"/></td></tr>
+    </>):(
+                   
+                   <tr>
                       <td colSpan="2">
                         <p>Information Not Available</p>
                       </td>
-                    </tr>
+                    </tr>)}
                   </table>
                 </div>
                 <div className="verifiedImg"></div>

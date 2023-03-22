@@ -1,0 +1,13 @@
+{
+    "$class": "com.strawberrysupplychain.system.BatchAsset",
+    "BatchId": "1234",
+    "Status": "SMARTINSPECTOR",
+    "CreatedDateTime": "2023-01-19T20:30:52.991Z",
+    "strawberryFamily": "a",
+    "TypeofSeed": "type_1",
+    "FertilizerUsed": "b",
+    "CultivatorIntime": "2023-01-19T20:30:52.991Z",
+    "FarmInspectorIntime": "2023-01-19T20:37:13.058Z",
+    "Cultivator": "resource:com.strawberrysupplychain.participant.SystemUser#0328",
+    "FarmInspector": "resource:com.strawberrysupplychain.participant.SystemUser#0330"
+  }
