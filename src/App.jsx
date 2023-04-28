@@ -10,21 +10,22 @@ import UserLogin from "./components/User/user_auth";
 import Signup from "./components/Admin/signup";
 import Form from "./components/Admin/form";
 import Preview from "./components/supply_chain/batchprogress";
-import AdminDashboard from "./components/Admin/admin_dashboard";
-import UserDashboard from "./components/User/user_dashboard";
+import Admin from "./components/Admin/index";
+import User from "./components/User/index";
 import Home from "./components/home/home";
 import React,{useEffect} from "react";
 import { Provider } from 'react-redux';
-import store from './helper/store';
-
+import  store  from './helper/store';
 
 function App() {
-
-
+    console.log("store.subscribe(()=>console.log(store.getState()));")
+    console.log("store");
+    console.log(store);
+    store.subscribe(()=>console.log(store.getState()));
     return (
         <div className="App">
-             <Provider store={store}>
-             <Router>
+    <Provider store={store}>
+    <Router>
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/admin_auth" element={<AdminLogin />} />
@@ -32,8 +33,8 @@ function App() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/form" element={<Form />} />
       <Route path="/preview" element={<Preview />} />
-      <Route path="/admin_dashboard" element={<AdminDashboard />} />
-      <Route path="/user_dashboard" element={<UserDashboard />} />
+      <Route path="/admin/*" element={<Admin />} />
+      <Route path="/user/*" element={<User/>} />
     </Routes>   
   </Router>
   </Provider>

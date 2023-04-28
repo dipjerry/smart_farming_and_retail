@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Table , Container, Button,  Row, Col, Image, Alert , Card , Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye } from '@fortawesome/free-solid-svg-icons'
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector , useDispatch } from 'react-redux';
+import {link, useNavigate } from 'react-router-dom';
 function UserDashboard() {
+  const navigate = useNavigate();
     const user = useSelector(state => state.user);
   const isAuthenticated = useSelector(state => state.isAuthenticated);
   const dispatch = useDispatch();
@@ -55,30 +56,36 @@ const [forthModalOpen, setForthModalOpen] = useState(false);
         <Col md={12} xs={12}>
           <Card className="white-box">
             <div className="user-bg">
-              <Image src={require("../../assets/plugins/images/heading-bg/slide3.jpg")} alt="user" fluid />
+              <Image src={"../../assets/plugins/images/heading-bg/slide3.jpg"} alt="user" fluid />
               <div className="overlay-box">
                 <div className="user-content">
                   {/* <a href="javascript:void(0)"> */}
-                    <Image src={require("../../assets/plugins/images/users/user1.jpg")} id="userImage" className="thumb-lg img-circle" alt="img" />
+                    <Image src={"../../assets/plugins/images/users/user1.jpg"} id="userImage" className="thumb-lg img-circle" alt="img" />
                   {/* </a> */}
                   <h4 className="text-white" id="userName">--</h4>
                   <h5 className="text-white" id="currentUserAddress">--</h5>
                 </div>
+                
               </div>
+              
             </div>
+            
             <Card.Body className="user-btm-box">
               <Row>
-                <Col md={4} sm={4} className="text-center">
+                <Col md={3} sm={3} className="text-center">
                   <p className="text-purple"><i className="fa fa-mobile"></i> Contact No</p>
-                  <h1 id="userContact">{user.phoneNumber}</h1>
+                  <h1 id="userContact">{user?.phoneNumber}</h1>
                 </Col>
-                <Col md={4} sm={4} className="text-center">
+                <Col md={3} sm={3} className="text-center">
                   <p className="text-blue"><i className="fa fa-user"></i> Role</p>
-                  <h1 id="userRole">{user.roles}</h1>
+                  <h1 id="userRole">{user?.roles}</h1>
                 </Col>
-                <Col md={4} sm={4} className="text-center">
+                <Col md={3} sm={3} className="text-center">
                   <p className="text-danger"><i className="fa fa-gears"></i> Settings</p>
+                  </Col>
+                <Col md={3} sm={3} className="text-center">
                   <a className="btn btn-info m-l-20 black btn-rounded  hidden-xs hidden-sm waves-effect waves-light" id="editUser" onClick={() => setFirstModalOpen(true)}>Edit</a>
+                  <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" onClick={()=>{navigate('statistics')}}>View Details</Button>
                   </Col>
                   </Row>
                   <Row>
@@ -106,7 +113,7 @@ const [forthModalOpen, setForthModalOpen] = useState(false);
                     <td><span className="label label-warning font-weight-100"onClick={() => setForthModalOpen(true)}>Processing</span> </td>
                     <td><span className="label label-danger font-weight-100" onClick={() => setFifthModalOpen(true)}>Not Available</span> </td>
                     <td><span className="label label-danger font-weight-100" onClick={() => setSixthModalOpen(true)}>Not Available</span> </td>
-                     <td><a href='/preview' onClick="view('` + batchid + `')"><FontAwesomeIcon icon={faEye} /></a></td>
+                     <td onClick={()=>{navigate("/preview")}}><FontAwesomeIcon icon={faEye} /></td>
                      {/* <td><FontAwesomeIcon icon={faEye} /></td> */}
                     </tr>
         </tbody>

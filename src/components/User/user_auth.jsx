@@ -84,9 +84,11 @@ function UserLogin() {
             <Form.Group>
               <Form.Control type="password" placeholder="Password" name="password" onChange={e => setUser({ ...user, password: e.target.value })} required />
             </Form.Group>
+            <Form.Group>
             <Button type="submit" variant="info" block>Login</Button>
-            <div className="form-group text-center m-t-20">
-              <a href="/">Go Back</a>
+            </Form.Group>
+            <div className="form-group btn btn-danger text-center m-t-20" onClick={(e)=>{history("/")}}>
+              Go Back
             </div>
           </Form>
         </div>

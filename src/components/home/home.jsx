@@ -1,12 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Container, Row,  Button , Image, Col } from 'react-bootstrap';
 import Glassmorphism from 'react-glassmorphism'
 import '../../assets/css/style.css';
 import './home.css';
+import {Link, useNavigate} from 'react-router-dom';
 // import strawberry from '../assets/plugins/images/strawberry-supplychain.png';
 
 const WelcomePage = () => {
+  const history = useNavigate();
   return (
     <div className="login-register ">
     <div className="login-box">
@@ -21,8 +22,8 @@ const WelcomePage = () => {
       <Row className="align-items-center h-100">
         <Col className="mx-auto">
         <p>Please choose your login option:</p>
-          <Button variant="primary" href="/admin_auth">Login as Admin</Button>
-          <Button variant="info" href="/user_auth">Login as User</Button>
+          <Button variant="primary" onClick={(e)=>{e.preventDefault ; history("/admin_auth")}}>Login as Admin</Button>
+          <Button variant="info" onClick={(e)=>{e.preventDefault ; history("/user_auth")}}>Login as User</Button>
         </Col>
       </Row>
     </Container>

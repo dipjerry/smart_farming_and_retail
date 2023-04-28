@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
-import {admindashboard} from './admindashboard';
-
+import {Link, useNavigate} from 'react-router-dom';
 
 function AdminLogin() {
+  const history = useNavigate();
   const [error, setError] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
     // Perform login process
+    history("/admin");
   }
-
   return (
     <section className="login-register">
       <div className="login-box">
@@ -26,7 +26,7 @@ function AdminLogin() {
             <Form.Group>
               <Form.Control type="password" placeholder="Password" name="password" required />
             </Form.Group>
-            <Button type="submit" variant="info" block href="/admin_dashboard">Login</Button>
+            <Button type="submit" variant="info" block >Login</Button>
             <div className="form-group text-center m-t-20">
               <a href="/">Go Back</a>
             </div>
