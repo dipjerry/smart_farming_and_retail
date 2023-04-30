@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     user: "guest user",
+    token: "",
     isAuthenticated: false
   };
 export const authSlice = createSlice({
@@ -15,7 +16,8 @@ export const authSlice = createSlice({
     LOGIN: (state , action) => {
         console.log("action");
         console.log(action);
-        state.user= action.payload;
+        state.user= action.payload.id;
+        state.token= action.payload.accessToken;
         state.isAuthenticated= true
     },
   },
