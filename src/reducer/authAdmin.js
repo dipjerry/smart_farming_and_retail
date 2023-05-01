@@ -5,7 +5,7 @@ const initialState = {
     isAuthenticated: false
   };
 export const authSlice = createSlice({
-  name: 'auth',
+  name: 'authAdmin',
   initialState,
   reducers: {
     LOGOUT: (state) => {

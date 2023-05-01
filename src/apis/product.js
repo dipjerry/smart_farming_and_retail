@@ -77,7 +77,12 @@ console.log("approved");
 
     static fetch = async (data) => {
         try {
-          const res = await axios.post(endpoint + `/v1/kyc/add_other`, data);
+          const res = await axios.get(endpoint + `/product/products`, {
+            params:{
+              role:'admin',
+              id:data
+            }
+          });
           return res.data;
         } catch (error) {
           console.log(error.data)

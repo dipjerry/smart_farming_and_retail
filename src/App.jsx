@@ -15,16 +15,18 @@ import User from "./components/User/index";
 import Home from "./components/home/home";
 import React,{useEffect} from "react";
 import { Provider } from 'react-redux';
-import  store  from './helper/store';
+import { PersistGate } from 'redux-persist/integration/react';
+import store , {persistor}  from './helper/store';
 
 function App() {
     console.log("store.subscribe(()=>console.log(store.getState()));")
     console.log("store");
     console.log(store);
-    store.subscribe(()=>console.log(store.getState()));
+    // store.subscribe(()=>console.log(store.getState()));
     return (
         <div className="App">
     <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
     <Router>
     <Routes>
       <Route path="/" element={<Home />} />
@@ -35,10 +37,8 @@ function App() {
       <Route path="/preview" element={<Preview />} />
       <Route path="/admin/*" element={<Admin />} />
       <Route path="/user/*" element={<User/>} />
-    </Routes>   
-  </Router>
-  </Provider>
-            <ToastContainer
+    </Routes>
+    <ToastContainer
                 position="top-right"
                 autoClose={5000}
                 hideProgressBar={false}
@@ -48,7 +48,11 @@ function App() {
                 pauseOnFocusLoss
                 draggable
                 pauseOnHover
-            />
+            />   
+  </Router>
+  </PersistGate>
+  </Provider>
+           
         </div >
     );
 }
