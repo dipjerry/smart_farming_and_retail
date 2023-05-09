@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { NavLink , useNavigate } from "react-router-dom";
+import { AiOutlineShoppingCart } from 'react-icons/ai';
+import FooterNavbar from "./footernav";
 // import { Container, Row, Col, Card, Table } from 'react-bootstrap';
 // import Sidebar from "../Components/explore/sidebar";
 // import Ccds from "../Components/explore/ccds";
@@ -19,7 +21,7 @@ function Shop() {
     {
     // logo: CompanyLogo3,
     _id:1,
-    registeredCompanyName: "boo",
+    title: "boo",
     shortDescription: "fsdds",
     tags: "sdfsdf",
     colour: "#F0D9FF",
@@ -27,7 +29,7 @@ function Shop() {
     {
       _id:2,
     // logo: CompanyLogo3,
-    registeredCompanyName: "boo",
+    title: "boo",
     shortDescription: "fsdds",
     tags: "sdfsdf",
     colour: "#F0D9FF",
@@ -178,24 +180,6 @@ const typeOfcompanys = [
                   </div>
                 )}
                 <p className="compdes">{card.text}</p>
-                <div className="flex justify-between">
-                  <div>
-                    <label className="not-italic font-normal text-[16px] leading-4 tracking-[0.971402px] text-[#252525] font-[Roboto]">
-                      {card.rise}
-                    </label>
-                    <p className="not-italic font-normal text-[10.5726px] leading-4 tracking-[0.971402px] text-[#828F99] font-[Roboto]">
-                      Raised
-                    </p>
-                  </div>
-                  <div>
-                    <label className="not-italic font-normal text-[16px] leading-4 tracking-[0.971402px] text-[#252525] font-[Roboto]">
-                      {card.subscription}
-                    </label>
-                    <p className="not-italic font-normal text-[10.5726px] leading-4 tracking-[0.971402px] text-[#828F99] font-[Roboto]">
-                      Min Invest
-                    </p>
-                  </div>
-                </div>
                 <div className="flex justify-start items-center ">
                   {typeOfcompanys.map((data, f) => (
                     <div
@@ -218,6 +202,7 @@ const typeOfcompanys = [
       </div>
            </div>
         </div>
+        <FooterNavbar />
       </div>
   );
 }
