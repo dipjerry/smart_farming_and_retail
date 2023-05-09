@@ -4,80 +4,23 @@ import { Form, Button, Alert } from 'react-bootstrap';
 import {Link, useNavigate} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import API from "../../apis/admin";
+import { toast, ToastContainer } from "react-toastify";
 import {
-  LOGIN
+  LOGINUSER
 } from '../../reducer/authUser';
+import {
+  LOGINADMIN
+} from '../../reducer/authAdmin';
 
 function UserLogin() {
   const history = useNavigate();
   const [user, setUser] = useState({});
   const dispatch = useDispatch();
 
-  const users = [
-    {
-      id: 'inspector',
-      password: '1234',
-      name: 'Inspector Hema',
-      phoneNumber: '123456',
-      roles: 'inspector'
-    },
-    {
-      id: 'harvester',
-      password: '1234',
-      name: 'jivan',
-      phoneNumber: '123456',
-      roles: 'harvestor'
-    },
-    {
-      id: 'exporter',
-      password: '1234',
-      name: 'jivan',
-      phoneNumber: '1234',
-      roles: 'importer'
-    },
-    {
-      id: 'exporter',
-      password: '1234',
-      name: 'tajku',
-      phoneNumber: '1234',
-      roles: 'exporter'
-    },
-    {
-      id: 'processor',
-      password: '1234',
-      name: 'dip',
-      phoneNumber: '1234',
-      roles: 'processor'
-    }
-  ];
+
 
   const [error, setError] = useState('');
 
-  const login = (event) => {
-    event.preventDefault();
-    // Perform login process
-   
-
-    const foundUser = users.find(u => 
-      u.id === user.id && 
-      u.password === user.password
-    );
-
-
-
-
-
-
-    console.log(foundUser);
-    console.log(foundUser.length);
-    console.log(foundUser.id);
-    if(foundUser.id === user.id) {
-      dispatch({ type: 'LOGIN', payload: foundUser });
-      history('/user_dashboard');
-    } else {
-      setError('Invalid id or password');
-  }
-  }
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -88,19 +31,17 @@ function UserLogin() {
       const response =  await API.login(formData)
       console.log("data");
       console.log(response);
-      console.log(response.status);
+      
       if(response.message === 'Success')
       {
           // localStorage.setItem("investoruserID", data.data.refId);
-          dispatch(LOGIN(response.data))
+          toast.success("Login Success");
+          dispatch(LOGINUSER(response.data))
           history('/user');
       }
       // navigate("/otp", { state: { data:data.data }});
     
   }
-
-
-
 
 
   return (
@@ -125,6 +66,7 @@ function UserLogin() {
               Go Back
             </div>
           </Form>
+          {/* <ToastContainer position="bottom-right" /> */}
         </div>
       </div>
     </section>

@@ -5,15 +5,15 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import API from "../../apis/admin";
 import {
-  LOGIN
-} from '../../reducer/authUser';
+  LOGINADMIN
+} from '../../reducer/authAdmin';
 
 function AdminLogin() {
   const history = useNavigate();
   const [error, setError] = useState('');
   const [user, setUser] = useState({});
   const dispatch = useDispatch();
-  
+
   async function handleSubmit(event) {
     event.preventDefault();
     const formData = {
@@ -23,12 +23,12 @@ function AdminLogin() {
       const response =  await API.login(formData)
       console.log("data");
       console.log(response);
-      console.log(response.status);
       if(response.message === 'Success')
       {
           // localStorage.setItem("investoruserID", data.data.refId);
-
-          dispatch(LOGIN(response.data))
+          console.log("response.data");
+          console.log(response.data);
+          dispatch(LOGINADMIN(response.data))
           history('/admin');
           toast.success('Login Success!');
       }

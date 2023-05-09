@@ -5,50 +5,26 @@ const initialState = {
     token: "",
     isAuthenticated: false
   };
-export const authSlice = createSlice({
+export const authUserSlice = createSlice({
   name: 'authUser',
   initialState,
   reducers: {
-    LOGOUT: (state) => {
-              state.user= "guest user",
-              state.isAuthenticated= false
-      },
-    LOGIN: (state , action) => {
-        console.log("action");
-        console.log(action);
+    LOGOUTUSER: () => initialState,
+    LOGINUSER: (state , action) => {
+      console.log("action user");
+      console.log(action);
         state.user= action.payload.id;
-        state.token= action.payload.accessToken;
-        state.isAuthenticated= true
+        state.userName= action.payload.Name;
+        state.userType= action.payload.User_Type;
+        state.userToken= action.payload.accessToken;
+        state.isUserAuthenticated= true
+    },
+    CURRENTCHAINUSER: (state , action) => {
+        state.chain= action.payload;
     },
   },
 })
 // Action creators are generated for each case reducer function
-export const { LOGIN , LOGOUT}  = authSlice.actions
+export const { LOGINUSER , LOGOUTUSER , CURRENTCHAINUSER}  = authUserSlice.actions
 
-export default authSlice.reducer
-
-// const initialState2 = {
-//     user: "anonymous",
-//     isAuthenticated: false
-//   };
-  
-//   export const authSlice2 = createSlice({
-//     name: 'auth2',
-//     initialState: initialState2,
-//     reducers: {
-//       LOGOUT: (state) => {
-//         state.user= "anonymous",
-//         state.isAuthenticated= false
-//       },
-//       LOGIN: (state , action) => {
-//         console.log("action");
-//         console.log(action);
-//         state.user= action.payload;
-//         state.isAuthenticated= true
-//       }
-//     },
-//   })
-  
-//   export const { LOGIN: LOGIN2, LOGOUT: LOGOUT2 } = authSlice2.actions
-  
-//   export default authSlice2.reducer
+export default authUserSlice.reducer

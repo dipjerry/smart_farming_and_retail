@@ -1,52 +1,30 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    user: "guest user",
+    admin: "guest Admin",
+    token: "",
     isAuthenticated: false
   };
-export const authSlice = createSlice({
+export const authAdminSlice = createSlice({
   name: 'authAdmin',
   initialState,
   reducers: {
-    LOGOUT: (state) => {
-              state.user= "guest user",
-              state.isAuthenticated= false
-      },
-    LOGIN: (state , action) => {
-        console.log("action");
-        console.log(action);
-        state.user= action.payload;
-        state.isAuthenticated= true
+    LOGOUTADMIN: () => initialState,
+    LOGINADMIN: (state , action) => {
+      console.log("action admin");
+      console.log(action);
+        state.admin= action.payload.id;
+        state.adminName= action.payload.Name;
+        state.adminType= action.payload.User_Type;
+        state.adminToken= action.payload.accessToken;
+        state.isAdminAuthenticated= true
+    },
+    CURRENTCHAINADMIN: (state , action) => {
+        state.chain= action.payload;
     },
   },
 })
 // Action creators are generated for each case reducer function
-export const { LOGIN , LOGOUT}  = authSlice.actions
+export const { LOGINADMIN , LOGOUTADMIN , CURRENTCHAINADMIN}  = authAdminSlice.actions
 
-export default authSlice.reducer
-
-// const initialState2 = {
-//     user: "anonymous",
-//     isAuthenticated: false
-//   };
-  
-//   export const authSlice2 = createSlice({
-//     name: 'auth2',
-//     initialState: initialState2,
-//     reducers: {
-//       LOGOUT: (state) => {
-//         state.user= "anonymous",
-//         state.isAuthenticated= false
-//       },
-//       LOGIN: (state , action) => {
-//         console.log("action");
-//         console.log(action);
-//         state.user= action.payload;
-//         state.isAuthenticated= true
-//       }
-//     },
-//   })
-  
-//   export const { LOGIN: LOGIN2, LOGOUT: LOGOUT2 } = authSlice2.actions
-  
-//   export default authSlice2.reducer
+export default authAdminSlice.reducer

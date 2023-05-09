@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Row,  Button , Image, Col } from 'react-bootstrap';
-import Glassmorphism from 'react-glassmorphism'
+// import Glassmorphism from 'react-glassmorphism'
 import '../../assets/css/style.css';
 import './home.css';
 import {Link, useNavigate} from 'react-router-dom';

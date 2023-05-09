@@ -1,20 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import { Table , Container, Button,  Row, Col, Image, Alert , Card , Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { useSelector , useDispatch } from 'react-redux';
-import {link, useNavigate } from 'react-router-dom';
-function UserDashboard() {
-  const navigate = useNavigate();
-    const user = useSelector(state => state.user);
-  const isAuthenticated = useSelector(state => state.isAuthenticated);
-  const dispatch = useDispatch();
+import {useNavigate } from 'react-router-dom';
+import API from "../../apis/product";
+import slide from "../../assets/plugins/images/heading-bg/farmer2.jpg";
+import userImg from "../../assets/plugins/images/users/user1.jpg";
+import Classify from "../ML/service/classify2";
+import {
+  LOGOUTUSER,
+  LOGINUSER , CURRENTCHAINUSER
+} from '../../reducer/authUser';
+import Navbar from "./components/nav";
 
-  console.log(user);
+function UserDashboard() {
+  const myState = useSelector((state)=>state)
+  const dispatch = useDispatch()
+  const navigate = useNavigate(); 
+  const isAuthenticated = useSelector(state => state.isUserAuthenticated);
+
 
   const [show, setShow] = useState(false);
   const [error, setError] = useState('');
-//   const [user, setUser] = useState({});
+  const [user, setUser] = useState({});
 //   const [showModal, setShowModal] = useState(false)
 
 //   const handleUpdateClick = () => setShowModal(true)
@@ -27,24 +36,52 @@ function UserDashboard() {
 //   }
 
 
-const [firstModalOpen, setFirstModalOpen] = useState(false);
- const [secondModalOpen, setSecondModalOpen] = useState(false);
-  const [thirdModalOpen, setThirdModalOpen] = useState(false);
-const [forthModalOpen, setForthModalOpen] = useState(false);
- const [fifthModalOpen, setFifthModalOpen] = useState(false);
+const [createBatch, setcreateBatchOpen] = useState(false);
+const [farmerModalOpen, setFarmerModalOpen] = useState(false);
+ const [exporterModalOpen, setExporterModalOpen] = useState(false);
+  const [importerModalOpen, setImporterModalOpen] = useState(false);
+const [logisticModalOpen, setLogisticModalOpen] = useState(false);
+ const [retailerModalOpen, setRetailerModalOpen] = useState(false);
   const [sixthModalOpen, setSixthModalOpen] = useState(false);
   const [seventhModalOpen, setSeventhModalOpen] = useState(false);
+  const [product, setProducts] = useState([]);
+
+  function createCultivation() {
+    // handle creating a new cultivation batch
+  }
+
+
+  async function getProducts()
+{
+  const formData={
+    key : 'producer', 
+    role:myState.authUser?.userType , 
+    id:myState.authUser?.user
+  }
+
+  const res = await API.fetchbyrole(formData);
+  console.log("res");
+  console.log(res);
+  setProducts(res.data?.success) 
+}
+function viewChain(product)
+{
+  console.log("product");
+  console.log(product);
+  dispatch(CURRENTCHAINUSER(product))
+  navigate("/preview") 
+}
+
+
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
 
   return (
     <Container fluid>
-      <Row className="bg-title">
-        <Col lg={3} md={4} sm={4} xs={12}>
-          <h4 className="page-title">Dashboard</h4>
-        </Col>
-        <Col lg={9} md={8} sm={8} xs={12}>
-          <a href="/" className="pull-right btn btn-info m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Log out</a>
-        </Col>
-      </Row>
+     {/* <Navbar data={myState.authUser} /> */}
       <Row>
         <Col md={12}>
           <Alert variant="info" id="divOngoingTransaction" style={{display: 'none'}}>
@@ -56,14 +93,14 @@ const [forthModalOpen, setForthModalOpen] = useState(false);
         <Col md={12} xs={12}>
           <Card className="white-box">
             <div className="user-bg">
-              <Image src={"../../assets/plugins/images/heading-bg/slide3.jpg"} alt="user" fluid />
+              <Image  src={slide} alt="user" fluid />
               <div className="overlay-box">
                 <div className="user-content">
                   {/* <a href="javascript:void(0)"> */}
-                    <Image src={"../../assets/plugins/images/users/user1.jpg"} id="userImage" className="thumb-lg img-circle" alt="img" />
+                    <Image src={userImg} id="userImage" className="thumb-lg img-circle" alt="img" />
                   {/* </a> */}
-                  <h4 className="text-white" id="userName">--</h4>
-                  <h5 className="text-white" id="currentUserAddress">--</h5>
+                  <h4 className="text-white" id="userName">{myState.authUser?.userName}</h4>
+                  <h5 className="text-white" id="currentUserAddress">{myState.authUser?.userName}</h5>
                 </div>
                 
               </div>
@@ -74,18 +111,21 @@ const [forthModalOpen, setForthModalOpen] = useState(false);
               <Row>
                 <Col md={3} sm={3} className="text-center">
                   <p className="text-purple"><i className="fa fa-mobile"></i> Contact No</p>
-                  <h1 id="userContact">{user?.phoneNumber}</h1>
+                  <h5 id="userContact">{user?.phoneNumber}</h5>
                 </Col>
                 <Col md={3} sm={3} className="text-center">
                   <p className="text-blue"><i className="fa fa-user"></i> Role</p>
-                  <h1 id="userRole">{user?.roles}</h1>
+                  <h5 id="userRole">{myState.authUser?.userType}</h5>
                 </Col>
-                <Col md={3} sm={3} className="text-center">
-                  <p className="text-danger"><i className="fa fa-gears"></i> Settings</p>
+                <Col md={2} sm={2} className="text-center">
+                  {/* <p className="text-danger"><i className="fa fa-gears"></i> Settings</p> */}
+                  <a className="btn btn-info m-l-20 black btn-rounded  hidden-xs hidden-sm waves-effect waves-light" id="editUser" onClick={() => setFirstModalOpen(true)}><i className="fa fa-gears"></i> Settings</a>
                   </Col>
-                <Col md={3} sm={3} className="text-center">
-                  <a className="btn btn-info m-l-20 black btn-rounded  hidden-xs hidden-sm waves-effect waves-light" id="editUser" onClick={() => setFirstModalOpen(true)}>Edit</a>
-                  <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" onClick={()=>{navigate('statistics')}}>View Details</Button>
+                <Col md={4} sm={4} className="text-center">
+                <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" onClick={() => navigate("explorar")}>Explorar</Button>
+                <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" onClick={() => setcreateBatchOpen(true)}>Create Batch</Button>
+                <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" onClick={()=>{navigate('statistics')}}>View Details</Button>
+                <Classify/>
                   </Col>
                   </Row>
                   <Row>
@@ -93,42 +133,41 @@ const [forthModalOpen, setForthModalOpen] = useState(false);
                     <Table striped bordered hover className="product-overview" id="userCultivationTable">
         <thead>
           <tr>
-            <th>Batch ID</th>
-            <th>ADMIN</th>
-            <th>Farm Inspector</th>
-            <th>Harvester</th>
+            <th>Product ID</th>
+            <th>Farmer</th>
             <th>Exporter</th>
+            <th>Logistic</th>
             <th>Importer</th>
-            <th>Processor</th>
+            <th>Retailer</th>
             <th>view</th>
           </tr>
         </thead>
         <tbody>
-        <tr>
-                   <td>3kmsdj3</td>
-                   
-                    <td><span className="label label-success font-weight-100" >Completed</span></td>
-                    <td><span className="label label-success font-weight-100" onClick={() => setSecondModalOpen(true)}>Completed</span></td>
-                    <td><span className="label label-success font-weight-100" onClick={() => setThirdModalOpen(true)}>Completed</span></td>
-                    <td><span className="label label-warning font-weight-100"onClick={() => setForthModalOpen(true)}>Processing</span> </td>
-                    <td><span className="label label-danger font-weight-100" onClick={() => setFifthModalOpen(true)}>Not Available</span> </td>
-                    <td><span className="label label-danger font-weight-100" onClick={() => setSixthModalOpen(true)}>Not Available</span> </td>
-                     <td onClick={()=>{navigate("/preview")}}><FontAwesomeIcon icon={faEye} /></td>
-                     {/* <td><FontAwesomeIcon icon={faEye} /></td> */}
-                    </tr>
+        {/* <tr> */}
+        {product?.map((product) => (
+      <tr key={product.Key}>
+     
+                    <td>{product.Record.id}</td>
+                    <td><span className="label label-success font-weight-100" onClick={() => setFarmerModalOpen(true)}>Completed</span></td>
+                    <td><span className="label label-warning font-weight-100"onClick={() => setExporterModalOpen(true)}>Processing</span> </td>
+                    <td><span className="label label-danger font-weight-100" onClick={() => setLogisticModalOpen(true)}>Not Available</span> </td>
+                    <td><span className="label label-danger font-weight-100" onClick={() => setImporterModalOpen(true)}>Not Available</span> </td>
+                    <td><span className="label label-danger font-weight-100" onClick={() => setRetailerModalOpen(true)}>Not Available</span> </td>
+                    <td onClick={()=>{viewChain(product.Record)}}><FontAwesomeIcon icon={faEye} /></td>
+
+      </tr>
+    ))}
         </tbody>
       </Table>
                     </Col>
                   </Row>
                   </Card.Body>
                   </Card>
-
-
                   </Col></Row>
                   
                   
-        <Modal show={firstModalOpen} toggle={() => setFirstModalOpen(false)} >
-        <Modal.Header toggle={() => setFirstModalOpen(false)} closeButton>
+        <Modal show={farmerModalOpen} toggle={() => setFarmerModalOpen(false)} >
+        <Modal.Header>
           <Modal.Title>Update Profile</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -159,7 +198,36 @@ const [forthModalOpen, setForthModalOpen] = useState(false);
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setFirstModalOpen(false)}>
+          <Button variant="secondary" onClick={() => setFarmerModalOpen(false)}>
+            Close
+          </Button>
+          <Button variant="primary">Save changes</Button>
+        </Modal.Footer>
+
+      {/* create a new batch  */}
+      </Modal>
+        <Modal show={createBatch} toggle={() => setcreateBatchOpen(false)} >
+        <Modal.Header>
+          <Modal.Title>Create Batch</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form>
+            <div className="form-group">
+              <label>Name</label>
+              <input type="text" className="form-control" placeholder="Name" required />
+            </div>
+            <div className="form-group">
+              <label>Quantity</label>
+              <input type="number" className="form-control" placeholder="Quantity" required />
+            </div>
+            <div className="form-group">
+              <label>Price of raw material</label>
+              <input type="number" className="form-control" placeholder="Price" required />
+            </div>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setcreateBatchOpen(false)}>
             Close
           </Button>
           <Button variant="primary">Save changes</Button>
@@ -167,8 +235,8 @@ const [forthModalOpen, setForthModalOpen] = useState(false);
       </Modal>
 
 
-      <Modal show={secondModalOpen} toggle={() => setSecondModalOpen(false)} >
-  <Modal.Header closeButton>
+  <Modal show={exporterModalOpen} >
+  <Modal.Header>
     <Modal.Title id="farmInspectionModelTitle">Farm Inspection</Modal.Title>
   </Modal.Header>
   <Modal.Body>
@@ -177,17 +245,18 @@ const [forthModalOpen, setForthModalOpen] = useState(false);
     </form>
   </Modal.Body>
   <Modal.Footer>
-    <Button variant="secondary" toggle={() => setThirdModalOpen(false)}>
+    <Button variant="secondary" toggle={() => setExporterModalOpen(false)}>
       Close
     </Button>
     <Button variant="primary" type="submit" form="farmInspectionForm" >
       Save
     </Button>
   </Modal.Footer>
+
 </Modal>
 
-      <Modal show={thirdModalOpen} toggle={() => setThirdModalOpen(false)} >
-  <Modal.Header closeButton>
+<Modal show={importerModalOpen}>
+  <Modal.Header>
     <Modal.Title id="farmerModelTitle">Farmer</Modal.Title>
   </Modal.Header>
   <Modal.Body>
@@ -196,17 +265,19 @@ const [forthModalOpen, setForthModalOpen] = useState(false);
     </form>
   </Modal.Body>
   <Modal.Footer>
-    <Button variant="secondary" toggle={() => setThirdModalOpen(false)}>
-      Close
+    <Button variant="secondary" toggle={() => setImporterModalOpen(false)}>
+      Close  
     </Button>
     <Button variant="primary" type="submit" form="farmInspectionForm" >
       Save
     </Button>
   </Modal.Footer>
 </Modal>
+
 {/* // Forth Modal */}
-<Modal show={forthModalOpen} toggle={() => setForthModalOpen(false)} >
-  <Modal.Header closeButton>
+
+<Modal show={logisticModalOpen}>
+  <Modal.Header>
     <Modal.Title id="forthModalTitle"> Farmer</Modal.Title>
   </Modal.Header>
   <Modal.Body>
@@ -244,7 +315,7 @@ const [forthModalOpen, setForthModalOpen] = useState(false);
     </form>
   </Modal.Body>
   <Modal.Footer>
-    <Button variant="secondary" toggle={() => setForthModalOpen(false)}>
+    <Button variant="secondary" toggle={() => setLogisticModalOpen(false)}>
       Close
     </Button>
     <Button variant="primary" type="submit" form="ForthModalForm" >
@@ -253,7 +324,7 @@ const [forthModalOpen, setForthModalOpen] = useState(false);
   </Modal.Footer>
 </Modal>
 {/* // Fifth Modal */}
-<Modal show={fifthModalOpen} toggle={() => setFifthModalOpen(false)} >
+<Modal show={retailerModalOpen}>
   <Modal.Header closeButton>
     <Modal.Title id="fifthModalTitle">Fifth Modal</Modal.Title>
   </Modal.Header>
@@ -263,7 +334,7 @@ const [forthModalOpen, setForthModalOpen] = useState(false);
     </form>
   </Modal.Body>
   <Modal.Footer>
-    <Button variant="secondary" toggle={() => setFifthModalOpen(false)}>
+    <Button variant="secondary" toggle={() => setRetailerModalOpen(false)}>
       Close
     </Button>
     <Button variant="primary" type="submit" form="fifthModalForm" >
@@ -273,7 +344,7 @@ const [forthModalOpen, setForthModalOpen] = useState(false);
 </Modal>
 
 {/* // Sixth Modal */}
-<Modal show={sixthModalOpen} toggle={() => setSixthModalOpen(false)} >
+<Modal show={sixthModalOpen}>
   <Modal.Header closeButton>
     <Modal.Title id="sixthModalTitle">Importer</Modal.Title>
   </Modal.Header>

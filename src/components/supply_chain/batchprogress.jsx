@@ -2,18 +2,26 @@ import React, { useState, useEffect } from 'react';
 import './batchprogress.css';
 import myData from './data.json';
 import userData from './udata.json';
+import { useSelector , useDispatch } from 'react-redux';
+import verified from "../../assets/plugins/images/verified.jpg"
 // import '../../assets/css/style.css';
 
 const BatchProgress = () => {
+  const myState = useSelector((state)=>state)
+  console.log("myState.authUser?.chain")
+  console.log(myState.authUser?.chain)
+  const [Batch_array] = useState(myState.authUser?.chain);
   const [batchStatus, setBatchStatus] = useState(null);
   const [batchNo, setBatchNo] = useState(null);
   const [BatchId, setBatchId] = useState(null);
-  const [CultivatorIntime, setCultivatorIntime] = useState(null);
+  const [CultivatorIntime, setCultivatoarIntime] = useState(null);
   const [FarmInspectorIntime, setFarmInspectorIntime] = useState(null);
   const [ProcessorIntime, setUser] = useState(null);
   const [StrawberryFamily, setStrawberryFamily] = useState(null);
   const [FertilizerUsed, setFertilizerUsed] = useState(null);
     
+
+
   useEffect(() => {
     // setBatchNo(() => {
     //   return new URLSearchParams(window.location.search).get('batchNo');
@@ -37,14 +45,23 @@ const BatchProgress = () => {
 
   // const loadData = () => {
   //   // perform your data loading logic here
-    console.log(myData.Status);
+    // console.log(myData.Status);
   //   alert("Data Loaded");
   // };
 
+  async function ConvertDate(timestamp) {
+    console.log("timestamp");
+    console.log(timestamp);
+    const date = new Date(timestamp * 1000);
+    const options = { timeZone: 'Asia/Kolkata', timeZoneName: 'short' };
+    const dateString = date.toLocaleString('en-US', options);
+    return dateString;
+  }
+
   const populate = ()=>{
-    var Batch_array = myData;
-    if (Batch_array.Status == "ADMIN") {
-      buildCultivatorData(Batch_array);
+    
+    if (Batch_array.producer.id) {
+      buildCultivatorData();
     } else if (Batch_array.Status == "FARMINSPECTOR") {
       buildInspectorData(Batch_array);
     } else if (Batch_array.Status == "HARVESTOR") {
@@ -62,10 +79,11 @@ const BatchProgress = () => {
 
 
 
-  async function buildCultivatorData(batchinfo) {
-      setBatchId(batchinfo.BatchId);
-      setCultivatorIntime(batchinfo.CultivatorIntime);
-      setBatchStatus(batchinfo.Status);
+  async function buildCultivatorData() {
+      const time = await ConvertDate(Batch_array.product.production_date.ManufactureDate.time);
+      setBatchId(Batch_array.id);
+      setCultivatoarIntime(time);
+      setBatchStatus(Batch_array.status);
   }
 
   async function buildInspectorData(batchinfo) {
@@ -108,10 +126,10 @@ const BatchProgress = () => {
                         </div>
                         <div className="timeline-body">
                           <table className="table activityData table-responsive" id="cultivatorTable">
-                          {batchStatus==="ADMIN"||batchStatus==="FARMINSPECTOR"?(<>
+                          {batchStatus==="Available"||batchStatus==="FARMINSPECTOR"?(<>
                             <tr><td>batchId: {BatchId} </td></tr>
     <tr><td>Cultivated Time:{CultivatorIntime}</td></tr>
-    <tr><td><img src = {require("../../assets/plugins/images/verified.jpg")} className="img-circle pull-left" alt="Verified"/></td></tr>
+    <tr><td><img src = {verified} className="img-circle pull-left" alt="Verified"/></td></tr>
         </>):(
                    
                    <tr>

@@ -85,4 +85,44 @@ console.log("approved");
 
         }
       }; 
+      static fetchuser = async (data) => {
+        try {
+          const res = await axios.get(endpoint + `/user/all`, {
+            params:{
+              role:'admin',
+              id:data
+            }
+          });
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+            return error.data;
+
+        }
+      }; 
+      static fetchproduct = async (data) => {
+        try {
+          const res = await axios.get(endpoint + `/product/products`, {
+            params:{
+              role:'admin',
+              id:data
+            }
+          });
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+            return error.data;
+
+        }
+      }; 
+      static createUserAdd = async (data) => {
+        try {
+          const res = await axios.post(endpoint + `/user/signup`, data);
+          console.log(res);
+          return res.data;
+        } catch (error) {
+          console.log(error.data);
+          return error.data;
+        }
+      };
 }

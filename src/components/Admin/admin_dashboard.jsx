@@ -1,34 +1,72 @@
 import { useState, useEffect } from "react";
-import { Container, Row, Col, Button, Table, Badge } from "react-bootstrap";
+import { Container, Row, Col, Button, Table, Badge ,Modal } from "react-bootstrap";
 import {Link, useNavigate} from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import API from "../../apis/product";
+import API from "../../apis/admin";
 import {
-  LOGIN,
-  LOGOUT,
-} from '../../reducer/authUser';
+  LOGOUTADMIN,
+  LOGINADMIN,
+} from '../../reducer/authAdmin';
 
 function AdminDashboard() {
 const myState = useSelector((state)=>state)
 const dispatch = useDispatch()
 const navigate = useNavigate(); 
- 
+
+const [addUser, setAddUserOpen] = useState(false);
 const [totalUsers, setTotalUsers] = useState(0);
+const [usersCount, setUserCount] = useState({});
 const [totalBatch, setTotalBatch] = useState(0);
 const [cultivations, setCultivations] = useState([]);
 const [users, setUsers] = useState([]);
 const [product, setProducts] = useState([]);
+const [file, setFile] = useState(null);
+
+const [createUser , setCreateUser] = useState({
+  name: "",
+  email: "",
+  address: "",
+  userType: "",
+  password: "",
+})
+
+const handleInputChange = (event) => {
+  const { name, value } = event.target;
+
+  setCreateUser((prevUser) => ({
+    ...prevUser,
+    [name]: value,
+  }));
+};
 
 async function getUser()
 {
-  
+  const res = await API.fetchuser(myState.authAdmin?.admin);
+  // console.log("users");
+  // console.log(res);
+  const userCounts = countUsersByType(res.data?.success);
+  setUserCount(userCounts);
+  setUsers(res.data?.success)  
 }
+
+function countUsersByType(users) {
+  const counts = {};
+  setTotalUsers(users.length); 
+  users.forEach(user => {
+    const userType = user.Record.User_Type;
+    counts[userType] = counts[userType] ? counts[userType] + 1 : 1;
+  });
+  return counts;
+}
+
 async function getProducts()
 {
-  const res = await API.fetch(myState.authAdmin?.user);
-  console.log("res");
-  console.log(res);
-  setProducts(res.data?.success)
+  const res = await API.fetchproduct(myState.authAdmin?.admin);
+  // console.log("product");
+  // console.log(res);
+  setProducts(res?.data?.success)
+  setTotalBatch(res?.data?.success?.length)
+ 
 }
 
   useEffect(() => {
@@ -45,24 +83,61 @@ async function getProducts()
 
   const handleCreateBatchClick = () => setShowCreateBatchModal(true);
   const handleCreateUserClick = () => setShowCreateUserModal(true);
+
+  const handleFile = (event) => {
+    // const formData = new FormData();
+    alert("hello");
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
+    console.log(selectedFile)
+    // setFile(event.target.files[0]);
+  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const data = new FormData();
+    console.log("file")
+    console.log(file)
+    data.append("file", file);
+    data.append("name", createUser.name);
+    data.append("id", myState.authAdmin?.admin);
+    data.append("email", createUser.email);
+    data.append("address", createUser.address);
+    data.append("userType", createUser.userType);
+    data.append("password", createUser.password);
+
+    const res = await API.createUserAdd(data);
+    console.log(res);
+    // navigate('/startup/profile/faq')
+   
+ 
+  //   setCreateUser({
+  //     name: "",
+  //     email: "",
+  //     email: "",
+  //     address: "",
+  //     userType: "",
+  // });
+};
+
+
   return (
     <Container fluid>
       <Row className="bg-title">
         <Col lg={3} md={4} sm={4} xs={12}>
-          <h4 className="page-title">Dashboard of {myState.authAdmin?.user}</h4>
+          <h4 className="page-title">Dashboard of {myState.authAdmin?.admin}</h4>
         </Col>
         <Col lg={9} md={8} sm={8} xs={12}>
-          {myState.authAdmin.isAuthenticated?
+          {myState.authAdmin.isAdminAuthenticated?
           <Button
             // href="/admin/logout"
-            onClick={() => dispatch(LOGOUT())}
+            onClick={() => {dispatch(LOGOUTADMIN()) ; navigate('/'); }}
             className="pull-right m-l-20 btn-info btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light"
           >
             Log out
           </Button>:
           <Button
             // href="/admin/logout"
-            onClick={() => dispatch(LOGIN("jerry"))}
+            onClick={() => {dispatch(LOGINADMIN("jerry"))}}
             className="pull-right m-l-20 btn-info btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light"
           >
             Log in
@@ -138,7 +213,6 @@ async function getProducts()
               <tr>
                 <th>Batch ID</th>
                 <th>Farmer</th>
-                <th>Farm Inspector</th>
                 <th>Exporter</th>
                 <th>Importer</th>
                 <th>Logistic</th>
@@ -153,7 +227,6 @@ async function getProducts()
         <td>{product.Record.name}</td>
         <td>{product.Record.producer.id}</td>
         <td>{product.Record.importer.id}</td>
-        <td>{product.Record.inspector.id}</td>
         <td>{product.Record.logistics.id}</td>
         <td>{product.Record.producer.id}</td>
         {/* <td>{JSON.stringify(product.Record.product)}</td> */}
@@ -184,34 +257,34 @@ async function getProducts()
           </thead>
           <tbody>
             <tr>
+              <td>Admin</td>
+              <td><span className="label label-danger font-weight-100">Admin</span></td>
+              <td>{usersCount?.admin}</td>
+            </tr>
+            <tr>
               <td>Farmer</td>
               <td><span className="label label-info font-weight-100">FARMER</span></td>
-              <td>1</td>
+              <td>{usersCount?.manufacturer}</td>
             </tr>
             <tr>
               <td>exporter</td>
               <td><span className="label label-success font-weight-100">EXPORTER</span></td>
-              <td>1</td>
+              <td>{usersCount?.exporter}</td>
             </tr>
             <tr>
               <td>Importer</td>
               <td><span className="label label-warning font-weight-100">IMPORTER</span></td>
-              <td>1</td>
+              <td>{usersCount?.importer}</td>
             </tr>
             <tr>
               <td>Logistic</td>
               <td><span className="label label-danger font-weight-100">LOGISTIC</span></td>
-              <td>1</td>
-            </tr>
-            <tr>
-              <td>Inspector</td>
-              <td><span className="label label-primary font-weight-100">INSPECTOR</span></td>
-              <td>1</td>
+              <td>{usersCount?.logistic}</td>
             </tr>
             <tr>
               <td>Retailer</td>
               <td><span className="label label-default font-weight-100">Retailer</span></td>
-              <td>1</td>
+              <td>{usersCount?.retailer}</td>
             </tr>
           </tbody>
         </Table>
@@ -219,7 +292,7 @@ async function getProducts()
     </div>
   </Col>
     <Col md={12} lg={8} sm={12}>
-      <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" id="userFormClick" onClick={() => $('#userFormModel').modal()}>Create User</Button>
+      <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" id="userFormClick" onClick={() => setAddUserOpen(true)}>Create User</Button>
      <div className="white-box">
       <h3 className="box-title">Users</h3>
       <div className="table-responsive" id="tblUserdiv">
@@ -234,13 +307,129 @@ async function getProducts()
             </tr>
           </thead>
           <tbody>
+          {users?.map((user) => (
+      <tr key={user.Key}>
+        <td>{user?.Record?.Name}</td>
+        <td>{user?.Record?.Email}</td>
+        <td>{user?.Record?.Email}</td>
+        <td>{user?.Record?.User_Type}</td>
+        <td>{user?.Record?.Email}</td>
+       
+      </tr>
+    ))}
           </tbody>
           </Table>
           </div>
           </div>
           </Col>
           </Row>
+          <Modal show={addUser} toggle={() => setAddUserOpen(false)} >
+        <Modal.Header>
+          <Modal.Title>Add User</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <form>
+      <div className="form-group">
+        <label>First Name</label>
+        <input
+          type="text"
+          name="name"
+          value={createUser.name}
+          onChange={handleInputChange}
+          className="form-control"
+          placeholder="Name"
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label>Email</label>
+        <input
+          type="email"
+          name="email"
+          value={createUser.email}
+          onChange={handleInputChange}
+          className="form-control"
+          placeholder="name@domain.com"
+          required
+        />
+      </div>
+      {/* <div className="form-group">
+        <label>Contact No</label>
+        <input
+          type="text"
+          name="email"
+          value={createUser.email}
+          onChange={handleInputChange}
+          className="form-control"
+          placeholder="Contact No"
+          required
+        />
+      </div> */}
+      <div className="form-group">
+        <label>Address</label>
+        <input
+          type="text"
+          name="address"
+          value={createUser.address}
+          onChange={handleInputChange}
+          className="form-control"
+          placeholder="Address"
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label>Password</label>
+        <input
+          type="text"
+          name="password"
+          value={createUser.address}
+          onChange={handleInputChange}
+          className="form-control"
+          placeholder="password"
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label>Role</label>
+        <select
+          name="userType"
+          value={createUser.userType}
+          onChange={handleInputChange}
+          className="form-control"
+        >
+          <option value="">Select Role</option>
+          <option value="Farmer">Farmer</option>
+          <option value="Exporter">Exporter</option>
+          <option value="Importer">Importer</option>
+          <option value="Logistic">Logistic</option>
+          <option value="Retailer">Retailer</option>
+        </select>
+        
+      </div>
+      <div className="form-group">
+        <label>Profile Pic</label>
+        <div className="form-group">
+        {/* <label>Profile Pic</label> */}
+        <input type="file" name="file" onChange={handleFile} />
+      </div>
+
+      </div>
+    </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setAddUserOpen(false)}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleSubmit}>
+  Save changes
+</Button>
+
+        </Modal.Footer>
+
+      {/* create a new batch  */}
+      </Modal>
       </Container>
+      
   )
 }
 

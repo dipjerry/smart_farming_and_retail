@@ -4,7 +4,7 @@ import storage from 'redux-persist/lib/storage';
 import { combineReducers } from 'redux';
 
 import authUserReducer from '../reducer/authUser'
-import authAdminReducer from '../reducer/authUser'
+import authAdminReducer from '../reducer/authAdmin'
 import countReducer from '../reducer/counter'
 
 const persistConfig = {
@@ -14,7 +14,7 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, combineReducers({
   authAdmin: authAdminReducer,
-  authUserAdmin: authUserReducer,
+  authUser: authUserReducer,
   count: countReducer,
 }));
 

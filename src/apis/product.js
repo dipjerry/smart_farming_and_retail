@@ -75,19 +75,16 @@ console.log("approved");
         }
       };
 
-    static fetch = async (data) => {
+    static fetchbyrole = async (data) => {
         try {
-          const res = await axios.get(endpoint + `/product/products`, {
-            params:{
-              role:'admin',
-              id:data
-            }
+          console.log("boom go")
+          const res = await axios.get(endpoint + `/product/productsbyRole`, {
+            params:data
           });
           return res.data;
         } catch (error) {
           console.log(error.data)
             return error.data;
-
         }
       }; 
 }

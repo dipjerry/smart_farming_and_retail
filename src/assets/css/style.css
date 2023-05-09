@@ -43,7 +43,7 @@
 body {
     font-family: Poppins, sans-serif;
     margin: 0;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
     color: #686868;
     font-weight: 300;
 }
@@ -2744,7 +2744,7 @@ ul.common li a:hover {
     position: relative;
 }
 .user-bg .overlay-box {
-    background: #8bce8f;
+    background: #424242aa;
     opacity: 0.9;
     position: absolute;
     top: 0;
