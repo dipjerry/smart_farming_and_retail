@@ -382,7 +382,7 @@ async function getProducts()
         <input
           type="text"
           name="password"
-          value={createUser.address}
+          value={createUser.password}
           onChange={handleInputChange}
           className="form-control"
           placeholder="password"
