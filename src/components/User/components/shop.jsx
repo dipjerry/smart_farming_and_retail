@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { NavLink , useNavigate } from "react-router-dom";
+import { AiOutlineShoppingCart } from 'react-icons/ai';
+import FooterNavbar from "./footernav";
+import { useDispatch } from 'react-redux';
 // import { Container, Row, Col, Card, Table } from 'react-bootstrap';
 // import Sidebar from "../Components/explore/sidebar";
 // import Ccds from "../Components/explore/ccds";
@@ -10,125 +13,37 @@ import { NavLink , useNavigate } from "react-router-dom";
 // import Footer2 from "../Components/Footer2/Footer2";
 // import CompanyLogo3 from "../Images/CompanyLogo3.png";
 // import API from "../Apis/startupApis";
+import {
+  ADD_ITEM 
+} from '../../../reducer/cart';
 
 
-function Shop() {
-
+function Shop({shop}) {
+console.log('shop',shop)
   const navigate = useNavigate();
-  const [shop, setShop] = useState([
-    {
-    // logo: CompanyLogo3,
-    _id:1,
-    registeredCompanyName: "boo",
-    shortDescription: "fsdds",
-    tags: "sdfsdf",
-    colour: "#F0D9FF",
-  },
-    {
-      _id:2,
-    // logo: CompanyLogo3,
-    registeredCompanyName: "boo",
-    shortDescription: "fsdds",
-    tags: "sdfsdf",
-    colour: "#F0D9FF",
-  }
-]);
-//   const [startupsccps, setstartupsccps] = useState([{
-//     logo: CompanyLogo3,
-//     registeredCompanyName: "",
-//     shortDescription: "",
-//     tags: "",
+  const dispatch = useDispatch();
+
+//   const [shop, setShop] = useState([
+//     {
+//     id:1,
+//     title: "boo",
+//     shortDescription: "fsdds",
+//     tags: "sdfsdf",
+//     price:10.10,
 //     colour: "#F0D9FF",
-//   }]);
-//   const [startupsequity, setstartupsequity] = useState([{
-//     logo: CompanyLogo3,
-//     registeredCompanyName: "",
-//     shortDescription: "",
-//     tags: "",
+//   },
+//     {
+//       id:2,
+//     title: "boo",
+//     shortDescription: "fsdds",
+//     tags: "sdfsdf",
+//     price:20.10,
 //     colour: "#F0D9FF",
-//   }]);
-//   const [startupse, setstartups] = useState([{
-//     logo: CompanyLogo3,
-//     registeredCompanyName: "",
-//     shortDescription: "",
-//     tags: "",
-//     colour: "#F0D9FF",
-//   }]);
-
-//   const fetchStartupCcps = async () => {
-//     try { 
-//       const response = await API.fetchStartupByType({tos:"CCPS"})
-//       //  console.log("response.data.data")
-//       //  console.log(response.data.data)
-//        setstartupsccps(response.data.data);
-//     } catch (error) {
-//       console.error('Error fetching data:', error);
-//     }
-//   };
-
-//   const fetchStartupCcds = async () => {
-//     try { 
-//       const response = await API.fetchStartupByType({tos:"CCDS"})
-//       //  console.log("response.data.data")
-//       //  console.log(response.data.data)
-//        setstartupscds(response.data.data);
-//     } catch (error) {
-//       console.error('Error fetching data:', error);
-//     }
-//   };
-
-//   const fetchStartupEquity = async () => {
-//     try { 
-//       const response = await API.fetchStartupByType({tos:"equity"})
-     
-//        setstartupsequity(response.data.data);
-//     } catch (error) {
-//       console.error('Error fetching data:', error);
-//     }
-//   };
-
-//   const fetchStartup = async () => {
-//     try { 
-//       const response = await API.fetchStartupByType({tos:"startup"})
-//       //  console.log("response.data.data")
-//       //  console.log(response.data.data)
-//        setstartups(response.data.data);
-//     } catch (error) {
-//       console.error('Error fetching data:', error);
-//     }
-//   };
-
-//   const handleInvestClick = async(id) => {
-//     alert(id);
-//    const data = {
-//      id:id
-//    }
-//     navigate('/startup/startupondetails/'+id, {state: data });
-//    }
-
-//   const count = {
-//     ccps : startupsccps.length,
-//     ccds : startupsccds.length,
-//     equity : startupsequity.length,
-//     startup : startupse.length,
 //   }
-
-//   useEffect(() => {
-//     fetchStartup();   
-//     fetchStartupCcps();   
-//     fetchStartupCcds();   
-//     fetchStartupEquity();   
-//   }, []);
-
-  
-//     const [callbackResult, setCallbackResult] = useState(null);
-    
-//     const handleCallback = async (result) => {
-//       alert(result);
-//       setCallbackResult(result);
-//     };
+// ]);
 console.log("Hello");
 const [hovered, setHovered] = useState(null);
+const [cartItems, setCartItems] = useState([]);
 
 const handleHover = (id) => {
   setHovered(id);
@@ -141,83 +56,90 @@ const typeOfcompanys = [
       shoping1: "E-Commerce",
     },
   ];
+
+
+
+  function handleAddToCart(product) {
+    const existingItem = cartItems.find(item => item.id === product.id);
+    if (existingItem) {
+      setCartItems(cartItems.map(item => {
+        if (item.id === product.id) {
+          return { ...item, quantity: item.quantity + 1 };
+        } else {
+          return item;
+        }
+      }));
+    } else {
+      setCartItems([...cartItems, { ...product, quantity: 1 }]);
+    }
+  }
+
+  function handleIncreaseQuantity(item) {
+    setCartItems(cartItems.map(i => {
+      if (i.id === item.id) {
+        return { ...i, quantity: i.quantity + 1 };
+      } else {
+        return i;
+      }
+    }));
+  }
+
+  function handleDecreaseQuantity(item) {
+    setCartItems(cartItems.map(i => {
+      if (i.id === item.id && i.quantity > 1) {
+        return { ...i, quantity: i.quantity - 1 };
+      } else {
+        return i;
+      }
+    }));
+  }
+
+
   return (
   
-      <div className="flex flex-col w-[80%]">
-        <h1>Shop</h1>
+      <div className="flex flex-col w-[90%]">
+        {/* <h1>Shop</h1> */}
         <div className="flex gap-8">
           {/* <Sidebar count={count} /> */}
-          <div className="w-[75%] flex flex-col gap-8">
+          <div className="w-[50%] flex flex-col gap-8">
           <div className="rounded-[5px]!important md:grid md:grid-cols-3 gap-[28.5px]">
         {shop?.map((card, index) => {
           return (
-            <div
-              className="startupcard "
-              key={index}
-              onMouseEnter={()=>handleHover(index)}
-              onMouseLeave={()=>handleHover(null)}
-              onClick={()=>{handleCallback(card._id)}}
-            >
-              <div className=" flex flex-col gap-3">
-                <div>
-                  <img src={"https://picsum.photos/200"}  className="banner" />
-                  <div className="flex px-3 ">
-                    <div className="mt-[-20px] flex justify-center bg-[#fefefe] w-[60px] h-[60px] box-border rounded-[7.93145px] border-[0.793145px] border-solid border-[#DDDDDD]">
-                    <img src={"https://picsum.photos/200"} />
-                    </div>
-                    <label className="not-italic font-medium m-2 leading-[13px] text-[#252525] font-[Poppins]">
-                      {card.title}
-                    </label>
-                  </div>
+            <div className="startupcard" key={index} onMouseEnter={() => handleHover(index)} onMouseLeave={() => handleHover(null)} onClick={() => dispatch(ADD_ITEM({ id: card.Key, name: card.Record.name, price: card.Record.product.price }))}>
+            <div className="flex flex-col gap-3">
+              <div className="relative">
+                <img src="https://picsum.photos/200" className="banner" />
+                <div className="absolute bottom-5 mt-[-20px] flex justify-center items-center bg-[#fefefe] w-[60px] h-[60px] rounded-full border-[0.8px] border-solid border-[#DDDDDD]">
+                  <img src="https://picsum.photos/200" className="w-full h-full rounded-full" />
                 </div>
-                {hovered===index && (
-                  <div className="card__hover-content">
-                    <div>
-                <p className="compdes">{card.shortDescription}</p>
-                </div>
-                  </div>
-                )}
-                <p className="compdes">{card.text}</p>
-                <div className="flex justify-between">
-                  <div>
-                    <label className="not-italic font-normal text-[16px] leading-4 tracking-[0.971402px] text-[#252525] font-[Roboto]">
-                      {card.rise}
-                    </label>
-                    <p className="not-italic font-normal text-[10.5726px] leading-4 tracking-[0.971402px] text-[#828F99] font-[Roboto]">
-                      Raised
-                    </p>
-                  </div>
-                  <div>
-                    <label className="not-italic font-normal text-[16px] leading-4 tracking-[0.971402px] text-[#252525] font-[Roboto]">
-                      {card.subscription}
-                    </label>
-                    <p className="not-italic font-normal text-[10.5726px] leading-4 tracking-[0.971402px] text-[#828F99] font-[Roboto]">
-                      Min Invest
-                    </p>
-                  </div>
-                </div>
-                <div className="flex justify-start items-center ">
-                  {typeOfcompanys.map((data, f) => (
-                    <div
-                      className="flex justify-center items-center pb-[1px] border-[0.5px] rounded-[7499.3px] bg-[#9797FE]  w-[83px] mr-[12px] h-[16px] border-[#828F99]"
-                      key={f}
-                    >
-                      <div className="w-[12px] pr-[2.75px]">
-                        <img src="" alt="" className="w-[100%]" />
-                      </div>
-                      <p className="font-[400] leading-[9.26px] font-[Roboto] text-[#ffffff] text-[9.26px] ">
-                        {data.shoping1}
-                      </p>
-                    </div>
-                  ))}
-                </div>
+                {/* <label className="not-italic font-medium mt-3 mb-2 px-3 leading-[13px] text-[#252525] font-[Poppins]">{card.Record.name}</label> */}
               </div>
+              {hovered === index && (
+                <div className="card__hover-content">
+                  <p className="compdes">{card.Record.product.description}</p>
+                </div>
+              )}
+              <p className="compdes">{card?.Record?.name}</p>
+              <p className="compdes">₹{card?.Record?.product?.price}</p>
+              {/* <div className="flex items-center space-x-2">
+                {typeOfcompanys.map((data, f) => (
+                  <div className="flex justify-center items-center px-2 py-[1px] rounded-full bg-[#9797FE] text-[#ffffff] text-[9.26px] font-[Roboto]" key={f}>
+                    <div className="w-[12px] pr-[2.75px]">
+                      <img src="" alt="" className="w-full" />
+                    </div>
+                    <p className="leading-[9.26px]">{data.shoping1}</p>
+                  </div>
+                ))}
+              </div> */}
             </div>
+          </div>
+          
           );
         })}
       </div>
            </div>
         </div>
+        <FooterNavbar increaseQuantity={handleIncreaseQuantity} decreaseQuantity={handleDecreaseQuantity} cart={cartItems} />
       </div>
   );
 }

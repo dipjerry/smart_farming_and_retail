@@ -13,6 +13,7 @@ import {
   LOGINUSER , CURRENTCHAINUSER
 } from '../../reducer/authUser';
 import Navbar from "./components/nav";
+import { IpfsImage } from 'react-ipfs-image';
 
 function UserDashboard() {
   const myState = useSelector((state)=>state)
@@ -24,6 +25,7 @@ function UserDashboard() {
   const [show, setShow] = useState(false);
   const [error, setError] = useState('');
   const [user, setUser] = useState({});
+
 //   const [showModal, setShowModal] = useState(false)
 
 //   const handleUpdateClick = () => setShowModal(true)
@@ -46,10 +48,42 @@ const [logisticModalOpen, setLogisticModalOpen] = useState(false);
   const [seventhModalOpen, setSeventhModalOpen] = useState(false);
   const [product, setProducts] = useState([]);
 
+  const [createProduct , setCreateProduct] = useState({
+    name : "", price:"" , quantity:"",id:myState.authUser?.user , loggedUserType:myState.authUser?.userType== "Farmer" ? "manufacturer" : myState.authUser?.userType
+  })
+
+
   function createCultivation() {
     // handle creating a new cultivation batch
   }
 
+  const handleCreateProductChange = (event) => {
+  const { name, value } = event.target;
+  setCreateProduct((prevProduct) => ({
+    ...prevProduct,
+    [name]: value,
+  }));
+};
+
+// const handleFile = (event) => {
+//   // const formData = new FormData();
+//   alert("hello");
+//   const selectedFile = event.target.files[0];
+//   setFile(selectedFile);
+//   console.log(selectedFile)
+//   // setFile(event.target.files[0]);
+// };
+const handleCreateProductSubmit = async (event) => {
+  event.preventDefault();
+  const res = await API.addProduct(createProduct);
+  console.log(res);
+  // navigate('/startup/profile/faq')
+  setcreateBatchOpen(false);
+
+  setCreateProduct({
+    name : "", price:"" , quantity:"",id:myState.authUser?.user , loggedUserType:myState.authUser?.userType== "farmer" ? "manufacturer" : myState.authUser?.userType
+});
+};
 
   async function getProducts()
 {
@@ -91,14 +125,17 @@ function viewChain(product)
       </Row>
       <Row>
         <Col md={12} xs={12}>
-          <Card className="white-box">
-            <div className="user-bg">
+          <Card className="white-box" >
+            <div className="user-bg" style={{ height:"fit-content" }}>
               <Image  src={slide} alt="user" fluid />
               <div className="overlay-box">
                 <div className="user-content">
-                  {/* <a href="javascript:void(0)"> */}
-                    <Image src={userImg} id="userImage" className="thumb-lg img-circle" alt="img" />
-                  {/* </a> */}
+                  <div className='flex justify-center'>
+                    {myState.authUser?.profilePic?
+                  <IpfsImage hash='myState.authUser?.profilePic'/>: 
+                  <Image src={userImg} id="userImage" style={{ width: "6vw" , height:"auto" }} className="img-fluid thumb-lg img-circle" alt="img" />
+                   }
+                  </div>
                   <h4 className="text-white" id="userName">{myState.authUser?.userName}</h4>
                   <h5 className="text-white" id="currentUserAddress">{myState.authUser?.userName}</h5>
                 </div>
@@ -109,19 +146,19 @@ function viewChain(product)
             
             <Card.Body className="user-btm-box">
               <Row>
-                <Col md={3} sm={3} className="text-center">
+                <Col md={3} sm={6} xs={12} className="text-center">
                   <p className="text-purple"><i className="fa fa-mobile"></i> Contact No</p>
                   <h5 id="userContact">{user?.phoneNumber}</h5>
                 </Col>
-                <Col md={3} sm={3} className="text-center">
+                <Col md={3} sm={6} xs={12} className="text-center">
                   <p className="text-blue"><i className="fa fa-user"></i> Role</p>
                   <h5 id="userRole">{myState.authUser?.userType}</h5>
                 </Col>
-                <Col md={2} sm={2} className="text-center">
+                {/* <Col md={2} sm={2} className="text-center"> */}
                   {/* <p className="text-danger"><i className="fa fa-gears"></i> Settings</p> */}
-                  <a className="btn btn-info m-l-20 black btn-rounded  hidden-xs hidden-sm waves-effect waves-light" id="editUser" onClick={() => setFirstModalOpen(true)}><i className="fa fa-gears"></i> Settings</a>
-                  </Col>
-                <Col md={4} sm={4} className="text-center">
+                  {/* <a className="btn btn-info m-l-20 black btn-rounded  hidden-xs hidden-sm waves-effect waves-light" id="editUser" onClick={() => setFirstModalOpen(true)}><i className="fa fa-gears"></i> Settings</a>
+                  </Col> */}
+                <Col md={6} sm={12} xs={12} className="text-center">
                 <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" onClick={() => navigate("explorar")}>Explorar</Button>
                 <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" onClick={() => setcreateBatchOpen(true)}>Create Batch</Button>
                 <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" onClick={()=>{navigate('statistics')}}>View Details</Button>
@@ -214,15 +251,15 @@ function viewChain(product)
           <form>
             <div className="form-group">
               <label>Name</label>
-              <input type="text" className="form-control" placeholder="Name" required />
+              <input type="text" name='name' onChange={handleCreateProductChange} value={createProduct.name} className="form-control" placeholder="Name" required />
             </div>
             <div className="form-group">
               <label>Quantity</label>
-              <input type="number" className="form-control" placeholder="Quantity" required />
+              <input type="number" name='quantity' onChange={handleCreateProductChange} value={createProduct.quantity} className="form-control" placeholder="Quantity" required />
             </div>
             <div className="form-group">
               <label>Price of raw material</label>
-              <input type="number" className="form-control" placeholder="Price" required />
+              <input type="number" name='price' onChange={handleCreateProductChange} className="form-control" value={createProduct.price} placeholder="Price" required />
             </div>
           </form>
         </Modal.Body>
@@ -230,7 +267,7 @@ function viewChain(product)
           <Button variant="secondary" onClick={() => setcreateBatchOpen(false)}>
             Close
           </Button>
-          <Button variant="primary">Save changes</Button>
+          <Button variant="primary" onClick={handleCreateProductSubmit}>Save changes</Button>
         </Modal.Footer>
       </Modal>
 

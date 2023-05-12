@@ -1,108 +1,86 @@
 lockfileVersion: '6.0'
 
+specifiers:
+  '@fortawesome/fontawesome-svg-core': ^6.2.1
+  '@fortawesome/free-solid-svg-icons': ^6.2.1
+  '@fortawesome/react-fontawesome': ^0.2.0
+  '@material-tailwind/react': ^1.4.2
+  '@popperjs/core': ^2.11.6
+  '@reduxjs/toolkit': ^1.9.5
+  '@tensorflow/tfjs': ^4.4.0
+  '@testing-library/dom': ^8.20.0
+  '@testing-library/jest-dom': ^5.16.5
+  '@testing-library/react': ^13.4.0
+  '@testing-library/user-event': ^13.5.0
+  '@vitejs/plugin-react': ^4.0.0
+  autoprefixer: ^10.4.14
+  bootstrap: ^5.2.3
+  chart.js: ^4.1.1
+  cropperjs: ^1.5.13
+  cross-env: ^7.0.3
+  dotenv: ^16.0.3
+  faker: ^6.6.6
+  idb: ^7.1.1
+  postcss: ^8.4.23
+  react: ^18.2.0
+  react-bootstrap: ^2.7.0
+  react-chartjs-2: ^5.2.0
+  react-cropper: ^2.3.3
+  react-dom: ^18.2.0
+  react-glassmorphism: ^0.0.1
+  react-icons: ^4.8.0
+  react-ipfs-image: ^0.7.0
+  react-redux: ^7.2.4
+  react-router-dom: ^6.5.0
+  react-table: ^7.8.0
+  react-toastify: ^9.1.1
+  react-webcam: ^7.0.1
+  redux: ^4.1.0
+  redux-persist: ^6.0.0
+  seedrandom: ^3.0.5
+  tailwindcss: ^3.3.2
+  vite: ^4.3.0
+  vite-plugin-ssr: ^0.4.117
+  vite-plugin-svgr: ^2.4.0
+  vite-tsconfig-paths: ^4.2.0
+  web-vitals: ^2.1.4
+
 dependencies:
-  '@fortawesome/fontawesome-svg-core':
-    specifier: ^6.2.1
-    version: 6.4.0
-  '@fortawesome/free-solid-svg-icons':
-    specifier: ^6.2.1
-    version: 6.4.0
-  '@fortawesome/react-fontawesome':
-    specifier: ^0.2.0
-    version: 0.2.0(@fortawesome/fontawesome-svg-core@6.4.0)(react@18.2.0)
-  '@material-tailwind/react':
-    specifier: ^1.4.2
-    version: 1.4.2(react-dom@18.2.0)(react@18.2.0)
-  '@popperjs/core':
-    specifier: ^2.11.6
-    version: 2.11.7
-  '@reduxjs/toolkit':
-    specifier: ^1.9.5
-    version: 1.9.5(react-redux@7.2.9)(react@18.2.0)
-  '@tensorflow/tfjs':
-    specifier: ^4.4.0
-    version: 4.4.0(seedrandom@3.0.5)
-  '@testing-library/dom':
-    specifier: ^8.20.0
-    version: 8.20.0
-  '@testing-library/jest-dom':
-    specifier: ^5.16.5
-    version: 5.16.5
-  '@testing-library/react':
-    specifier: ^13.4.0
-    version: 13.4.0(react-dom@18.2.0)(react@18.2.0)
-  '@testing-library/user-event':
-    specifier: ^13.5.0
-    version: 13.5.0(@testing-library/dom@8.20.0)
-  axios:
-    specifier: ^1.4.0
-    version: 1.4.0
-  bootstrap:
-    specifier: ^5.2.3
-    version: 5.2.3(@popperjs/core@2.11.7)
-  chart.js:
-    specifier: ^4.1.1
-    version: 4.2.1
-  cropperjs:
-    specifier: ^1.5.13
-    version: 1.5.13
-  cross-env:
-    specifier: ^7.0.3
-    version: 7.0.3
-  dotenv:
-    specifier: ^16.0.3
-    version: 16.0.3
-  faker:
-    specifier: ^6.6.6
-    version: 6.6.6
-  idb:
-    specifier: ^7.1.1
-    version: 7.1.1
-  react:
-    specifier: ^18.2.0
-    version: 18.2.0
-  react-bootstrap:
-    specifier: ^2.7.0
-    version: 2.7.4(@types/react@18.2.6)(react-dom@18.2.0)(react@18.2.0)
-  react-chartjs-2:
-    specifier: ^5.2.0
-    version: 5.2.0(chart.js@4.2.1)(react@18.2.0)
-  react-cropper:
-    specifier: ^2.3.3
-    version: 2.3.3(react@18.2.0)
-  react-dom:
-    specifier: ^18.2.0
-    version: 18.2.0(react@18.2.0)
-  react-glassmorphism:
-    specifier: ^0.0.1
-    version: 0.0.1(react-dom@18.2.0)(react@18.2.0)
-  react-icons:
-    specifier: ^4.8.0
-    version: 4.8.0(react@18.2.0)
-  react-redux:
-    specifier: ^7.2.4
-    version: 7.2.9(react-dom@18.2.0)(react@18.2.0)
-  react-router-dom:
-    specifier: ^6.5.0
-    version: 6.10.0(react-dom@18.2.0)(react@18.2.0)
-  react-toastify:
-    specifier: ^9.1.1
-    version: 9.1.2(react-dom@18.2.0)(react@18.2.0)
-  react-webcam:
-    specifier: ^7.0.1
-    version: 7.0.1(react-dom@18.2.0)(react@18.2.0)
-  redux:
-    specifier: ^4.1.0
-    version: 4.2.1
-  redux-persist:
-    specifier: ^6.0.0
-    version: 6.0.0(react@18.2.0)(redux@4.2.1)
-  seedrandom:
-    specifier: ^3.0.5
-    version: 3.0.5
-  web-vitals:
-    specifier: ^2.1.4
-    version: 2.1.4
+  '@fortawesome/fontawesome-svg-core': 6.4.0
+  '@fortawesome/free-solid-svg-icons': 6.4.0
+  '@fortawesome/react-fontawesome': 0.2.0_tumfstpptabomqiydababgzl3q
+  '@material-tailwind/react': 1.4.2_biqbaboplfbrettd7655fr4n2y
+  '@popperjs/core': 2.11.7
+  '@reduxjs/toolkit': 1.9.5_7ozmmenbreubqajvpxb2pmuuau
+  '@tensorflow/tfjs': 4.4.0_seedrandom@3.0.5
+  '@testing-library/dom': 8.20.0
+  '@testing-library/jest-dom': 5.16.5
+  '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
+  '@testing-library/user-event': 13.5.0_yxlyej73nftwmh2fiao7paxmlm
+  bootstrap: 5.2.3_@popperjs+core@2.11.7
+  chart.js: 4.2.1
+  cropperjs: 1.5.13
+  cross-env: 7.0.3
+  dotenv: 16.0.3
+  faker: 6.6.6
+  idb: 7.1.1
+  react: 18.2.0
+  react-bootstrap: 2.7.4_biqbaboplfbrettd7655fr4n2y
+  react-chartjs-2: 5.2.0_t5yjg6ab35jnsudnh2qdighszm
+  react-cropper: 2.3.3_react@18.2.0
+  react-dom: 18.2.0_react@18.2.0
+  react-glassmorphism: 0.0.1_biqbaboplfbrettd7655fr4n2y
+  react-icons: 4.8.0_react@18.2.0
+  react-ipfs-image: 0.7.0_react@18.2.0
+  react-redux: 7.2.9_biqbaboplfbrettd7655fr4n2y
+  react-router-dom: 6.10.0_biqbaboplfbrettd7655fr4n2y
+  react-table: 7.8.0_react@18.2.0
+  react-toastify: 9.1.2_biqbaboplfbrettd7655fr4n2y
+  react-webcam: 7.0.1_biqbaboplfbrettd7655fr4n2y
+  redux: 4.2.1
+  redux-persist: 6.0.0_react@18.2.0+redux@4.2.1
+  seedrandom: 3.0.5
+  web-vitals: 2.1.4
 
 devDependencies:
   '@types/react':
@@ -2750,7 +2728,16 @@ packages:
       react: 18.2.0
     dev: false
 
-  /react-is@16.13.1:
+  /react-ipfs-image/0.7.0_react@18.2.0:
+    resolution: {integrity: sha512-ZlamIm9yQkoD2tjwBwoYXBVl9Y6IRkd+UF9bbREfc4XCyRd6g77v68iIw6DKH8wTlIRqLSe2fKOaZfmWQNYRIg==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16'
+    dependencies:
+      react: 18.2.0
+    dev: false
+
+  /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
     dev: false
 
@@ -2816,7 +2803,15 @@ packages:
       react: 18.2.0
     dev: false
 
-  /react-toastify@9.1.2(react-dom@18.2.0)(react@18.2.0):
+  /react-table/7.8.0_react@18.2.0:
+    resolution: {integrity: sha512-hNaz4ygkZO4bESeFfnfOft73iBUj8K5oKi1EcSHPAibEydfsX2MyU6Z8KCr3mv3C9Kqqh71U+DhZkFvibbnPbA==}
+    peerDependencies:
+      react: ^16.8.3 || ^17.0.0-0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
+
+  /react-toastify/9.1.2_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-PBfzXO5jMGEtdYR5jxrORlNZZe/EuOkwvwKijMatsZZm8IZwLj01YvobeJYNjFcA6uy6CVrx2fzL9GWbhWPTDA==}
     peerDependencies:
       react: '>=16'
