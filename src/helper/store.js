@@ -6,6 +6,7 @@ import { combineReducers } from 'redux';
 import authUserReducer from '../reducer/authUser'
 import authAdminReducer from '../reducer/authAdmin'
 import countReducer from '../reducer/counter'
+import cartReducer from '../reducer/cart'
 
 const persistConfig = {
   key: 'root',
@@ -16,6 +17,7 @@ const persistedReducer = persistReducer(persistConfig, combineReducers({
   authAdmin: authAdminReducer,
   authUser: authUserReducer,
   count: countReducer,
+  cart: cartReducer,
 }));
 
 const store = configureStore({

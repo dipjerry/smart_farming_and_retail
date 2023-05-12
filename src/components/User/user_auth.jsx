@@ -8,9 +8,9 @@ import { toast, ToastContainer } from "react-toastify";
 import {
   LOGINUSER
 } from '../../reducer/authUser';
-import {
-  LOGINADMIN
-} from '../../reducer/authAdmin';
+// import {
+//   LOGINADMIN
+// } from '../../reducer/authAdmin';
 
 function UserLogin() {
   const history = useNavigate();

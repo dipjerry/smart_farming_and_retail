@@ -21,14 +21,16 @@ function Inventory() {
     _id:1,
     registeredCompanyName: "boo",
     shortDescription: "fsdds",
+    quantity: 10,
     tags: "sdfsdf",
     colour: "#F0D9FF",
   },
-    {
-      _id:2,
+  {
+    _id:2,
     // logo: CompanyLogo3,
     registeredCompanyName: "boo",
     shortDescription: "fsdds",
+    quantity: 10,
     tags: "sdfsdf",
     colour: "#F0D9FF",
   }
@@ -144,7 +146,7 @@ const typeOfcompanys = [
   return (
   
       <div className="flex flex-col w-[80%]">
-        <h1>Inventory</h1>
+        {/* <h2>Inventory</h2> */}
         <div className="flex gap-8">
           {/* <Sidebar count={count} /> */}
           <div className="w-[75%] flex flex-col gap-8">
@@ -162,9 +164,9 @@ const typeOfcompanys = [
                 <div>
                   <img src={"https://picsum.photos/200"}  className="banner" />
                   <div className="flex px-3 ">
-                    <div className="mt-[-20px] flex justify-center bg-[#fefefe] w-[60px] h-[60px] box-border rounded-[7.93145px] border-[0.793145px] border-solid border-[#DDDDDD]">
+                    {/* <div className="mt-[-20px] flex justify-center bg-[#fefefe] w-[60px] h-[60px] box-border rounded-[7.93145px] border-[0.793145px] border-solid border-[#DDDDDD]">
                     <img src={"https://picsum.photos/200"} />
-                    </div>
+                    </div> */}
                     <label className="not-italic font-medium m-2 leading-[13px] text-[#252525] font-[Poppins]">
                       {card.title}
                     </label>
@@ -183,20 +185,20 @@ const typeOfcompanys = [
                     <label className="not-italic font-normal text-[16px] leading-4 tracking-[0.971402px] text-[#252525] font-[Roboto]">
                       {card.rise}
                     </label>
-                    <p className="not-italic font-normal text-[10.5726px] leading-4 tracking-[0.971402px] text-[#828F99] font-[Roboto]">
-                      Raised
+                    <p className="not-italic font-normal text-[12.5726px] leading-4 tracking-[0.971402px] text-[#828F99] font-[Roboto]">
+                      Quantity - {card.quantity}
                     </p>
                   </div>
-                  <div>
+                  {/* <div>
                     <label className="not-italic font-normal text-[16px] leading-4 tracking-[0.971402px] text-[#252525] font-[Roboto]">
                       {card.subscription}
                     </label>
                     <p className="not-italic font-normal text-[10.5726px] leading-4 tracking-[0.971402px] text-[#828F99] font-[Roboto]">
                       Min Invest
                     </p>
-                  </div>
+                  </div> */}
                 </div>
-                <div className="flex justify-start items-center ">
+                {/* <div className="flex justify-start items-center ">
                   {typeOfcompanys.map((data, f) => (
                     <div
                       className="flex justify-center items-center pb-[1px] border-[0.5px] rounded-[7499.3px] bg-[#9797FE]  w-[83px] mr-[12px] h-[16px] border-[#828F99]"
@@ -210,7 +212,7 @@ const typeOfcompanys = [
                       </p>
                     </div>
                   ))}
-                </div>
+                </div> */}
               </div>
             </div>
           );

@@ -1,9 +1,10 @@
-import React from "react";
+import React , {useState} from "react";
 import { NavLink , useNavigate } from "react-router-dom";
 import { BiRightArrowCircle } from "react-icons/bi";
 
 function Sidebar(props) {
 // console.log(props.count);
+const [active , setActive] = useState("Shop");
 const navigate = useNavigate();
   const menuitem = [
     {
@@ -28,15 +29,17 @@ const navigate = useNavigate();
   return (
     <div className="containize flex flex-col gap-y-7">
       <div className="sidebar-container">
+        <h2>{active}</h2>
         <div>
           {menuitem.map((item, index) => (
             <div
-              onClick={()=>navigate(item.path)}
+              onClick={()=>{setActive(item.name);
+                navigate(item.path)}}
               key={index}
-              className="link justify-between"
+              // className=""
               activeclassname="active"
               style={{cursor: "pointer"}}
-              class="flex justify-between py-2 px-4 bg-gray-200 text-gray-700 hover:bg-gray-300 rounded transition-colors duration-300"
+              className="flex justify-between py-2 px-4 bg-gray-200 text-gray-700 hover:bg-gray-300 rounded transition-colors duration-300"
             >
               <div className="link-text">{item.name}</div>
               <div className="link-text">{item.noofstartup}</div>

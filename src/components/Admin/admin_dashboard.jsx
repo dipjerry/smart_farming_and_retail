@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Table, Badge ,Modal } from "react-bootstrap";
 import {Link, useNavigate} from 'react-router-dom';
+import {AiFillDelete} from 'react-icons/ai';
 import { useSelector, useDispatch } from 'react-redux';
 import API from "../../apis/admin";
 import {
   LOGOUTADMIN,
   LOGINADMIN,
 } from '../../reducer/authAdmin';
+import Table1 from "../all/table";
+
 
 function AdminDashboard() {
 const myState = useSelector((state)=>state)
@@ -30,6 +33,40 @@ const [createUser , setCreateUser] = useState({
   password: "",
 })
 
+const columns = [
+  {
+    Header: "Index",
+    // accessor: (row, index) => index + 1,
+    accessor: 'Key',
+  },
+  {
+    Header: 'Name',
+    accessor: 'Record.Name',
+  },
+  {
+    Header: 'Mode',
+    accessor: 'Record.Email',
+  },
+  {
+    Header: 'User Type',
+    accessor: 'Record.User_Type',
+  },
+  {
+    Header: "Action",
+    Cell: ({ row }) => (
+      <AiFillDelete
+        className="text-red-600"
+        onClick={() => removeuser(row.original.Key)}
+      />
+    )
+  }
+  
+];
+{/* <td>{user?.Record?.Name}</td>
+<td>{user?.Record?.Email}</td>
+<td>{user?.Record?.Email}</td>
+<td>{user?.Record?.User_Type}</td> */}
+
 const handleInputChange = (event) => {
   const { name, value } = event.target;
 
@@ -37,6 +74,9 @@ const handleInputChange = (event) => {
     ...prevUser,
     [name]: value,
   }));
+};
+const removeuser = (id) => {
+alert(id);
 };
 
 async function getUser()
@@ -50,11 +90,15 @@ async function getUser()
 }
 
 function countUsersByType(users) {
-  const counts = {};
+  const counts = [];
   setTotalUsers(users.length); 
   users.forEach(user => {
+    console.log(user)
     const userType = user.Record.User_Type;
-    counts[userType] = counts[userType] ? counts[userType] + 1 : 1;
+    console.log(userType);
+    counts[userType] = counts[userType] ? counts[userType] + 1 :1;
+    console.log(counts[userType])
+    console.log(counts)
   });
   return counts;
 }
@@ -108,15 +152,15 @@ async function getProducts()
     const res = await API.createUserAdd(data);
     console.log(res);
     // navigate('/startup/profile/faq')
-   
+    setAddUserOpen(false);
  
-  //   setCreateUser({
-  //     name: "",
-  //     email: "",
-  //     email: "",
-  //     address: "",
-  //     userType: "",
-  // });
+    setCreateUser({
+      name: "",
+      email: "",
+      email: "",
+      address: "",
+      userType: "",
+  });
 };
 
 
@@ -225,10 +269,10 @@ async function getProducts()
     {product?.map((product) => (
       <tr key={product.Key}>
         <td>{product.Record.name}</td>
-        <td>{product.Record.producer.id}</td>
-        <td>{product.Record.importer.id}</td>
-        <td>{product.Record.logistics.id}</td>
-        <td>{product.Record.producer.id}</td>
+        <td>{product.Record.producer?.id}</td>
+        <td>{product.Record.importer?.id}</td>
+        <td>{product.Record.logistics?.id}</td>
+        <td>{product.Record.producer?.id}</td>
         {/* <td>{JSON.stringify(product.Record.product)}</td> */}
         <td>{product.Record.status}</td>
         <td>{product.Record.status}</td>
@@ -296,12 +340,14 @@ async function getProducts()
      <div className="white-box">
       <h3 className="box-title">Users</h3>
       <div className="table-responsive" id="tblUserdiv">
-        <Table className="table-responsive" id="tblUser">
+      <Table1 data={users} columns={columns} />
+        {/* <Table className="table-responsive" id="tblUser">
           <thead>
             <tr>
-              <th style={{width: '40%'}}>Name</th>
-              <th style={{width: '20%'}}>Email</th>
-              <th style={{width: '20%'}}>Contact No.</th>
+              <th >Index</th>
+              <th >Name</th>
+              <th>Email</th>
+              <th>Contact No.</th>
               <th>Role</th>
               <th>Actions</th>
             </tr>
@@ -309,16 +355,17 @@ async function getProducts()
           <tbody>
           {users?.map((user) => (
       <tr key={user.Key}>
+        <td>{user?.Key}</td>
         <td>{user?.Record?.Name}</td>
         <td>{user?.Record?.Email}</td>
         <td>{user?.Record?.Email}</td>
         <td>{user?.Record?.User_Type}</td>
-        <td>{user?.Record?.Email}</td>
+        <td>{<AiFillDelete className="text-red-600" onClick={()=>removeuser(user.Key)} />}</td>
        
       </tr>
     ))}
           </tbody>
-          </Table>
+          </Table> */}
           </div>
           </div>
           </Col>
@@ -398,11 +445,11 @@ async function getProducts()
           className="form-control"
         >
           <option value="">Select Role</option>
-          <option value="Farmer">Farmer</option>
-          <option value="Exporter">Exporter</option>
-          <option value="Importer">Importer</option>
-          <option value="Logistic">Logistic</option>
-          <option value="Retailer">Retailer</option>
+          <option value="manufacturer">Farmer</option>
+          <option value="exporter">Exporter</option>
+          <option value="importer">Importer</option>
+          <option value="logistic">Logistic</option>
+          <option value="retailer">Retailer</option>
         </select>
         
       </div>

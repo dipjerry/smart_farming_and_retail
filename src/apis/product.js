@@ -18,13 +18,12 @@ async function checkLogin() {
 
 export default class startup{
     
-    static StartupForm = async (data) => {
+    static addProduct = async (data) => {
         try {
-          const res = await axios.post(endpoint + `/v1/startup/register`, data);
-          console.log(res);
+          const res = await axios.post(endpoint + `/product`, data);
           return res.data;
         } catch (error) {
-          console.log(error.data);
+          // console.log(error.data);
           return error.data;
         }
       };
@@ -86,5 +85,18 @@ console.log("approved");
           console.log(error.data)
             return error.data;
         }
-      }; 
+      };
+      
+      static fetchRawProduct = async (data) => {
+        try {
+          const res = await axios.get(endpoint + `/product/raw_products`, {
+            params:data
+          });
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+            return error.data;
+
+        }
+      };
 }
