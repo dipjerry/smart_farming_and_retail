@@ -5,6 +5,7 @@ import Statistics from "./components/statistics";
 import Explorar from "./components/explorar";
 import Navbar2 from "./components/nav";
 import Cart from "./components/cart";
+import Details from "./components/details";
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/explorar/*" element={<Explorar />} />
       <Route path="/statistics" element={<Statistics />} />
+      <Route path="/details" element={<Details />} />
       <Route path="/cart" element={<Cart />} />
     </Routes>
     </>   

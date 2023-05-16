@@ -99,4 +99,14 @@ console.log("approved");
 
         }
       };
+      static buyRawProduct = async (data) => {
+        try {
+          const res = await axios.post(endpoint + `/product/raw_products`, data);
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+            return error.data;
+
+        }
+      };
 }
