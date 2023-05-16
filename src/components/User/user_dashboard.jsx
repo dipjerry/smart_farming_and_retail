@@ -155,48 +155,34 @@ function UserDashboard() {
                 {/* <a className="btn btn-info m-l-20 black btn-rounded  hidden-xs hidden-sm waves-effect waves-light" id="editUser" onClick={() => setFirstModalOpen(true)}><i className="fa fa-gears"></i> Settings</a>
                   </Col> */}
                 <Col md={6} sm={12} xs={12} className="text-center">
-                  <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" onClick={() => navigate("explorar")}>Explorar</Button>
-                  <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" onClick={() => setcreateBatchOpen(true)}>Create Batch</Button>
-                  <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" onClick={() => { navigate('statistics') }}>View Details</Button>
-                  <Classify />
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Table striped bordered hover className="product-overview" id="userCultivationTable">
-                    <thead>
-                      <tr>
-                        <th>Product ID</th>
-                        <th>Farmer</th>
-                        <th>Exporter</th>
-                        <th>Importer</th>
-                        <th>Logistic</th>
-                        <th>Retailer</th>
-                        <th>Inspect</th>
-                        <th>view</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {/* <tr> */}
-                      {product?.map((product) => (
-                        <tr key={product.Key}>
-                          {console.log(product.Record)}
-                          <td>{product.Record.id}</td>
-                          <td>
-                            {product.Record.producer.id ?
-                              (product.Record.status === 'Available' ?
-                                <span className="label label-success font-weight-100" onClick={() => setFarmerModalOpen(true)}>Completed</span> :
-                                (product.Record.status === 'Processing' ?
-                                  <span className="label label-warning font-weight-100" onClick={() => setNewProcessingStageModalOpen(true)}>Processing</span> :
-                                  <span className="label label-danger font-weight-100" onClick={() => setFarmerModalOpen(true)}>{product.Record.producer.id}</span>
-                                )
-                              ) :
-                              <span className="label label-danger font-weight-100" onClick={() => setFarmerModalOpen(true)}>Not Available</span>
-                            }
-                          </td>
-                          {/* <span className="label label-success font-weight-100" onClick={() => setFarmerModalOpen(true)}>Completed</span></td> */}
-
-                          {/* <td><span className="label label-warning font-weight-100"onClick={() => setExporterModalOpen(true)}>Processing</span> </td>
+                <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" onClick={() => navigate("explorar")}>Explorar</Button>
+                <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" onClick={() => setcreateBatchOpen(true)}>Create Batch</Button>
+                <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" onClick={()=>{navigate('details')}}>View Details</Button>
+                <Classify/>
+                  </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                    <Table striped bordered hover className="product-overview" id="userCultivationTable">
+        <thead>
+          <tr>
+            <th>Product ID</th>
+            <th>Farmer</th>
+            <th>Exporter</th>
+            <th>Logistic</th>
+            <th>Importer</th>
+            <th>Retailer</th>
+            <th>view</th>
+          </tr>
+        </thead>
+        <tbody>
+        {/* <tr> */}
+        {product?.map((product) => (
+      <tr key={product.Key}>
+     
+                    <td>{product.Record.id}</td>
+                    <td><span className="label label-success font-weight-100" onClick={() => setFarmerModalOpen(true)}>Completed</span></td>
+                    <td><span className="label label-warning font-weight-100"onClick={() => setExporterModalOpen(true)}>Processing</span> </td>
                     <td><span className="label label-danger font-weight-100" onClick={() => setLogisticModalOpen(true)}>Not Available</span> </td>
                     <td><span className="label label-danger font-weight-100" onClick={() => setImporterModalOpen(true)}>Not Available</span> </td>
                     <td><span className="label label-danger font-weight-100" onClick={() => setRetailerModalOpen(true)}>Not Available</span> </td> */}

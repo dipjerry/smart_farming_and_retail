@@ -18,29 +18,31 @@ import {
 } from '../../../reducer/cart';
 
 
-function Shop({shop}) {
-console.log('shop',shop)
+// function Shop({shop}) {
+function Shop() {
+// console.log('shop',shop)
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-//   const [shop, setShop] = useState([
-//     {
-//     id:1,
-//     title: "boo",
-//     shortDescription: "fsdds",
-//     tags: "sdfsdf",
-//     price:10.10,
-//     colour: "#F0D9FF",
-//   },
-//     {
-//       id:2,
-//     title: "boo",
-//     shortDescription: "fsdds",
-//     tags: "sdfsdf",
-//     price:20.10,
-//     colour: "#F0D9FF",
-//   }
-// ]);
+  const [shop, setShop] = useState([
+    {
+    id:1,
+    name: "product 1",
+    description: "fsdds",
+    // shortDescription: "fsdds",
+    tags: "sdfsdf",
+    price:10.10,
+    colour: "#F0D9FF",
+  },
+    {
+      id:2,
+    name: "Product 2",
+    description: "fsdds",
+    tags: "sdfsdf",
+    price:20.10,
+    colour: "#F0D9FF",
+  }
+]);
 console.log("Hello");
 const [hovered, setHovered] = useState(null);
 const [cartItems, setCartItems] = useState([]);
@@ -105,7 +107,8 @@ const typeOfcompanys = [
           <div className="rounded-[5px]!important md:grid md:grid-cols-3 gap-[28.5px]">
         {shop?.map((card, index) => {
           return (
-            <div className="startupcard" key={index} onMouseEnter={() => handleHover(index)} onMouseLeave={() => handleHover(null)} onClick={() => dispatch(ADD_ITEM({ id: card.Key, name: card.Record.name, price: card.Record.product.price }))}>
+            // <div className="startupcard" key={index} onMouseEnter={() => handleHover(index)} onMouseLeave={() => handleHover(null)} onClick={() => dispatch(ADD_ITEM({ id: card.Key, name: card.Record.name, price: card.Record.product.price }))}>
+            <div className="startupcard" key={index} onMouseEnter={() => handleHover(index)} onMouseLeave={() => handleHover(null)} onClick={() => dispatch(ADD_ITEM({ id: card.id, name: card.name, price: card.price }))}>
             <div className="flex flex-col gap-3">
               <div className="relative">
                 <img src="https://picsum.photos/200" className="banner" />
@@ -119,8 +122,10 @@ const typeOfcompanys = [
                   <p className="compdes">{card.Record?.product?.description}</p>
                 </div>
               )}
-              <p className="compdes">{card?.Record?.name}</p>
-              <p className="compdes">₹{card?.Record?.product?.price}</p>
+              {/* <p className="compdes">{card?.Record?.name}</p> */}
+              <p className="compdes">{card?.name}</p>
+              {/* <p className="compdes">₹{card?.Record?.product?.price}</p> */}
+              <p className="compdes">₹{card?.price}</p>
               {/* <div className="flex items-center space-x-2">
                 {typeOfcompanys.map((data, f) => (
                   <div className="flex justify-center items-center px-2 py-[1px] rounded-full bg-[#9797FE] text-[#ffffff] text-[9.26px] font-[Roboto]" key={f}>

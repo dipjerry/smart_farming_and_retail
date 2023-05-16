@@ -55,6 +55,8 @@ const Classify = () => {
       if (('indexedDB' in window)) {
         try {
           const modelTemp = await tf.loadLayersModel('indexeddb://' + INDEXEDDB_KEY);
+          console.log("modelTemp");
+          console.log(modelTemp);
           setModel(modelTemp);
           // Safe to assume tensorflowjs database and related object store exists.
           // Get the date when the model was saved.
@@ -85,9 +87,12 @@ const Classify = () => {
           console.log('Not found in IndexedDB. Loading and saving...');
           console.log(error);
           const modelTemp = await tf.loadLayersModel(MODEL_PATH);
+          console.log('modelTemp');
+          console.log(modelTemp);
           setModel(modelTemp);
           // model.current = await tf.loadLayersModel(MODEL_PATH);
-          await model.save('indexeddb://' + INDEXEDDB_KEY);
+          console.log(model)
+          await modelTemp.save('indexeddb://' + INDEXEDDB_KEY);
         }
       }
       // If no IndexedDB, then just download like normal.
@@ -246,6 +251,9 @@ const Classify = () => {
     setShowModal(action);
     if (showModal) {
       console.log("Stop");
+      // await stopWebcam();
+      // await unInitWebcam();
+      // uninit();
       // await stopWebcam();
       // await unInitWebcam();
       uninit();

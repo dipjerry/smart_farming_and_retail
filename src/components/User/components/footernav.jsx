@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 import {
     REMOVE_ITEM , INCREASE_QUANTITY , DECREASE_QUANTITY 
   } from '../../../reducer/cart';
