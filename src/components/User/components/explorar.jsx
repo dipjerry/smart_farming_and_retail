@@ -38,6 +38,27 @@ function Explorar() {
   }
 ]);
 
+  const [inventory, setInventory] = useState([
+    {
+      // logo: CompanyLogo3,
+      _id:1,
+      registeredCompanyName: "boo",
+      shortDescription: "fsdds",
+      quantity: 10,
+      tags: "sdfsdf",
+      colour: "#F0D9FF",
+    },
+    {
+      _id:2,
+      // logo: CompanyLogo3,
+      registeredCompanyName: "boo",
+      shortDescription: "fsdds",
+      quantity: 10,
+      tags: "sdfsdf",
+      colour: "#F0D9FF",
+    }
+]);
+
 console.log("Hello");
 const [hovered, setHovered] = useState(false);
 
@@ -59,6 +80,20 @@ async function getRawProducts()
   setShop(res.data?.success) 
 }
 
+async function getInventory()
+{
+  const formData={
+    userType:myState.authUser?.userType , 
+    id:myState.authUser?.user
+  }
+
+  const res = await API.fetchInventory(formData);
+  console.log("res inventory");
+  console.log("res inventory");
+  console.log(res);
+  setInventory(res.data?.inventory) 
+}
+
 async function getProducts()
 {
   const formData={ 
@@ -77,9 +112,11 @@ useEffect(() => {
   if(myState.authUser?.userType=='manufacturer')
   {
     getRawProducts();
+    getInventory();
   }
   else{
     getProducts();
+    getInventory();
   }
 }, []);
   return (
@@ -92,7 +129,7 @@ useEffect(() => {
       <Sidebar/>
       <div className="w-[75%] flex flex-col gap-8">
       <Routes>
-      <Route path="/inventory" element={<Inventory />} />
+      <Route path="/inventory" element={<Inventory inventory={inventory} />} />
       <Route path="/" element={<Shop shop={shop}/>} />
     </Routes>  
             
