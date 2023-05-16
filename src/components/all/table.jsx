@@ -4,8 +4,8 @@ function PaginatedTable({ columns, data }) {
 
     console.log("data");
     console.log(data);
-    console.log("columns");
-    console.log(columns);
+    // console.log("columns");
+    // console.log(columns);
   const {
     getTableProps,
     getTableBodyProps,
