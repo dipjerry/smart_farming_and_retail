@@ -184,7 +184,7 @@ const Statistics = () => {
             <Card.Body>
               <Card.Title>Orders</Card.Title>
               <Bar options={stacked} data={order} />
-              <Table responsive>
+              <Table className='Table' responsive>
                 <thead>
                   <tr>
                     <th>Status</th>
@@ -217,7 +217,7 @@ const Statistics = () => {
           <Card className='equal-height-card'>
             <Card.Body>
               <Card.Title>Logistics</Card.Title>
-              <Table responsive>
+              <Table className='Table' responsive>
                 <thead>
                   <tr>
                     <th>Transportation</th>
@@ -248,8 +248,10 @@ const Statistics = () => {
           <Card className='equal-height-card'>
             <Card.Body>
               <Card.Title>Quality</Card.Title>
-              <Pie options={{responsive:true}} data={pieData}/>
-              <Table responsive>
+              <div className="pie">
+              <Pie className='pie' options={{responsive:true}} data={pieData}/>
+              </div>
+              <Table className='Table' responsive>
                 <thead>
                   <tr>
                     <th>Supplier/Product</th>
@@ -288,7 +290,7 @@ const Statistics = () => {
         <Card.Body>
           <Card.Title>Finance</Card.Title>
           <Bar options={{responsive:true}} data={finance} />
-          <Table responsive>
+          <Table className='Table' responsive>
             <thead>
               <tr>
                 <th>Revenue</th>
