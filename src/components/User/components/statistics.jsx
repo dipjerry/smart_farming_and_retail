@@ -1,6 +1,11 @@
 import React , {useState , useEffect} from 'react';
 import { Container, Row, Col, Card, Table } from 'react-bootstrap';
 import { Bar } from 'react-chartjs-2';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
+// import Transections from './details';
+// import Sonnet from '../../components/Sonnet';
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -94,6 +99,7 @@ const Statistics = () => {
   // }, [chartData]);
   return (
     <Container fluid>
+       {/* <Details/> */}
       <Row>
         <Col md={4}>
           <Card>

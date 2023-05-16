@@ -55,6 +55,8 @@ const Classify = () => {
       if (('indexedDB' in window)) {
         try {
           const modelTemp = await tf.loadLayersModel('indexeddb://' + INDEXEDDB_KEY);
+          console.log("modelTemp");
+          console.log(modelTemp);
           setModel(modelTemp);
           // Safe to assume tensorflowjs database and related object store exists.
           // Get the date when the model was saved.
@@ -85,8 +87,14 @@ const Classify = () => {
           console.log('Not found in IndexedDB. Loading and saving...');
           console.log(error);
           const modelTemp = await tf.loadLayersModel(MODEL_PATH);
+          console.log('modelTemp');
+          console.log(modelTemp);
           setModel(modelTemp);
           // model.current = await tf.loadLayersModel(MODEL_PATH);
+<<<<<<< HEAD
+=======
+          console.log(model)
+>>>>>>> c8702a7ec837be7e972f87b0eaf53917240ba86a
           await modelTemp.save('indexeddb://' + INDEXEDDB_KEY);
         }
       }
@@ -98,7 +106,7 @@ const Classify = () => {
         // model.current = await tf.loadLayersModel(MODEL_PATH);
       }
       setModelLoaded(true);
-      // initWebcam();
+      initWebcam();
       // Warm up model.
       let prediction = await tf.tidy(() => model.predict(tf.zeros([1, IMAGE_SIZE, IMAGE_SIZE, 3])));
       prediction.dispose();
@@ -246,8 +254,11 @@ const Classify = () => {
     setShowModal(action);
     if (showModal) {
       console.log("Stop");
-      await stopWebcam();
-      await unInitWebcam();
+      // await stopWebcam();
+      // await unInitWebcam();
+      // uninit();
+      // await stopWebcam();
+      // await unInitWebcam();
       uninit();
 
     } else {
@@ -397,7 +408,7 @@ const Classify = () => {
   const handlePanelClick = () => {
     setPhotoSettingsOpen(!photoSettingsOpen);
     if (photoSettingsOpen) {
-      stopWebcam();
+      // stopWebcam();
     } else {
       startWebcam();
     }
@@ -417,7 +428,7 @@ const Classify = () => {
       case 'localfile':
         setFile(null)
       setfilename(null)
-        stopWebcam();
+        // stopWebcam();
         break;
       default:
     }

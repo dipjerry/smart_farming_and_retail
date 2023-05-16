@@ -59,8 +59,28 @@ async function getRawProducts()
   setShop(res.data?.success) 
 }
 
+async function getProducts()
+{
+  const formData={ 
+    id:myState.authUser?.user,
+    userType:myState.authUser?.userType , 
+    role:'middlemen' , 
+  }
+
+  const res = await API.fetchShopProduct(formData);
+  console.log("res");
+  console.log(res);
+  setShop(res.data?.success) 
+}
+
 useEffect(() => {
-  getRawProducts();
+  if(myState.authUser?.userType=='manufacturer')
+  {
+    getRawProducts();
+  }
+  else{
+    getProducts();
+  }
 }, []);
   return (
     <div>
