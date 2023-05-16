@@ -99,4 +99,28 @@ console.log("approved");
 
         }
       };
+      static buyProduct = async (data) => {
+        try {
+          const res = await axios.post(endpoint + `/transact/buyProduct`, data);
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+          return error.data;
+        }
+      };
+
+      static fetchShopProduct = async (data) => {
+        try {
+          const res = await axios.get(endpoint + `/product/shopProduct`, {
+            params:data
+          });
+          console.log('res Api');
+          console.log(res);
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+            return error.data;
+
+        }
+      };
 }

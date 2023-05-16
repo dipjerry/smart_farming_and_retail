@@ -98,7 +98,7 @@ const Classify = () => {
         // model.current = await tf.loadLayersModel(MODEL_PATH);
       }
       setModelLoaded(true);
-      // initWebcam();
+      initWebcam();
       // Warm up model.
       let prediction = await tf.tidy(() => model.predict(tf.zeros([1, IMAGE_SIZE, IMAGE_SIZE, 3])));
       prediction.dispose();
@@ -246,8 +246,8 @@ const Classify = () => {
     setShowModal(action);
     if (showModal) {
       console.log("Stop");
-      await stopWebcam();
-      await unInitWebcam();
+      // await stopWebcam();
+      // await unInitWebcam();
       uninit();
 
     } else {
@@ -397,7 +397,7 @@ const Classify = () => {
   const handlePanelClick = () => {
     setPhotoSettingsOpen(!photoSettingsOpen);
     if (photoSettingsOpen) {
-      stopWebcam();
+      // stopWebcam();
     } else {
       startWebcam();
     }
@@ -417,7 +417,7 @@ const Classify = () => {
       case 'localfile':
         setFile(null)
       setfilename(null)
-        stopWebcam();
+        // stopWebcam();
         break;
       default:
     }

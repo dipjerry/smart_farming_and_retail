@@ -116,7 +116,7 @@ const typeOfcompanys = [
               </div>
               {hovered === index && (
                 <div className="card__hover-content">
-                  <p className="compdes">{card.Record.product.description}</p>
+                  <p className="compdes">{card.Record?.product?.description}</p>
                 </div>
               )}
               <p className="compdes">{card?.Record?.name}</p>

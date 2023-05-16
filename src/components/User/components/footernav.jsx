@@ -3,12 +3,27 @@ import {
     REMOVE_ITEM , INCREASE_QUANTITY , DECREASE_QUANTITY 
   } from '../../../reducer/cart';
 import { useSelector , useDispatch } from 'react-redux';
+import { faHouseMedicalCircleExclamation } from '@fortawesome/free-solid-svg-icons';
+import API from '../../../apis/product';
 function FooterNavbar({ cart , increaseQuantity , decreaseQuantity  }) {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const myState = useSelector((state)=>state);
   const dispatch = useDispatch(); 
 //   const cartTotal = 0;
   const cartTotal = myState.cart?.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
+  const handleCheckout = async (event) => {
+    event.preventDefault();
+    const data = {items : myState.cart?.cartItems , 
+      id:myState.authUser?.user , 
+      userType:myState.authUser?.userType
+    }
+    const res = await API.buyProduct(data);
+
+    console.log(res);
+   
+};
+
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
@@ -17,7 +32,7 @@ function FooterNavbar({ cart , increaseQuantity , decreaseQuantity  }) {
           <h2>Cart</h2>
         </div>
         <div className="flex items-center">
-          <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+          <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded" onClick={handleCheckout}>
             Checkout ({cartTotal.toFixed(2)})
           </button>
           <button
