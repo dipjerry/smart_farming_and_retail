@@ -5,6 +5,8 @@ import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import API from "../../apis/product";
+// import Select from 'react-select';
+
 import slide from "../../assets/plugins/images/heading-bg/farmer2.jpg";
 import userImg from "../../assets/plugins/images/users/user1.jpg";
 import Classify from "../ML/service/classify2";
@@ -20,11 +22,40 @@ function UserDashboard() {
   const dispatch = useDispatch()
   const navigate = useNavigate();
   const isAuthenticated = useSelector(state => state.isUserAuthenticated);
-
-
+  const [selectedRawItems, setSelectedRawItems] = useState([]);
   const [show, setShow] = useState(false);
   const [error, setError] = useState('');
   const [user, setUser] = useState({});
+  const [inventory, setInventory] = useState([
+    {
+      // logo: CompanyLogo3,
+      id:1,
+      name: "strawberry seed",
+      price: 20,
+      quantity: 10,
+      index: 20,
+
+    },
+    {
+      // logo: CompanyLogo3,
+      id:2,
+      name: "Watermellon seed",
+      price: 20,
+      quantity: 10,
+      index: 20,
+
+    },
+    {
+      // logo: CompanyLogo3,
+      id:3,
+      name: "Manure",
+      price: 20,
+      quantity: 10,
+      index: 20,
+
+    },
+    
+]);
 
   //   const [showModal, setShowModal] = useState(false)
 
@@ -45,9 +76,10 @@ function UserDashboard() {
   const [logisticModalOpen, setLogisticModalOpen] = useState(false);
   const [retailerModalOpen, setRetailerModalOpen] = useState(false);
   const [product, setProducts] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
 
   const [createProduct, setCreateProduct] = useState({
-    name: "", price: "", quantity: "", id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
+    name: "", price: "", quantity: "", id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType , rawItems: []
   })
 
 
@@ -61,6 +93,31 @@ function UserDashboard() {
       ...prevProduct,
       [name]: value,
     }));
+  };
+  const handleRawItemsChange = (e) => {
+    console.log(selectedItems)
+    const { options } = e.target;
+    alert("hello")
+    const selectedRawItems = Array.from(options)
+      .filter((option) => option.selected)
+      .map((option) => option.value);
+    setCreateProduct((prevProduct) => ({ ...prevProduct, rawItems: selectedRawItems }));
+    setSelectedItems(selectedRawItems);
+  };
+
+  const handleQuantityChange = (itemId, newQuantity) => {
+    const updatedSelectedItems = selectedItems.map((item) => {
+      if (item.id === itemId) {
+        return { ...item, quantity: newQuantity };
+      }
+      return item;
+    });
+    setSelectedItems(updatedSelectedItems);
+  };
+
+  const handleRemoveItem = (itemId) => {
+    const updatedSelectedItems = selectedItems.filter((item) => item.id !== itemId);
+    setSelectedItems(updatedSelectedItems);
   };
 
   // const handleFile = (event) => {
@@ -181,11 +238,19 @@ function UserDashboard() {
       <tr key={product.Key}>
      
                     <td>{product.Record.id}</td>
-                    <td><span className="label label-success font-weight-100" onClick={() => setFarmerModalOpen(true)}>Completed</span></td>
-                    <td><span className="label label-warning font-weight-100"onClick={() => setExporterModalOpen(true)}>Processing</span> </td>
-                    <td><span className="label label-danger font-weight-100" onClick={() => setLogisticModalOpen(true)}>Not Available</span> </td>
-                    <td><span className="label label-danger font-weight-100" onClick={() => setImporterModalOpen(true)}>Not Available</span> </td>
-                    <td><span className="label label-danger font-weight-100" onClick={() => setRetailerModalOpen(true)}>Not Available</span> </td> */}
+                    {/* <td><span className="label label-success font-weight-100" onClick={() => setFarmerModalOpen(true)}>Completed</span></td> */}
+                          <td>
+                            {product.Record.producer.id ?
+                              (product.Record.status === 'Available' ?
+                                <span className="label label-success font-weight-100" onClick={() => setFarmerModalOpen(true)}>Completed</span> :
+                                (product.Record.status === 'Processing' ?
+                                  <span className="label label-warning font-weight-100" onClick={() => setFarmerModalOpen(true)}>Processing</span> :
+                                  <span className="label label-danger font-weight-100" onClick={() => setFarmerModalOpen(true)}>{product.Record.exporter.id}</span>
+                                )
+                              ) :
+                              <span className="label label-danger font-weight-100" onClick={() => setExporterModalOpen(true)}>Not Available</span>
+                            }
+                          </td>
                           <td>
                             {product.Record.exporter.id ?
                               (product.Record.status === 'Available' ?
@@ -282,20 +347,76 @@ function UserDashboard() {
           <Modal.Title>Create Batch</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <form>
-            <div className="form-group">
-              <label>Name</label>
-              <input type="text" name='name' onChange={handleCreateProductChange} value={createProduct.name} className="form-control" placeholder="Name" required />
+      <form>
+      <div className="form-group">
+        <label>Name</label>
+        <input
+          type="text"
+          name="name"
+          onChange={handleCreateProductChange}
+          value={createProduct.name}
+          className="form-control"
+          placeholder="Name"
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label>Quantity</label>
+        <input
+          type="number"
+          name="quantity"
+          onChange={handleCreateProductChange}
+          value={createProduct.quantity}
+          className="form-control"
+          placeholder="Quantity"
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label>Price of raw material</label>
+        <input
+          type="number"
+          name="price"
+          onChange={handleCreateProductChange}
+          className="form-control"
+          value={createProduct.price}
+          placeholder="Price"
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label>Select Raw Items</label>
+        <select
+          name="rawItems"
+          onChange={handleRawItemsChange}
+          className="form-control"
+        >
+          {inventory.map((item) => (
+            <option key={item.id} value={item.id , item.index}>
+              {item.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      {selectedItems.length > 0 && (
+        <div className="selected-items">
+          {selectedItems?.map((item) => (
+            <div key={item.id} className="selected-item">
+              <span>{item.name}</span>
+              <input
+                type="number"
+                value={item.quantity}
+                onChange={(e) => handleQuantityChange(item.id, e.target.value)}
+                className="quantity-input"
+              />
+              <button onClick={() => handleRemoveItem(item.id)} className="remove-button">
+                X
+              </button>
             </div>
-            <div className="form-group">
-              <label>Quantity</label>
-              <input type="number" name='quantity' onChange={handleCreateProductChange} value={createProduct.quantity} className="form-control" placeholder="Quantity" required />
-            </div>
-            <div className="form-group">
-              <label>Price of raw material</label>
-              <input type="number" name='price' onChange={handleCreateProductChange} className="form-control" value={createProduct.price} placeholder="Price" required />
-            </div>
-          </form>
+          ))}
+        </div>
+      )}
+      </form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setcreateBatchOpen(false)}>

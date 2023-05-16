@@ -158,7 +158,6 @@ async function getProducts()
     setCreateUser({
       name: "",
       email: "",
-      email: "",
       address: "",
       userType: "",
   });

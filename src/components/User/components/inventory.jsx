@@ -12,8 +12,9 @@ import { NavLink , useNavigate } from "react-router-dom";
 // import API from "../Apis/startupApis";
 
 
-function Inventory() {
-
+function Inventory({inventory}) {
+  console.log(' props inventory')
+  console.log(inventory)
   const navigate = useNavigate();
   const [shop, setShop] = useState([
     {
@@ -151,7 +152,7 @@ const typeOfcompanys = [
           {/* <Sidebar count={count} /> */}
           <div className="w-[75%] flex flex-col gap-8">
           <div className="rounded-[5px]!important md:grid md:grid-cols-3 gap-[28.5px]">
-        {shop?.map((card, index) => {
+        {inventory?.map((card, index) => {
           return (
             <div
               className="startupcard "
@@ -168,7 +169,7 @@ const typeOfcompanys = [
                     <img src={"https://picsum.photos/200"} />
                     </div> */}
                     <label className="not-italic font-medium m-2 leading-[13px] text-[#252525] font-[Poppins]">
-                      {card.title}
+                      {card.name}
                     </label>
                   </div>
                 </div>

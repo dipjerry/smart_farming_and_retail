@@ -96,6 +96,17 @@ console.log("approved");
         } catch (error) {
           console.log(error.data)
             return error.data;
+        }
+      };
+      static fetchInventory = async (data) => {
+        try {
+          const res = await axios.get(endpoint + `/user/inventory`, {
+            params:data
+          });
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+            return error.data;
 
         }
       };
