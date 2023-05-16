@@ -87,7 +87,7 @@ const Classify = () => {
           const modelTemp = await tf.loadLayersModel(MODEL_PATH);
           setModel(modelTemp);
           // model.current = await tf.loadLayersModel(MODEL_PATH);
-          await model.save('indexeddb://' + INDEXEDDB_KEY);
+          await modelTemp.save('indexeddb://' + INDEXEDDB_KEY);
         }
       }
       // If no IndexedDB, then just download like normal.

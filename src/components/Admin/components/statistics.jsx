@@ -1,5 +1,6 @@
 import React , {useState , useEffect} from 'react';
 import { Container, Row, Col, Card, Table } from 'react-bootstrap';
+import './statistics.css';
 import { Bar , Pie } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -149,7 +150,7 @@ const Statistics = () => {
     <Container fluid>
       <Row>
         <Col md={4}>
-          <Card>
+          <Card className='equal-height-card'>
             <Card.Body>
               <Card.Title>Inventory</Card.Title>
               <Bar className={"mh-15"} options={{responsive:true}} data={inventory} />
@@ -179,7 +180,7 @@ const Statistics = () => {
           </Card>
         </Col>
         <Col md={4}>
-          <Card>
+          <Card className='equal-height-card'>
             <Card.Body>
               <Card.Title>Orders</Card.Title>
               <Bar options={stacked} data={order} />
@@ -213,7 +214,7 @@ const Statistics = () => {
           </Card>
         </Col>
         <Col md={4}>
-          <Card>
+          <Card className='equal-height-card'>
             <Card.Body>
               <Card.Title>Logistics</Card.Title>
               <Table responsive>
@@ -244,7 +245,7 @@ const Statistics = () => {
       </Row>
       <Row>
         <Col md={6}>
-          <Card>
+          <Card className='equal-height-card'>
             <Card.Body>
               <Card.Title>Quality</Card.Title>
               <Pie options={{responsive:true}} data={pieData}/>
@@ -283,7 +284,7 @@ const Statistics = () => {
       </Card>
     </Col>
     <Col md={6}>
-      <Card>
+      <Card className='equal-height-card'>
         <Card.Body>
           <Card.Title>Finance</Card.Title>
           <Bar options={{responsive:true}} data={finance} />
