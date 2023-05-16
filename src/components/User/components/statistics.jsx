@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Table } from 'react-bootstrap';
 import { Bar } from 'react-chartjs-2';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import './statistics.css'
 // import Transections from './details';
 // import Sonnet from '../../components/Sonnet';
 
@@ -102,7 +103,7 @@ const Statistics = () => {
        {/* <Details/> */}
       <Row>
         <Col md={4}>
-          <Card>
+          <Card className='card'>
             <Card.Body>
               <Card.Title>Inventory</Card.Title>
               <Table responsive>
@@ -128,10 +129,10 @@ const Statistics = () => {
                 </tbody>
               </Table>
             </Card.Body>
-          </Card>
+          </Card >
         </Col>
         <Col md={4}>
-          <Card>
+          <Card className='card'>
             <Card.Body>
               <Card.Title>Orders</Card.Title>
               <Table responsive>
@@ -164,7 +165,7 @@ const Statistics = () => {
           </Card>
         </Col>
         <Col md={4}>
-          <Card>
+          <Card className='card'>
             <Card.Body>
               <Card.Title>Logistics</Card.Title>
               <Table responsive>
@@ -195,7 +196,7 @@ const Statistics = () => {
       </Row>
       <Row>
         <Col md={6}>
-          <Card>
+          <Card className='card'>
             <Card.Body>
               <Card.Title>Quality</Card.Title>
               <Table responsive>
@@ -233,7 +234,7 @@ const Statistics = () => {
       </Card>
     </Col>
     <Col md={6}>
-      <Card>
+      <Card className='card'>
         <Card.Body>
           <Card.Title>Finance</Card.Title>
           <Bar options={options} data={data} />
