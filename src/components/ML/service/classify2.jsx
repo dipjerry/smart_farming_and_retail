@@ -91,10 +91,6 @@ const Classify = () => {
           console.log(modelTemp);
           setModel(modelTemp);
           // model.current = await tf.loadLayersModel(MODEL_PATH);
-<<<<<<< HEAD
-=======
-          console.log(model)
->>>>>>> c8702a7ec837be7e972f87b0eaf53917240ba86a
           await modelTemp.save('indexeddb://' + INDEXEDDB_KEY);
         }
       }

@@ -61,10 +61,8 @@ const BatchProgress = () => {
   const populate = ()=>{
     
     if (Batch_array.producer.id) {
-      buildCultivatorData();
-    } else if (Batch_array.Status == "FARMINSPECTOR") {
-      buildInspectorData(Batch_array);
-    } else if (Batch_array.Status == "HARVESTOR") {
+      buildCultivatorData();}
+     else if (Batch_array.Status == "HARVESTOR") {
       // buildHarvestorData(Batch_array);
     } else if (Batch_array.Status == "EXPORTOR") {
       // buildExportorData(Batch_array);
@@ -80,7 +78,7 @@ const BatchProgress = () => {
 
 
   async function buildCultivatorData() {
-      const time = await ConvertDate(Batch_array.product.production_date.ManufactureDate.time);
+      const time = await ConvertDate(Batch_array.product.production_date);
       setBatchId(Batch_array.id);
       setCultivatoarIntime(time);
       setBatchStatus(Batch_array.status);

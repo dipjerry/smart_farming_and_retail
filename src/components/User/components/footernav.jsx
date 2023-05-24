@@ -15,11 +15,19 @@ function FooterNavbar({ cart , increaseQuantity , decreaseQuantity  }) {
 
   const handleCheckout = async (event) => {
     event.preventDefault();
-    const data = {items : myState.cart?.cartItems , 
+    const data = {
+      items : myState.cart?.cartItems , 
       id:myState.authUser?.user , 
       userType:myState.authUser?.userType
     }
-    const res = await API.buyProduct(data);
+    let res;
+    // if(myState.authUser?.userType === 'manufacturer')
+    //   {
+        res = await API.buyProduct(data);
+      // }
+      // else{
+      //   res = await API.buyProduct(data);
+      // }
 
     console.log(res);
    

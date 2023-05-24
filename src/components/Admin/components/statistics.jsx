@@ -248,7 +248,7 @@ const Statistics = () => {
           <Card className='equal-height-card'>
             <Card.Body>
               <Card.Title>Quality</Card.Title>
-              <Pie options={{responsive:true}} data={pieData}/>
+              <Pie   options={{responsive:true}} data={pieData}/>
               <Table responsive>
                 <thead>
                   <tr>
