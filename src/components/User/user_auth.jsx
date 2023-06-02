@@ -54,7 +54,7 @@ function UserLogin() {
           </div>
           <Form onSubmit={handleSubmit}>
             <Form.Group>
-              <Form.Control type="text" placeholder="Email" name="email" onChange={e => setUser({ ...user, id: e.target.value })} required />
+              <Form.Control type="text" placeholder="User id" name="email" onChange={e => setUser({ ...user, id: e.target.value })} required />
             </Form.Group>
             <Form.Group>
               <Form.Control type="password" placeholder="Password" name="password" onChange={e => setUser({ ...user, password: e.target.value })} required />

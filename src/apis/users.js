@@ -85,4 +85,36 @@ console.log("approved");
 
         }
       }; 
+    static fetchTransaction = async (data) => {
+        try {
+          const res = await axios.get(endpoint + `/transact/listInvoice`, {params:data});
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+            return error.data;
+
+        }
+      }; 
+      static fetchUserbyrole = async (data) => {
+        try {
+          // const params = { role }; // Create an object with the role parameter
+          const res = await axios.get(`${endpoint}/user/userbytype`, { params : data });
+          console.log('Response:', res.data);
+          return res.data;
+        } catch (error) {
+          console.log('Error:', error);
+          return error.data;
+        }
+      };
+      static fetchUserbyById = async (data) => {
+        try {
+          // const params = { role }; // Create an object with the role parameter
+          const res = await axios.get(`${endpoint}/user/userbyid`, { params : data });
+          console.log('Response:', res.data);
+          return res.data;
+        } catch (error) {
+          console.log('Error:', error);
+          return error.data;
+        }
+      };
 }

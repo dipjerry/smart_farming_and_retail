@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Container, Button, Row, Col, Image, Alert, Card, Modal , Form } from 'react-bootstrap';
+import { Table, Container, Button, Row, Col, Image, Alert, Card, Tooltip, Modal , Form , Overlay , Popover , OverlayTrigger } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import API from "../../apis/product";
+import UserAPI from "../../apis/users";
 // import Select from 'react-select';
 
 import slide from "../../assets/plugins/images/heading-bg/farmer2.jpg";
@@ -64,26 +65,70 @@ function UserDashboard() {
 
   const [exporterModalOpen, setExporterModalOpen] = useState(false);
   const [exporterListModalOpen, setExporterListModalOpen] = useState(false);
+
   const [importerModalOpen, setImporterModalOpen] = useState(false);
   const [importerListModalOpen, setImporterListModalOpen] = useState(false);
+  
+  const [importerDeliveryModalOpen, setImporterDeliveryModalOpen] = useState(false);
+
   const [logisticModalOpen, setLogisticModalOpen] = useState(false);
-  const [logisticDeliveredModalOpen, setLogisticDeliveredModalOpen] = useState(false);
+  const [productPikupModalOpen, setProductPickupModalOpen] = useState(false);
+  const [productDeliveryModalOpen, setProductDeliveryModalOpen] = useState(false);
   const [retailerModalOpen, setRetailerModalOpen] = useState(false);
   const [retailerListModalOpen, setRetailerListModalOpen] = useState(false);
   const [product, setProducts] = useState([]);
+  const [logistic, setLogistic] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+// exporter
+  const renderTooltipManufacturer = (props) => (
+    <Popover id="popover-basic" {...props}>
+       <Popover.Header as="h3">{props.customText.name}</Popover.Header>
+    <Popover.Body>
+    <div>
+      <div>
+        <label>Producer ID:</label>
+        <span>{props.customText.producer.id}</span>
+      </div>
+      <div>
+        <label>Product Price:</label>
+        <span>{props.customText.product.price}</span>
+      </div>
+      <div>
+        <label>Soil Type:</label>
+        <span>{props.customText.producer.production_data.soil_type}</span>
+      </div>
+    </div>
+          </Popover.Body>
+          </Popover>
+  );
+  const renderTooltipExporter = (props) => (
+    <Popover id="popover-basic" {...props}>
+       <Popover.Header as="h3">{props.customText.name}</Popover.Header>
+    <Popover.Body>
+    <div>
+      <div>
+        <label>Exporter Id:</label>
+        <span>{props.customText.exporter.id}</span>
+      </div>
+      <div>
+        <label>exporter Price:</label>
+        <span>{props.customText.product.price}</span>
+      </div>
+      <div>
+        <label>Packaging:</label>
+        <span>{props.customText.producer.production_data.soil_type}</span>
+      </div>
+    </div>
+          </Popover.Body>
+          </Popover>
+  );
 
   console.log("importer")
   const [orderQuantity, setOrderQuantity] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [preferredDeliveryDate, setPreferredDeliveryDate] = useState('');
-  console.log("exporter")
-  const [packagingType, setPackagingType] = useState('');
-  const [packagingDate, setPackagingDate] = useState('');
-  const [quantityPerPackage, setQuantityPerPackage] = useState('');
-  const [packagingMaterialsUsed, setPackagingMaterialsUsed] = useState('');
-  console.log("Logistic")
+   console.log("Logistic")
   const [exporterName, setExporterName] = useState('');
   const [collectionDate, setCollectionDate] = useState('');
   const [collectionLocation, setCollectionLocation] = useState('');
@@ -99,10 +144,17 @@ console.log("Retailer")
     climate: "", soilType: "",price: 0,  id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
   })
   const [listProductExporter, setListProductExporter] = useState({
-    climate: "", soilType: "",price: 0,  id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
+    packagingType: "", quantityPerPackage: "",packagingDate: 0, price:"", id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
   })
   const [listProductImporter, setListProductImporter] = useState({
-    climate: "", soilType: "",price: 0,  id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
+    logisticSelect: "", exprctedDelivery: "",price: 0,  id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
+  })
+
+  const [productPickup, setProductPickup] = useState({
+   pickupDate: "",id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
+  })
+  const [productDelivery, setProductDelivery] = useState({
+    deliveryDate: "",  id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
   })
   const [listProductLogistic, setListProductLogistic] = useState({
     climate: "", soilType: "",price: 0,  id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
@@ -127,8 +179,9 @@ console.log("Retailer")
     }));
   };
   const handleListProductExporter = (event) => {
+    console.log("🚀 ~ file: user_dashboard.jsx:126 ~ handleListProductExporter ~ listProductExporter:", listProductExporter)
     const { name, value } = event.target;
-    setListProduct((prevProduct) => ({
+    setListProductExporter((prevProduct) => ({
       ...prevProduct,
       [name]: value,
     }));
@@ -209,6 +262,46 @@ console.log("Retailer")
       loggedUserType: myState.authUser?.userType == "farmer" ? "manufacturer" : myState.authUser?.userType
     });
   };
+  const handleListProductExporterSubmit = async (event) => {
+    event.preventDefault();
+    listProductExporter.productId = selectedItem
+    const res = await API.listProduct(listProductExporter);
+    setExporterListModalOpen(false);
+    setListProductExporter({
+      packagingType: "", quantityPerPackage: "",packagingDate: 0, price:"", id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
+    });
+  };
+
+  const handleListProductImporterSubmit = async (event) => {
+    event.preventDefault();
+    listProduct.productId = selectedItem
+    const res = await API.listProduct(listProduct);
+    setFarmerModalOpen(false);
+    setListProduct({
+      soilType: "", climate: "",productId:"", price: "", id: myState.authUser?.user, 
+      loggedUserType: myState.authUser?.userType == "farmer" ? "manufacturer" : myState.authUser?.userType
+    });
+  };
+  const handleListProductLogisticSubmit = async (event) => {
+    event.preventDefault();
+    listProduct.productId = selectedItem
+    const res = await API.listProduct(listProduct);
+    setFarmerModalOpen(false);
+    setListProduct({
+      soilType: "", climate: "",productId:"", price: "", id: myState.authUser?.user, 
+      loggedUserType: myState.authUser?.userType == "farmer" ? "manufacturer" : myState.authUser?.userType
+    });
+  };
+  const handleListProductRetailSubmit = async (event) => {
+    event.preventDefault();
+    listProduct.productId = selectedItem
+    const res = await API.listProduct(listProduct);
+    setFarmerModalOpen(false);
+    setListProduct({
+      soilType: "", climate: "",productId:"", price: "", id: myState.authUser?.user, 
+      loggedUserType: myState.authUser?.userType == "farmer" ? "manufacturer" : myState.authUser?.userType
+    });
+  };
 
   async function getProducts() {
 
@@ -222,6 +315,18 @@ console.log("Retailer")
    
     setProducts(res.data?.success)
   }
+
+  async function getLogistic() {
+    alert("hello")
+    const formData = {
+      userType: myState.authUser?.userType=='manufacturer'?'producer':myState.authUser?.userType,
+      type: 'logistic',
+      id: myState.authUser?.user
+    }
+    const res = await UserAPI.fetchUserbyrole(formData);
+    setLogistic(res?.data?.success)
+  }
+
   function viewChain(product) {
     dispatch(CURRENTCHAINUSER(product))
     navigate("/preview")
@@ -253,7 +358,7 @@ console.log("Retailer")
                 <div className="user-content">
                   <div className='flex justify-center'>
                     {myState.authUser?.profilePic ?
-                      <IpfsImage hash={myState.authUser?.profilePic} style={{ width: "6vw", height: "auto" }} className="img-fluid thumb-lg img-circle" alt="img" /> :
+                      <IpfsImage hash={myState.authUser?.profilePic} onClick={()=>navigate('profile')} style={{ width: "6vw", height: "auto" , cursor:"pointer" }} className="img-fluid thumb-lg img-circle" alt="img" /> :
                       <Image src={userImg} id="userImage" style={{ width: "6vw", height: "auto" }} className="img-fluid thumb-lg img-circle" alt="img" />
                     }
                   </div>
@@ -297,6 +402,7 @@ console.log("Retailer")
             <th>Logistic</th>
             <th>Importer</th>
             <th>Retailer</th>
+            <th>test</th>
             <th>view</th>
           </tr>
         </thead>
@@ -309,8 +415,15 @@ console.log("Retailer")
                     {/* <td><span className="label label-success font-weight-100" onClick={() => setFarmerModalOpen(true)}>Completed</span></td> */}
                           <td>
                             {product.Record.producer.id ?
-                              (product.Record.status === 'Available' ?
-                                <span className="label label-success font-weight-100" onClick={() => {setFarmerModalOpen(true); setSelectedItem(product.Record.id)}}>Completed</span> :
+                              (product.Record.producer.status === 'Available' ?
+                               <OverlayTrigger
+                                placement="top"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={(props) => renderTooltipManufacturer({ ...props, customText:product.Record })}
+                                >
+      <span className="label label-success font-weight-100" onClick={() => setFarmerModalOpen(true)}>Completed</span>
+    </OverlayTrigger> 
+                              :
                                 (product.Record.status === 'Processing' ?
                                   <span className="label label-warning font-weight-100" onClick={() => {setFarmerModalOpen(true); setSelectedItem(product.Record.id)}}>Processing</span> :
                                   <span className="label label-danger font-weight-100" onClick={() => {setFarmerModalOpen(true); setSelectedItem(product.Record.id)}}>{product.Record.exporter.id}</span>
@@ -318,14 +431,21 @@ console.log("Retailer")
                               ) :
                               <span className="label label-danger font-weight-100" onClick={() => {setFarmerModalOpen(true); setSelectedItem(product.Record.id)}}>Not Available</span>
                             }
-                          </td>
+                          </td> 
                           <td>
                             {product.Record.exporter.id ?
-                              (product.Record.status === 'Available' ?
-                                <span className="label label-success font-weight-100" onClick={() => setExporterModalOpen(true)}>Completed</span> :
+                              (product.Record.exporter.status === 'Available' ?
+                              <OverlayTrigger
+                              placement="top"
+                              delay={{ show: 250, hide: 400 }}
+                              overlay={(props) => renderTooltipExporter({ ...props, customText:product.Record })}
+                              >
+                                <span className="label label-success font-weight-100" onClick={() => setExporterModalOpen(true)}>Completed</span> 
+                                </OverlayTrigger> 
+                                :
                                 (product.Record.status === 'Processing' ?
-                                  <span className="label label-warning font-weight-100" onClick={() => setNewExporterProcessingStageModalOpen(true)}>Processing</span> :
-                                  <span className="label label-danger font-weight-100" onClick={() => setExporterModalOpen(true)}>{product.Record.exporter.id}</span>
+                                  <span className="label label-warning font-weight-100" onClick={() => {setExporterListModalOpen(true); setSelectedItem(product.Record.id)}}>Processing</span> :
+                                  <span className="label label-danger font-weight-100" onClick={() => {setExporterModalOpen(true);setSelectedItem(product.Record.id)}}>{product.Record.exporter.id}</span>
                                 )
                               ) :
                               <span className="label label-danger font-weight-100" onClick={() => setExporterListModalOpen(true)}>Not Available</span>
@@ -338,11 +458,11 @@ console.log("Retailer")
                               (product.Record.status === 'Available' ?
                                 <span className="label label-success font-weight-100" onClick={() => setLogisticModalOpen(true)}>Completed</span> :
                                 (product.Record.status === 'Processing' ?
-                                  <span className="label label-warning font-weight-100" onClick={() => ssetLogisticModalOpen(true)}>Processing</span> :
+                                  <span className="label label-warning font-weight-100" onClick={() => setProductDeliveryModalOpen(true)}>Processing</span> :
                                   <span className="label label-danger font-weight-100" onClick={() =>setLogisticModalOpen(true)}>{product.Record.logistics.id}</span>
                                 )
                               ) :
-                              <span onClick={() =>setLogisticModalOpen(true)} className="label label-danger font-weight-100">Not Available</span>
+                              <span onClick={() =>setProductPickupModalOpen(true)} className="label label-danger font-weight-100">Not Available</span>
                             }
                           </td>
                           <td>
@@ -350,11 +470,11 @@ console.log("Retailer")
                               (product.Record.status === 'Available' ?
                                 <span className="label label-success font-weight-100" onClick={() => setImporterModalOpen(true)}>Available</span> :
                                 (product.Record.status === 'Processing' ?
-                                  <span className="label label-warning font-weight-100" onClick={() => setNewImporterProcessingStageModalOpen(true)}>Processing</span> :
+                                  <span className="label label-warning font-weight-100" onClick={() => {getLogistic(); setImporterListModalOpen(true)}}>Processing</span> :
                                   <span className="label label-danger font-weight-100" onClick={() => setImporterModalOpen(true)}>{product.Record.importer.id}</span>
                                 )
                               ) :
-                              <span className="label label-danger font-weight-100" onClick={() => setImporterListModalOpen(true)}>Not Available</span>
+                              <span className="label label-danger font-weight-100" onClick={() => {getLogistic(); setImporterListModalOpen(true)}}>Not Available</span>
                             }
                           </td>
                           <td>
@@ -519,48 +639,58 @@ console.log("Retailer")
         <Form>
       <Form.Group controlId="packagingType">
         <Form.Label>Packaging Type</Form.Label>
-        <Form.Control
-          type="text"
-          value={packagingType}
-          onChange={(e) => setPackagingType(e.target.value)}
-          required
-        />
+          <Form.Control
+            as="select" // Use "select" to create a dropdown
+            value={listProductExporter.packagingType}
+            name="packagingType"
+            onChange={handleListProductExporter}
+            required
+          >
+            <option value="">Select Packaging Type</option>
+            <option value="Bags">Bags</option>
+            <option value="Crate">Crate</option>
+            <option value="Cartons">Cartons</option>
+          </Form.Control>
       </Form.Group>
       <Form.Group controlId="packagingDate">
         <Form.Label>Packaging Date</Form.Label>
         <Form.Control
           type="date"
-          value={packagingDate}
-          onChange={(e) => setPackagingDate(e.target.value)}
+          name="packagingDate"
+          value={listProductExporter.packagingDate}
+          onChange={handleListProductExporter}
           required
-        />
+          />
       </Form.Group>
       <Form.Group controlId="quantityPerPackage">
         <Form.Label>Quantity per Package</Form.Label>
         <Form.Control
           type="number"
-          value={quantityPerPackage}
-          onChange={(e) => setQuantityPerPackage(e.target.value)}
+          name="quantityPerPackage"
+          value={listProductExporter.quantityPerPackage}
+          onChange={handleListProductExporter}
           required
         />
       </Form.Group>
       <Form.Group controlId="packagingMaterialsUsed">
-        <Form.Label>Packaging Materials Used</Form.Label>
+        <Form.Label>Price</Form.Label>
         <Form.Control
-          type="text"
-          value={packagingMaterialsUsed}
-          onChange={(e) => setPackagingMaterialsUsed(e.target.value)}
+          type="number"
+          name="price"
+          value={listProductExporter.price}
+          onChange={handleListProductExporter}
           required
         />
       </Form.Group>
-      <Button variant="primary" type="submit">
-        Submit
-      </Button>
+  
     </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setExporterListModalOpen(false)}>
             Close
+          </Button>
+          <Button variant="primary" type="submit" form="fifthModalForm" onClick={handleListProductExporterSubmit} >
+            Save
           </Button>
           
         </Modal.Footer>
@@ -581,15 +711,15 @@ console.log("Retailer")
               <label>Estimate date</label>
               <input type="date" name='quantity' onChange={handleCreateProductChange} value={createProduct.quantity} className="form-control" placeholder="Quantity" required />
             </div>
-            {/* <div className="form-group">
-              <label>Price of raw material</label>
-              <input type="number" name='price' onChange={handleCreateProductChange} className="form-control" value={createProduct.price} placeholder="Price" required />
-            </div> */}
+
           </form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setExporterModalOpen(false)}>
             Close
+          </Button>
+          <Button variant="primary" type="submit" form="fifthModalForm" >
+            Save
           </Button>
           
         </Modal.Footer>
@@ -612,21 +742,29 @@ console.log("Retailer")
           
         </Modal.Footer>
       </Modal>
-
+{/* importer */}
       <Modal show={importerListModalOpen}>
         <Modal.Header>
-          <Modal.Title id="farmerModelTitle">Importer</Modal.Title>
+          <Modal.Title id="farmerModelTitle">Importer list </Modal.Title>
         </Modal.Header>
         <Modal.Body>
         <Form>
       <Form.Group controlId="orderQuantity">
-        <Form.Label>Order Quantity</Form.Label>
+      <Form.Group controlId="selectedShipment">
+        <Form.Label>Select Shipment</Form.Label>
         <Form.Control
-          type="number"
-          value={orderQuantity}
-          onChange={(e) => setOrderQuantity(e.target.value)}
+          as="select"
+          // value={selectedShipment}
+          // onChange={(e) => setSelectedShipment(e.target.value)}
           required
-        />
+        >
+          <option value="">Choose...</option>
+          <option value="shipment1">Shipment 1</option>
+          <option value="shipment2">Shipment 2</option>
+          <option value="shipment3">Shipment 3</option>
+          {/* Add more shipment options as needed */}
+        </Form.Control>
+      </Form.Group>
       </Form.Group>
       <Form.Group controlId="deliveryAddress">
         <Form.Label>Delivery Address</Form.Label>
@@ -646,51 +784,35 @@ console.log("Retailer")
           required
         />
       </Form.Group>
-      <Button variant="primary" type="submit">
-        Submit
-      </Button>
+      
     </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setImporterListModalOpen(false)}>
             Close
           </Button>
+        <Button variant="primary" type="submit" form="fifthModalForm" >
+            Save
+          </Button>
           
         </Modal.Footer>
       </Modal>
 
-      {/* // Forth Modal */}
 
-      <Modal show={logisticModalOpen}>
+  {/* logistic form */}
+
+      <Modal show={productPikupModalOpen}>
         <Modal.Header>
-          <Modal.Title id="forthModalTitle">Logistic Modal</Modal.Title>
+          <Modal.Title id="forthModalTitle">Logistic Pickup</Modal.Title>
         </Modal.Header>
         <Modal.Body>
         <Form >
-      <Form.Group controlId="exporterName">
-        <Form.Label>Exporter Name</Form.Label>
-        <Form.Control
-          type="text"
-          value={exporterName}
-          onChange={(e) => setExporterName(e.target.value)}
-          required
-        />
-      </Form.Group>
       <Form.Group controlId="collectionDate">
         <Form.Label>Collection Date</Form.Label>
         <Form.Control
           type="date"
-          value={collectionDate}
+          value={productPickup.collectionDate}
           onChange={(e) => setCollectionDate(e.target.value)}
-          required
-        />
-      </Form.Group>
-      <Form.Group controlId="collectionLocation">
-        <Form.Label>Collection Location</Form.Label>
-        <Form.Control
-          type="text"
-          value={collectionLocation}
-          onChange={(e) => setCollectionLocation(e.target.value)}
           required
         />
       </Form.Group>
@@ -698,18 +820,15 @@ console.log("Retailer")
         <Form.Label>Shipment Reference</Form.Label>
         <Form.Control
           type="text"
-          value={shipmentReference}
+          value={productPickup.shipmentReference}
           onChange={(e) => setShipmentReference(e.target.value)}
           required
         />
-      </Form.Group>
-      <Button variant="primary" type="submit">
-        Submit
-      </Button>
+      </Form.Group>   
     </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setLogisticModalOpen(false)}>
+          <Button variant="secondary" onClick={() => setProductPickupModalOpen(false)}>
             Close
           </Button>
           <Button variant="primary" type="submit" form="ForthModalForm" >
@@ -717,9 +836,39 @@ console.log("Retailer")
           </Button>
         </Modal.Footer>
       </Modal>
+
+
+      <Modal show={productDeliveryModalOpen}>
+        <Modal.Header>
+          <Modal.Title id="forthModalTitle">Item Delivery Modal</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <Form >
+      <Form.Group controlId="shipmentReference">
+        <Form.Label>Delivery Date</Form.Label>
+        <Form.Control
+          type="text"
+          value={productDelivery.deliveryDate}
+          onChange={(e) => setShipmentReference(e.target.value)}
+          required
+        />
+      </Form.Group>   
+    </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setProductDeliveryModalOpen(false)}>
+            Close
+          </Button>
+          <Button variant="primary" type="submit" form="ForthModalForm" >
+            Save
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+
       {/* // Fifth Modal */}
       <Modal show={retailerModalOpen}>
-        <Modal.Header closeButton>
+        <Modal.Header >
           <Modal.Title id="fifthModalTitle">Retailer</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -754,11 +903,6 @@ console.log("Retailer")
           </Button>
         </Modal.Footer>
       </Modal>
-
-  
-   
-
-
     </Container>
   );
 }
