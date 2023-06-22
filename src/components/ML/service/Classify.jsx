@@ -57,6 +57,7 @@ export default class Classify extends Component {
     if (('indexedDB' in window)) {
       try {
         this.model = await tf.loadLayersModel('indexeddb://' + INDEXEDDB_KEY);
+        
 
         // Safe to assume tensorflowjs database and related object store exists.
         // Get the date when the model was saved.

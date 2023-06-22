@@ -103,7 +103,7 @@ const Statistics = () => {
        {/* <Details/> */}
       <Row>
         <Col md={4}>
-          <Card className='card'>
+          <Card className='card cardcontainer'>
             <Card.Body>
               <Card.Title>Inventory</Card.Title>
               <Table responsive>
@@ -132,7 +132,7 @@ const Statistics = () => {
           </Card >
         </Col>
         <Col md={4}>
-          <Card className='card'>
+          <Card className='card cardcontainer'>
             <Card.Body>
               <Card.Title>Orders</Card.Title>
               <Table responsive>
@@ -165,7 +165,7 @@ const Statistics = () => {
           </Card>
         </Col>
         <Col md={4}>
-          <Card className='card'>
+          <Card className='card cardcontainer'>
             <Card.Body>
               <Card.Title>Logistics</Card.Title>
               <Table responsive>
@@ -196,7 +196,7 @@ const Statistics = () => {
       </Row>
       <Row>
         <Col md={6}>
-          <Card className='card'>
+          <Card className='card cardcontainer'>
             <Card.Body>
               <Card.Title>Quality</Card.Title>
               <Table responsive>
@@ -234,7 +234,7 @@ const Statistics = () => {
       </Card>
     </Col>
     <Col md={6}>
-      <Card className='card'>
+      <Card className='card cardcontainer'>
         <Card.Body>
           <Card.Title>Finance</Card.Title>
           <Bar options={options} data={data} />

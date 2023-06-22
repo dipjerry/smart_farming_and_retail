@@ -15,7 +15,7 @@ const WelcomePage = () => {
     <Container className="text-center glassmorphism ">
       <Row className="align-items-center h-100">
         <Col  className="mx-auto">
-          <h3>Welcome to Strawberry Supply Chain</h3>
+          <h3>Welcome to Supply Chain</h3>
           {/* <p>Please choose your login option:</p> */}
         </Col>
       </Row>

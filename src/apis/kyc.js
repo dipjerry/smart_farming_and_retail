@@ -1,11 +1,11 @@
 import axios from 'axios';
-const endpoint = process.env.REACT_APP_TEST_URL;
+// const API = require('./apis');
+const endpoint = `http://localhost:4007`;
 
 let token = null;
 const config = {
   headers: {'content-type': 'multipart/form-data'},
 };
-const API = require('./apis');
 async function checkLogin() {
     const authToken = sessionStorage.getItem('token');
     if (authToken) {
@@ -29,7 +29,7 @@ export default class kyc{
       };
     static aadhar = async (data) => {
         try {
-          const res = await axios.post(endpoint + `/v1/kyc/verify_and_add_aadhar`, data);
+          const res = await axios.post(endpoint + `/user/kyc/verify_and_add_aadhar`, data);
           return res.data;
         } catch (error) {
           console.log(error.data)

@@ -16,6 +16,7 @@ import User from "./components/User/index";
 import Shop from "./components/User/components/shop";
 import Home from "./components/home/home";
 import Classify from "./components/ML/service/Classify";
+import Error from './components/error/error';
 import React,{useEffect} from "react";
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -53,6 +54,7 @@ function App() {
       <Route path="/user/*" element={<User/>} />
       <Route path="/shop" element={<Shop/>} />
       <Route path="/classify" element={<Classify/>} />
+      <Route path="/*" element={<Error/>} />
     </Routes>
   
   </Router>

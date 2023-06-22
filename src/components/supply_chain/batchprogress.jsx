@@ -59,7 +59,8 @@ const BatchProgress = () => {
   }
 
   const populate = ()=>{
-    
+    // alert(Batch_array.producer.id);
+    // alert(batchStatus);
     if (Batch_array.producer.id) {
       buildCultivatorData();}
      else if (Batch_array.Status == "HARVESTOR") {
@@ -81,7 +82,7 @@ const BatchProgress = () => {
       const time = await ConvertDate(Batch_array.product.production_date);
       setBatchId(Batch_array.id);
       setCultivatoarIntime(time);
-      setBatchStatus(Batch_array.status);
+      setBatchStatus(Batch_array.producer.status);
   }
 
   async function buildInspectorData(batchinfo) {
@@ -113,8 +114,8 @@ const BatchProgress = () => {
           <div className="white-box">
             <ul className="timeline">
                 <li>
-                      <div className="timeline-badge danger">
-                        <i className={batchStatus==="ADMIN"||batchStatus==="FARMINSPECTOR"?"fa fa-check":"fa fa-times"}></i>
+                      <div className={batchStatus==="Available"||batchStatus==="FARMINSPECTOR"?"timeline-badge success":"timeline-badge danger" }>
+                        <i className={batchStatus==="Available"||batchStatus==="FARMINSPECTOR"?"fa fa-check":"fa fa-times" }></i>
                       </div>
                       <div className="timeline-panel" id="cultivationSection">
                         <div className="timeline-heading">
@@ -124,7 +125,7 @@ const BatchProgress = () => {
                         </div>
                         <div className="timeline-body">
                           <table className="table activityData table-responsive" id="cultivatorTable">
-                          {batchStatus==="Available"||batchStatus==="FARMINSPECTOR"?(<>
+                          {batchStatus==="Available" || batchStatus==="FARMINSPECTOR"?(<>
                             <tr><td>batchId: {BatchId} </td></tr>
     <tr><td>Cultivated Time:{CultivatorIntime}</td></tr>
     <tr><td><img src = {verified} className="img-circle pull-left" alt="Verified"/></td></tr>
