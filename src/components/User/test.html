@@ -1,88 +1,92 @@
 <div class="row">
-		<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-			<div class="white-box">
-				<h3 class="box-title">Batches Overview</h3>
-				<div class="table-responsive">
-					<table class="table product-overview" id="userCultivationTable">
-						<thead>
-							<tr>
-								<th>Batch ID</th>
-								<th>ADMIN</th>
-								<th>Farm Inspector</th>
-								<th>Harvester</th>
-								<th>Exporter</th>
-								<th>Importer</th>
-								<th>Processor</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
-					<div id="userFormModel" class="modal fade" tabindex="-1" role="dialog"
-						aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; padding-top: 170px;">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal"
-										aria-hidden="true">×</button>
-									<h2 class="modal-title" id="userModelTitle">Update Profile</h2>
-								</div>
-								<div class="modal-body" style="height: 500px;overflow: auto;">
-									<form id="updateUserForm" onsubmit="return false;">
-										<fieldset style="border:0;">
-											<div class="form-group">
-												<label class="control-label" for="fullname">First Name <i
-														class="red">*</i></label>
-												<input type="text" class="form-control" id="firstname" name="firstname"
-													placeholder="Name" data-parsley-required="true">
-											</div>
-											<div class="form-group">
-												<label class="control-label" for="fullname">Last Name <i
-														class="red">*</i></label>
-												<input type="text" class="form-control" id="Lastname" name="Lastname"
-													placeholder="Name" data-parsley-required="true">
-											</div>
-											<div class="form-group">
-												<label class="control-label" for="contactNumber">Contact No<i
-														class="red">*</i></label>
-												<input type="text" class="form-control" id="contactNumber"
-													name="contactNumber" placeholder="Contact No."
-													data-parsley-required="true" data-parsley-type="digits"
-													data-parsley-length="[10, 15]" maxlength="15">
-											</div>
-											<div class="form-group">
-												<label class="control-label" for="role">Role </label>
-												<select class="form-control" id="role" disabled="true" name="role">
-													<option value="">Select Role</option>
-													<option value="FARMINSPECTOR">Farm Inspection</option>
-													<option value="HARVESTOR">Harvester</option>
-													<option value="EXPORTOR">Exporter</option>
-													<option value="IMPORTOR">Importer</option>
-													<option value="PROCESSOR">Processor</option>
-												</select>
-											</div>
-											<div class="form-group">
-												<label class="control-label" for="userProfileHash">Profile Image <i
-														class="red">*</i></label>
-												<input type="file" class="form-control"
-													onchange="handleFileUpload(event);" />
-												<input type="hidden" class="form-control" id="userProfileHash"
-													name="userProfileHash" placeholder="User Profile Hash"
-													data-parsley-required="true">
-												<span id="imageHash"></span>
-											</div>
-											<div class="form-group" id="updateimagePreview"></div>
-										</fieldset>
-										<div class="modal-footer">
-											<i style="display: none;" class="fa fa-spinner fa-spin"></i>
-											<button type="button" class="btn btn-primary" id="userFormBtn"
-												onclick="updateprofile()">Submit</button>
-									</form>
-								</div>
+	<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+		<div class="white-box">
+			<h3 class="box-title">Batches Overview</h3>
+			<div class="table-responsive">
+				<table class="table product-overview" id="userCultivationTable">
+					<thead>
+						<tr>
+							<th>Batch ID</th>
+							<th>ADMIN</th>
+							<th>Farm Inspector</th>
+							<th>Harvester</th>
+							<th>Exporter</th>
+							<th>Importer</th>
+							<th>Processor</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+				<div id="userFormModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+					aria-hidden="true" style="display: none; padding-top: 170px;">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+								<h2 class="modal-title" id="userModelTitle">Update Profile</h2>
+							</div>
+							<div class="modal-body" style="height: 500px;overflow: auto;">
+								<form id="updateUserForm" onsubmit="return false;">
+									<fieldset style="border:0;">
+										<div class="form-group">
+											<label class="control-label" for="fullname">First Name <i
+													class="red">*</i></label>
+											<input type="text" class="form-control" id="firstname" name="firstname"
+												placeholder="Name" data-parsley-required="true">
+										</div>
+										<div class="form-group">
+											<label class="control-label" for="fullname">Last Name <i
+													class="red">*</i></label>
+											<input type="text" class="form-control" id="Lastname" name="Lastname"
+												placeholder="Name" data-parsley-required="true">
+										</div>
+										<div class="form-group">
+											<label class="control-label" for="contactNumber">Contact No<i
+													class="red">*</i></label>
+											<input type="text" class="form-control" id="contactNumber"
+												name="contactNumber" placeholder="Contact No."
+												data-parsley-required="true" data-parsley-type="digits"
+												data-parsley-length="[10, 15]" maxlength="15">
+										</div>
+										<div class="form-group">
+											<label class="control-label" for="role">Role </label>
+											<select class="form-control" id="role" disabled="true" name="role">
+												<option value="">Select Role</option>
+												<option value="FARMINSPECTOR">Farm Inspection</option>
+												<option value="HARVESTOR">Harvester</option>
+												<option value="EXPORTOR">Exporter</option>
+												<option value="IMPORTOR">Importer</option>
+												<option value="PROCESSOR">Processor</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label class="control-label" for="userProfileHash">Profile Image <i
+													class="red">*</i></label>
+											<input type="file" class="form-control"
+												onchange="handleFileUpload(event);" />
+											<input type="hidden" class="form-control" id="userProfileHash"
+												name="userProfileHash" placeholder="User Profile Hash"
+												data-parsley-required="true">
+											<span id="imageHash"></span>
+										</div>
+										<div class="form-group" id="updateimagePreview"></div>
+									</fieldset>
+									<div class="modal-footer">
+										<i style="display: none;" class="fa fa-spinner fa-spin"></i>
+										<button type="button" class="btn btn-primary" id="userFormBtn"
+											onclick="updateprofile()">Submit</button>
+								</form>
 							</div>
 						</div>
 					</div>
 				</div>
-				</div>
-				</div>
-		
+			</div>
+		</div>
+	</div>
+<div>
+<!-- <div>
+    <canvas id="canvas"></canvas>
+    <script src="bundle.js"></script>
+</div> -->
+<!--  -->

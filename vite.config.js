@@ -39,4 +39,9 @@ export default defineConfig({
       plugins: [tailwindcss],
     },
   },
+  // server: {
+  //   hmr: {
+  //     overlay: false
+  //   }
+  // }
 })

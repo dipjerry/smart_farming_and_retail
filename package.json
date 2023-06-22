@@ -26,6 +26,7 @@
     "faker": "^6.6.6",
     "idb": "^7.1.1",
     "mdb-react-ui-kit": "^6.0.0",
+    "qrcode": "^1.5.3",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",
     "react-chartjs-2": "^5.2.0",
