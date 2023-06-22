@@ -77,7 +77,7 @@ function FooterNavbar({ cart , increaseQuantity , decreaseQuantity  }) {
                 className="ms-0 "
                 style={{ color: "#5d9fc5" }}
               />
-              <p className="pt-0">MDBootstrap.com</p>
+              {/* <p className="pt-0">MDBootstrap.com</p> */}
             </MDBCol>
           </MDBContainer>
           <MDBRow>
@@ -244,9 +244,9 @@ function FooterNavbar({ cart , increaseQuantity , decreaseQuantity  }) {
           <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"  onClick={handleCheckout} >
             Checkout ({cartTotal.toFixed(2)})
           </button>
-          <button className="bg-blue-500 hover:bg-blue-500 text-white py-2 px-4 rounded" onClick={<Invoice/>} >
+          {/* <button className="bg-blue-500 hover:bg-blue-500 text-white py-2 px-4 rounded" onClick={Invoice} >
             Get Invoice 
-          </button>
+          </button> */}
           {/* {<Invoice/>} */}
             {/* console.log("hello"); */}
           {/* <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded" onClick={<Invoice/>} >
