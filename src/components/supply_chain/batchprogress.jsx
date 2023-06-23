@@ -81,6 +81,34 @@ const BatchProgress = () => {
       setBatchStatus(Batch_array.producer.status);
   }
 
+  async function buildImportData() {
+      const time = await ConvertDate(Batch_array.product.production_date);
+      setBatchId(Batch_array.id);
+      setCultivatoarIntime(time);
+      setBatchStatus(Batch_array.producer.status);
+  }
+
+  async function buildLogisticData() {
+      const time = await ConvertDate(Batch_array.product.production_date);
+      setBatchId(Batch_array.id);
+      setCultivatoarIntime(time);
+      setBatchStatus(Batch_array.producer.status);
+  }
+  
+  async function buildLogisticData() {
+      const time = await ConvertDate(Batch_array.product.production_date);
+      setBatchId(Batch_array.id);
+      setCultivatoarIntime(time);
+      setBatchStatus(Batch_array.producer.status);
+  }
+
+  async function buildImportData() {
+      const time = await ConvertDate(Batch_array.product.production_date);
+      setBatchId(Batch_array.id);
+      setCultivatoarIntime(time);
+      setBatchStatus(Batch_array.producer.status);
+  }
+
   async function buildInspectorData(batchinfo) {
     await buildCultivatorData(batchinfo);
     setFarmInspectorIntime(batchinfo.FarmInspectorIntime)
