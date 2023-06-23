@@ -1,38 +1,30 @@
 {
   "exporter": {
     "export_data": {
-      "export_data": 1687499952,
-      "packagingType": "box",
-      "quantityPerPackage": "5",
-      "shipping_method": "air"
+      "id": "User5",
+      "status": "Available"
     },
-    "id": "User5",
-    "status": "Available"
+    "id": "Product3"
   },
-  "id": "Product3",
   "importer": {
-    "id": "Importer1",
+    "id": "",
     "import_data": {},
-    "import_time": "11.30",
-    "import_date": "23-6-2023",
     "status": "Not Available"
   },
   "inspector": {
-    "id": "Inspector1",
-    "inspection_data": "good quality",
-    "inspection_time":"25-6-2023" ,
-    "status": " Available"
+    "id": "",
+    "inspection_data": {},
+    "status": "Not Available"
   },
   "invoice": {
-    "id":"invoice1",
-    "customer_invoice": "CustomerInvoice1",
+    "customer_invoice": "",
     "exporter_invoice": "Invoice1",
-    "importer_invoice": "ImporterInvoice1",
-    "logistics_invoice": "LogisticsInvoice1",
+    "importer_invoice": "",
+    "logistics_invoice": "",
     "producer_invoice": {}
   },
   "logistic": {
-    "id": "Logistic1",
+    "id": "",
     "logistics_data": {},
     "status": "Not Available"
   },
@@ -46,17 +38,13 @@
   },
   "producer": {
     "id": "User4",
-    "production_data": {
-      "production_date": 1687499944,
-      "quantity": "10",
-      "type": "Fresh"
-    },
+    "production_data": {},
     "status": "Available"
   },
   "product": {
     "availablefor": "importer",
-    "expiration_date": "2023-12-31",
-    "origin": "Country1",
+    "expiration_date": "",
+    "origin": "",
     "owner": "User5",
     "price": 700
   },

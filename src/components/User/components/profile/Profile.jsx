@@ -61,6 +61,7 @@ const Profile = () => {
   const [selectcountry, setSelectcountry] = useState("");
   //  console.log(selectcountry)
   const [formData, setFormData] = useState(initialvalue);
+
   const registerMethod2 = localStorage.getItem("loginMethod2");
   const registerMethod = localStorage.getItem("loginMethod");
   console.log("registerMethod");
@@ -114,19 +115,24 @@ const Profile = () => {
   }
   useEffect(() => {
     async function fetchData() { 
-        const res = await userApi.fetchUserbyById( {id:myState.authUser?.user});
-        console.log("🚀 ~ file: Profile.jsx:134 ~ fetchData ~ res:", res)
-        if(res && res.code==200){
-          console.log("worked")
-          if(res.data.data.pan.status!="pending")
-          {
-            console.log("pending state")
+        const res = await userApi.fetchUserbyById( {id:myState.authUser?.user , userType:myState.authUser?.userType == "farmer" ? "manufacturer" : myState.authUser?.userType});
+        console.log("🚀 ~ file: Profile.jsx:134 ~ fetchData ~ res:", res.data)
+        if(res && res.data.status==200){
+          // alert('hello');
+          // alert(res.data);
+          const value = {
+            Name: res.data.Name,
+            phone: res.data.phone,
+            email: res.data.Email,
+            address: res.data.Address.address,
+            country: res.data.Address.country,
+            city: res.data.Address?.city,
+            state: res.data.Address?.state,
+            pincode: res.data.Address?.pincode,
           }
-          if(res.data.data.aadhar.status!="pending")
-          {
-            console.log("pending state")
+          console.log("🚀 ~ file: Profile.jsx:131 ~ fetchData ~ value:", value)
+          setFormData(value);
         }
-      }
     }
     fetchData();
   }, []);

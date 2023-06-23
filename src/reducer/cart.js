@@ -18,35 +18,14 @@ export const cartSlice = createSlice({
               return item;
             });
           } else {
-            // setCartItems([...cartItems, { ...product, quantity: 1 }]);
-            // state.cartItems.push(action.payload);
-            // state.cartItems = (state.cartItems);
             state.cartItems = [...state.cartItems, { ...action.payload, quantity: 1 }];
           }
-        // state.cartItems.push(action.payload);
-        // return 
       },
-
-    //   function handleAddToCart(product) {
-    //     const existingItem = cartItems.find(item => item.id === product.id);
-        
-    //     if (existingItem) {
-    //       setCartItems(cartItems.map(item => {
-    //         if (item.id === product.id) {
-    //           return { ...item, quantity: item.quantity + 1 };
-    //         } else {
-    //           return item;
-    //         }
-    //       }));
-    //     } else {
-    //       setCartItems([...cartItems, { ...product, quantity: 1 }]);
-    //     }
-    //   }
-
 
       REMOVE_ITEM: (state, action) => {
         state.cartItems = state.cartItems.filter(item => item.id !== action.payload.id);
       },
+
       UPDATE_QUANTITY: (state, action) => {
         state.cartItems = state.cartItems.map(item => {
           if (item.id === action.payload.id) {
@@ -71,12 +50,13 @@ export const cartSlice = createSlice({
           }
             return item;
         });
-      }
+      },
+      CLEAR_CART:() => initialState
     },
   });
 
 
   // Action creators are generated for each case reducer function
-  export const { ADD_ITEM , REMOVE_ITEM , UPDATE_QUANTITY , DECREASE_QUANTITY , INCREASE_QUANTITY}  = cartSlice.actions
+  export const { ADD_ITEM , REMOVE_ITEM , UPDATE_QUANTITY , DECREASE_QUANTITY , INCREASE_QUANTITY , CLEAR_CART}  = cartSlice.actions
   
   export default cartSlice.reducer

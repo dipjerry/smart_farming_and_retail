@@ -61,7 +61,6 @@ console.log("approved");
         } catch (error) {
           console.log(error.data)
             return error.data;
-
         }
       };
     static loginAdmin = async (data) => {
@@ -71,7 +70,6 @@ console.log("approved");
         } catch (error) {
           console.log(error.data)
             return error.data;
-
         }
       };
 
@@ -82,7 +80,6 @@ console.log("approved");
         } catch (error) {
           console.log(error.data)
             return error.data;
-
         }
       }; 
     static fetchTransaction = async (data) => {

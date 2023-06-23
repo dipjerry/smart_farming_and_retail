@@ -8,6 +8,9 @@ import { toast, ToastContainer } from "react-toastify";
 import {
   LOGINUSER
 } from '../../reducer/authUser';
+import {
+  CLEAR_CART
+} from '../../reducer/cart';
 // import {
 //   LOGINADMIN
 // } from '../../reducer/authAdmin';
@@ -37,6 +40,7 @@ function UserLogin() {
           // localStorage.setItem("investoruserID", data.data.refId);
           toast.success("Login Success");
           dispatch(LOGINUSER(response.data))
+          dispatch(CLEAR_CART())
           history('/user');
       }
       // navigate("/otp", { state: { data:data.data }});

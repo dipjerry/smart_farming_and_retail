@@ -2,7 +2,7 @@ import React, { useState , useEffect } from 'react';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Statistics from './statistics';
-import {  Button,  Modal } from 'react-bootstrap';
+import {  Button,  Modal , Container, Card} from 'react-bootstrap';
 import { useSelector , useDispatch } from 'react-redux';
 import API from "../../../apis/users";
 // import Sonnet from '../../components/Sonnet';
@@ -221,12 +221,161 @@ useEffect(() => {
   })} data={data} columns={columns}/>
       </Tab>
     </Tabs>
-     <Modal show={showInvoice}>
+
+     <Modal size="lg" show={showInvoice}>
      <Modal.Header >
        <Modal.Title id="fifthModalTitle">Invoice</Modal.Title>
      </Modal.Header>
      <Modal.Body>
-
+     <Container className="py-5">
+      <Card className="p-4">
+        <Card.Body>
+          <Container className="mb-2 mt-3">
+            <div className="d-flex align-items-baseline">
+              <div className="col-xl-9">
+                <p style={{ color: "#7e8d9f", fontSize: "20px" }}>
+                  Invoice &gt; &gt; <strong>ID: #123-123</strong>
+                </p>
+              </div>
+              <div className="col-xl-3 float-end">
+                <Button variant="light" className="text-capitalize border-0" href="javascript:void(0);" onClick={() => window.print()}>
+                  Print
+                </Button>
+                <Button
+                  variant="light"
+                  className="text-capitalize border-0 ms-2"
+                >
+                  Export
+                </Button>
+                <hr />
+              </div>
+            </div>
+          </Container>
+          <Container>
+            <div className="text-center">
+              <i
+                className="fab fa-mdb"
+                style={{ fontSize: "4rem", color: "#5d9fc5" }}
+              />
+            </div>
+          </Container>
+          <div className="row">
+            <div className="col-xl-8">
+              <ul className="list-unstyled text-muted">
+                <li>
+                  To: <span style={{ color: "#5d9fc5" }}>John Lorem</span>
+                </li>
+                <li>Street, City</li>
+                <li>State, Country</li>
+                <li>
+                  <i className="fas fa-phone-alt" /> 123-456-789
+                </li>
+              </ul>
+            </div>
+            <div className="col-xl-4">
+              <p className="text-muted">Invoice</p>
+              <ul className="list-unstyled text-muted">
+                <li>
+                  <i
+                    className="fas fa-circle"
+                    style={{ color: "#84B0CA" }}
+                  ></i>
+                  <span className="fw-bold ms-1">ID:</span>#123-456
+                </li>
+                <li>
+                  <i
+                    className="fas fa-circle"
+                    style={{ color: "#84B0CA" }}
+                  ></i>
+                  <span className="fw-bold ms-1">Creation Date: </span>Jun
+                  23,2021
+                </li>
+                <li>
+                  <i
+                    className="fas fa-circle"
+                    style={{ color: "#84B0CA" }}
+                  ></i>
+                  <span className="fw-bold ms-1">Status:</span>
+                  <span className="badge bg-warning text-black fw-bold ms-1">
+                    Unpaid
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="my-2 mx-1 justify-content-center">
+            <table className="table table-striped table-borderless">
+              <thead className="text-white" style={{ backgroundColor: "#84B0CA" }}>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Qty</th>
+                  <th scope="col">Unit Price</th>
+                  <th scope="col">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>Pro Package</td>
+                  <td>4</td>
+                  <td>$200</td>
+                  <td>$800</td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>Web hosting</td>
+                  <td>1</td>
+                  <td>$10</td>
+                  <td>$10</td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td>Consulting</td>
+                  <td>1 year</td>
+                  <td>$300</td>
+                  <td>$300</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div className="row">
+            <div className="col-xl-8">
+              
+              <textarea className="ms-3">Add additional notes and payment information</textarea>
+            </div>
+            <div className="col-xl-3">
+              <ul className="list-unstyled">
+                <li className="text-black me-4">
+                  <span className="text-black me-4">SubTotal</span>$1110
+                </li>
+                <li className="text-black me-4 mt-2">
+                  <span className="text-black me-4">Tax(15%)</span>$111
+                </li>
+              </ul>
+              <p className="text-black float-start">
+                <span className="text-black me-3"> Total Amount</span>
+                <span style={{ fontSize: "25px" }}>$1221</span>
+              </p>
+            </div>
+          </div>
+          <hr />
+          <div className="row">
+            <div className="col-xl-10">
+              <p>Thank you for your purchase</p>
+            </div>
+            <div className="col-xl-2">
+              <Button
+                className="text-capitalize"
+                style={{ backgroundColor: "#60bdf3" }}
+              >
+                Pay Now
+              </Button>
+            </div>
+          </div>
+        </Card.Body>
+      </Card>
+    </Container>
      </Modal.Body>
      <Modal.Footer>
        <Button variant="secondary" onClick={() => setShowInvoice(false)}>

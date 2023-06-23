@@ -119,6 +119,44 @@ console.log("approved");
           return error.data;
         }
       };
+      static selectLogistic = async (data) => {
+        // console.log("🚀 ~ file: product.js:123 ~ startup ~ selectLogistic= ~ data:", data)
+        try {
+          const res = await axios.post(endpoint + `/transact/selectLogistic`, data);
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+          return error.data;
+        }
+      };
+      static selectLogistic = async (data) => {
+        // console.log("🚀 ~ file: product.js:123 ~ startup ~ selectLogistic= ~ data:", data)
+        try {
+          const res = await axios.post(endpoint + `/transact/selectLogistic`, data);
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+          return error.data;
+        }
+      };
+      static productPickup = async (data) => {
+        try {
+          const res = await axios.post(endpoint + `/transact/productPickup`, data);
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+          return error.data;
+        }
+      };
+      static productDelivery = async (data) => {
+        try {
+          const res = await axios.post(endpoint + `/transact/productDelivery`, data);
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+          return error.data;
+        }
+      };
 
       // static buyProduct = async (data) => {
       //   try {
