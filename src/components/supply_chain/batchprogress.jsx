@@ -23,23 +23,7 @@ const BatchProgress = () => {
 
 
   useEffect(() => {
-    // setBatchNo(() => {
-    //   return new URLSearchParams(window.location.search).get('batchNo');
-    // });
-  
-    // loadData();
-
-    // .then(response => response.json())
-    // .then(data => {
-    //   console.log(data);
-    //   populate(data);
-    // });
-
     populate()
-
-
- 
-
   });
 
 
@@ -63,17 +47,22 @@ const BatchProgress = () => {
     // alert(batchStatus);
     if (Batch_array.producer.id) {
       buildCultivatorData();}
-     else if (Batch_array.Status == "HARVESTOR") {
+      if (Batch_array.exporter.id) {
+       buildCultivatorData();
+      }
+      if (Batch_array.importer.id) {
+       buildCultivatorData();
+      }
       // buildHarvestorData(Batch_array);
-    } else if (Batch_array.Status == "EXPORTOR") {
-      // buildExportorData(Batch_array);
-    } else if (Batch_array.Status == "IMPORTOR") {
-      // buildImportorData(Batch_array);
-    } else if (Batch_array.Status == "PROCESSOR") {
-      // buildImportorData(Batch_array);
-    } else if (Batch_array.Status == "COMPLETE") {
-      // buildProcessorData(Batch_array);
-    }
+    //  else if (Batch_array.Status == "EXPORTOR") {
+    //   // buildExportorData(Batch_array);
+    // } else if (Batch_array.Status == "IMPORTOR") {
+    //   // buildImportorData(Batch_array);
+    // } else if (Batch_array.Status == "PROCESSOR") {
+    //   // buildImportorData(Batch_array);
+    // } else if (Batch_array.Status == "COMPLETE") {
+    //   // buildProcessorData(Batch_array);
+    // }
   }
 
 
@@ -85,8 +74,14 @@ const BatchProgress = () => {
       setBatchStatus(Batch_array.producer.status);
   }
 
-  async function buildInspectorData(batchinfo) {
+  async function buildexporterData() {
+      const time = await ConvertDate(Batch_array.product.production_date);
+      setBatchId(Batch_array.id);
+      setCultivatoarIntime(time);
+      setBatchStatus(Batch_array.producer.status);
+  }
 
+  async function buildInspectorData(batchinfo) {
     await buildCultivatorData(batchinfo);
     setFarmInspectorIntime(batchinfo.FarmInspectorIntime)
     setStrawberryFamily(batchinfo.StrawberryFamily)
@@ -113,10 +108,14 @@ const BatchProgress = () => {
         <div className="col-md-12">
           <div className="white-box">
             <ul className="timeline">
+
+
+
                 <li>
-                      <div className={batchStatus==="Available"||batchStatus==="FARMINSPECTOR"?"timeline-badge success":"timeline-badge danger" }>
-                        <i className={batchStatus==="Available"||batchStatus==="FARMINSPECTOR"?"fa fa-check":"fa fa-times" }></i>
+                      <div className={Batch_array.producer.id?"timeline-badge success":"timeline-badge danger" }>
+                        <i className={Batch_array.producer.id?"fa fa-check":"fa fa-times" }></i>
                       </div>
+
                       <div className="timeline-panel" id="cultivationSection">
                         <div className="timeline-heading">
                           <h4 className="timeline-title">Cultivation</h4>
@@ -141,7 +140,10 @@ const BatchProgress = () => {
                         </div>
                         <div className="verifiedImg"></div>
                       </div>
+
                     </li>
+
+
                     <li className="timeline-inverted">
                       <div className="timeline-badge danger">
                         <i className={batchStatus==="FARMINSPECTOR"?"fa fa-check":"fa fa-times"}></i>
@@ -171,27 +173,43 @@ const BatchProgress = () => {
                 <div className="verifiedImg"></div>
               </div>
             </li>
+
+
             <li>
-              <div className="timeline-badge danger">
-                <i className="fa fa-times"></i>
-              </div>
+
+            <div className={Batch_array.exporter.id?"timeline-badge success":"timeline-badge danger" }>
+                        <i className={Batch_array.producer.id?"fa fa-check":"fa fa-times" }></i>
+                      </div>
+
+
               <div className="timeline-panel" id="packingSection">
-                <div className="timeline-heading">
-                  <h4 className="timeline-title">Packing</h4>
-                  <p><small className="text-muted text-danger activityDateTime"></small></p><span
-                  className="activityQrCode"></span>
-                </div>
-                <div className="timeline-body">
-                  <table className="table activityData table-responsive" id="packerTable">
-                    <tr>
+                        <div className="timeline-heading">
+                          <h4 className="timeline-title">Packing</h4>
+                          <p><small className="text-muted text-success activityDateTime"></small></p><span
+                          className="activityQrCode"></span>
+                        </div>
+                        <div className="timeline-body">
+                          <table className="table activityData table-responsive" id="cultivatorTable">
+                          {Batch_array.exporter.id?(<>
+                            <tr><td>batchId: {BatchId} </td></tr>
+    <tr><td>Cultivated Time:{CultivatorIntime}</td></tr>
+    <tr><td><img src = {verified} className="img-circle pull-left" alt="Verified"/></td></tr>
+        </>):(
+                   
+                   <tr>
                       <td colSpan="2">
                         <p>Information Not Available</p>
                       </td>
-                    </tr>
-                  </table>
-                </div>
-                <div className="verifiedImg"></div>
-                </div>
+                    </tr>)}                  
+
+                          </table>
+                        </div>
+                        <div className="verifiedImg"></div>
+                      </div>
+
+
+
+
             </li>
             <li className="timeline-inverted">
               <div className="timeline-badge danger">
@@ -204,14 +222,21 @@ const BatchProgress = () => {
                   className="activityQrCode"></span>
                 </div>
                 <div className="timeline-body">
-                  <table className="table activityData table-responsive" id="transporterTable">
-                    <tr>
+                          <table className="table activityData table-responsive" id="cultivatorTable">
+                          {Batch_array.logistic.id?(<>
+                            <tr><td>batchId: {BatchId} </td></tr>
+    <tr><td>Cultivated Time:{CultivatorIntime}</td></tr>
+    <tr><td><img src = {verified} className="img-circle pull-left" alt="Verified"/></td></tr>
+        </>):(
+                   
+                   <tr>
                       <td colSpan="2">
                         <p>Information Not Available</p>
                       </td>
-                    </tr>
-                  </table>
-                </div>
+                    </tr>)}                  
+
+                          </table>
+                        </div>
                 <div className="verifiedImg"></div>
               </div>
             </li>

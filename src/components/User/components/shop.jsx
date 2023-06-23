@@ -14,8 +14,9 @@ import { useDispatch } from 'react-redux';
 // import CompanyLogo3 from "../Images/CompanyLogo3.png";
 // import API from "../Apis/startupApis";
 import {
-  ADD_ITEM 
+  ADD_ITEM , CLEAR_CART 
 } from '../../../reducer/cart';
+
 
 
 function Shop({shop}) {

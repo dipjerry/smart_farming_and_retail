@@ -1,8 +1,17 @@
 import React from "react";
 import {Button,  Row, Col } from 'react-bootstrap';
 import {NavLink, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  LOGOUTUSER,
+  LOGINUSER,
+} from '../../../reducer/authUser';
+
 
 const Navbar = (props) => {
+  const myState = useSelector((state) => state)
+  const dispatch = useDispatch()
+    console.log("🚀 ~ file: nav.jsx:6 ~ Navbar ~ props:", props)
     const navigate = useNavigate();
   return (
     <Row className="bg-title px-5">
@@ -18,9 +27,9 @@ const Navbar = (props) => {
     </Button>
   </Col>
   <Col lg={4} md={4} sm={4} xs={6} className="d-flex justify-content-end align-items-center">
-    {props?.data?.isUserAuthenticated ?
+    {myState.authUser.isUserAuthenticated ?
       <Button
-        onClick={() => { dispatch(LOGOUTUSER()); navigate('/'); }}
+        onClick={() => { dispatch(LOGOUTUSER()); navigate('/user_auth'); }}
         className="btn-info btn-rounded btn-outline px-3 py-2 hidden-xs hidden-sm waves-effect waves-light mr-3"
       >
         Log out

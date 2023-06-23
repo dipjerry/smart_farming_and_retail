@@ -1,13 +1,52 @@
 {
-    "$class": "com.strawberrysupplychain.system.BatchAsset",
-    "BatchId": "1234",
-    "Status": "SMARTINSPECTOR",
-    "CreatedDateTime": "2023-01-19T20:30:52.991Z",
-    "strawberryFamily": "a",
-    "TypeofSeed": "type_1",
-    "FertilizerUsed": "b",
-    "CultivatorIntime": "2023-01-19T20:30:52.991Z",
-    "FarmInspectorIntime": "2023-01-19T20:37:13.058Z",
-    "Cultivator": "resource:com.strawberrysupplychain.participant.SystemUser#0328",
-    "FarmInspector": "resource:com.strawberrysupplychain.participant.SystemUser#0330"
-  }
+  "exporter": {
+    "export_data": {
+      "id": "User5",
+      "status": "Available"
+    },
+    "id": "Product3"
+  },
+  "importer": {
+    "id": "",
+    "import_data": {},
+    "status": "Not Available"
+  },
+  "inspector": {
+    "id": "",
+    "inspection_data": {},
+    "status": "Not Available"
+  },
+  "invoice": {
+    "customer_invoice": "",
+    "exporter_invoice": "Invoice1",
+    "importer_invoice": "",
+    "logistics_invoice": "",
+    "producer_invoice": {}
+  },
+  "logistic": {
+    "id": "",
+    "logistics_data": {},
+    "status": "Not Available"
+  },
+  "name": "Strawberry",
+  "payment": {
+    "exporter_amount": 300,
+    "importer_amount": 0,
+    "inspector_amount": 0,
+    "logistics_amount": 0,
+    "producer_amount": 300
+  },
+  "producer": {
+    "id": "User4",
+    "production_data": {},
+    "status": "Available"
+  },
+  "product": {
+    "availablefor": "importer",
+    "expiration_date": "",
+    "origin": "",
+    "owner": "User5",
+    "price": 700
+  },
+  "status": "Available"
+}

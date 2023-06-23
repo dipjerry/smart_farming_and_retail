@@ -271,7 +271,7 @@ async function getProducts()
         <td>{product.Record.name}</td>
         <td>{product.Record.producer?.id}</td>
         <td>{product.Record.importer?.id}</td>
-        <td>{product.Record.logistics?.id}</td>
+        <td>{product.Record.logistic?.id}</td>
         <td>{product.Record.producer?.id}</td>
         {/* <td>{JSON.stringify(product.Record.product)}</td> */}
         <td>{product.Record.status}</td>

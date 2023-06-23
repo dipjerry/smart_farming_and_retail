@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Table, Container, Button, Row, Col, Image, Alert, Card, Tooltip, Modal , Form , Overlay , Popover , OverlayTrigger } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye } from '@fortawesome/free-solid-svg-icons'
+import { AiOutlineDownload } from 'react-icons/ai'
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import API from "../../apis/product";
@@ -66,12 +67,9 @@ function UserDashboard() {
   const [exporterModalOpen, setExporterModalOpen] = useState(false);
   const [exporterListModalOpen, setExporterListModalOpen] = useState(false);
 
-  const [importerModalOpen, setImporterModalOpen] = useState(false);
+  const [logisticSelectModal, setLogisticSelectModal] = useState(false);
   const [importerListModalOpen, setImporterListModalOpen] = useState(false);
-  
-  const [importerDeliveryModalOpen, setImporterDeliveryModalOpen] = useState(false);
 
-  const [logisticModalOpen, setLogisticModalOpen] = useState(false);
   const [productPikupModalOpen, setProductPickupModalOpen] = useState(false);
   const [productDeliveryModalOpen, setProductDeliveryModalOpen] = useState(false);
   const [retailerModalOpen, setRetailerModalOpen] = useState(false);
@@ -124,45 +122,28 @@ function UserDashboard() {
           </Popover>
   );
 
-  console.log("importer")
-  const [orderQuantity, setOrderQuantity] = useState('');
-  const [deliveryAddress, setDeliveryAddress] = useState('');
-  const [preferredDeliveryDate, setPreferredDeliveryDate] = useState('');
-   console.log("Logistic")
-  const [exporterName, setExporterName] = useState('');
-  const [collectionDate, setCollectionDate] = useState('');
-  const [collectionLocation, setCollectionLocation] = useState('');
-  const [shipmentReference, setShipmentReference] = useState('');
-console.log("Retailer")
   const [quantity, setQuantity] = useState('');
   const [price, setPrice] = useState('');
+
+
+
 
   const [createProduct, setCreateProduct] = useState({
     name: "", price: "", quantity: "", id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType , rawItems: []
   })
-  const [listProduct, setListProduct] = useState({
-    climate: "", soilType: "",price: 0,  id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
-  })
-  const [listProductExporter, setListProductExporter] = useState({
-    packagingType: "", quantityPerPackage: "",packagingDate: 0, price:"", id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
-  })
-  const [listProductImporter, setListProductImporter] = useState({
-    logisticSelect: "", exprctedDelivery: "",price: 0,  id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
-  })
 
-  const [productPickup, setProductPickup] = useState({
-   pickupDate: "",id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
-  })
-  const [productDelivery, setProductDelivery] = useState({
-    deliveryDate: "",  id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
-  })
-  const [listProductLogistic, setListProductLogistic] = useState({
-    climate: "", soilType: "",price: 0,  id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
-  })
-  const [listProductRetailer, setListProductRetailer] = useState({
-    climate: "", soilType: "",price: 0,  id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
-  })
+  // buy raw product handler
+  const handleRawItemsChange = (e) => {
+    console.log(selectedItems)
+    const { options } = e.target;
+    const selectedRawItems = Array.from(options)
+      .filter((option) => option.selected)
+      .map((option) => option.value);
+    setCreateProduct((prevProduct) => ({ ...prevProduct, rawItems: selectedRawItems }));
+    setSelectedItems(selectedRawItems);
+  };
 
+  // create product
   const handleCreateProductChange = (event) => {
     const { name, value } = event.target;
     setCreateProduct((prevProduct) => ({
@@ -171,6 +152,25 @@ console.log("Retailer")
     }));
   };
 
+  // handler
+  const handleCreateProductSubmit = async (event) => {
+    event.preventDefault();
+    const res = await API.addProduct(createProduct);
+    getProducts()
+    setcreateBatchOpen(false);
+    setCreateProduct({
+      name: "", price: "", quantity: "", id: myState.authUser?.user,  loggedUserType: myState.authUser?.userType == "farmer" ? "manufacturer" : myState.authUser?.userType
+    });
+  };
+
+
+
+
+  // list product create
+  const [listProduct, setListProduct] = useState({
+    climate: "", soilType: "",price: 0,  id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
+  })
+
   const handleListProductChange = (event) => {
     const { name, value } = event.target;
     setListProduct((prevProduct) => ({
@@ -178,6 +178,26 @@ console.log("Retailer")
       [name]: value,
     }));
   };
+
+  // handler
+  const handleListProductSubmit = async (event) => {
+    event.preventDefault();
+    listProduct.productId = selectedItem
+    const res = await API.listProduct(listProduct);
+    setFarmerModalOpen(false);
+    getProducts()
+    setListProduct({
+      soilType: "", climate: "",productId:"", price: "", id: myState.authUser?.user, 
+      loggedUserType: myState.authUser?.userType == "farmer" ? "manufacturer" : myState.authUser?.userType
+    });
+  };
+
+
+// list product exporter
+  const [listProductExporter, setListProductExporter] = useState({
+    packagingType: "", quantityPerPackage: "",packagingDate: 0, price:"", id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
+  })
+
   const handleListProductExporter = (event) => {
     console.log("🚀 ~ file: user_dashboard.jsx:126 ~ handleListProductExporter ~ listProductExporter:", listProductExporter)
     const { name, value } = event.target;
@@ -186,20 +206,130 @@ console.log("Retailer")
       [name]: value,
     }));
   };
-  const handleListProductImporter = (event) => {
+
+  // handler
+  const handleListProductExporterSubmit = async (event) => {
+    event.preventDefault();
+    listProductExporter.productId = selectedItem
+    const res = await API.listProduct(listProductExporter);
+    getProducts()
+    setExporterListModalOpen(false);
+    setListProductExporter({
+      packagingType: "", quantityPerPackage: "",packagingDate: 0, price:"", id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
+    });
+  };
+
+  // select logistic by importer
+
+  const [logisticSelect, setlogisticSelect] = useState({
+    logistic: "", preferredDeliveryDate: "" , deliveryType: "",price: 0,  id: myState.authUser?.user, userType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
+  })
+
+  const handleSelectLogistic = (event) => {
+    console.log("🚀 ~ file: user_dashboard.jsx:126 ~ handlelogisticSelect ~ logisticSelect:", logisticSelect)
     const { name, value } = event.target;
-    setListProduct((prevProduct) => ({
+    setlogisticSelect((prevProduct) => ({
       ...prevProduct,
       [name]: value,
     }));
   };
-  const handleListProductLogistic = (event) => {
+
+  const handleSelectLogisticSubmit = async (event) => {
+    event.preventDefault();
+    logisticSelect.productId = selectedItem
+    const res = await API.selectLogistic(logisticSelect);
+    getProducts()
+    setLogisticSelectModal(false);
+    setlogisticSelect({
+      logistic: "", preferredDeliveryDate: "" , deliveryType: "",price: 0,  id: myState.authUser?.user, userType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
+    });
+  };
+  
+  
+
+
+
+  const [logisticpickup, setLLogisticpickup] = useState({
+    shipmentPickup: "" ,  id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
+  })
+  const selectLogisticPickup = (event) => {
     const { name, value } = event.target;
-    setListProduct((prevProduct) => ({
+    setLLogisticpickup((prevProduct) => ({
       ...prevProduct,
       [name]: value,
     }));
   };
+  const handleLogisticPickup = async (event) => {
+    event.preventDefault();
+    logisticpickup.productId = selectedItem
+    const res = await API.productPickup(logisticpickup);
+    getProducts()
+    setProductPickupModalOpen(false);
+    setLLogisticpickup({
+      shipmentPickup: "" ,  id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
+    });
+  };
+
+
+  const [logisticDelivery, setLogisticDelivery] = useState({
+    shipmentDelivery: "" ,  id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
+  })
+
+  const selectLogisticDekivery = (event) => {
+    const { name, value } = event.target;
+    setLogisticDelivery((prevProduct) => ({
+      ...prevProduct,
+      [name]: value,
+    }));
+  };
+  const handleLogisticDelivery = async (event) => {
+    event.preventDefault();
+    logisticDelivery.productId = selectedItem
+    const res = await API.productDelivery(logisticDelivery);
+    getProducts()
+    setProductDeliveryModalOpen(false);
+    setLLogisticDelivery({
+      shipmentDelivery: "" ,  id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
+    });
+  };
+
+
+  const [listProductImporter, setListProductImporter] = useState({
+    price: 0,  id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
+  })
+
+  const selectListProductImporter = (event) => {
+    const { name, value } = event.target;
+    setListProductImporter((prevProduct) => ({
+      ...prevProduct,
+      [name]: value,
+    }));
+  };
+
+  const handleListProductImporterSubmit = async (event) => {
+    event.preventDefault();
+    listProductImporter.productId = selectedItem
+    const res = await API.listProduct(listProductImporter);
+    getProducts()
+    setImporterListModalOpen(false);
+    setListProductImporter({
+      price: 0,  id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
+
+    });
+  };  
+
+
+// logistic pickup
+  const [listProductRetailer, setListProductRetailer] = useState({
+    climate: "", soilType: "",price: 0,  id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
+  })
+
+  
+
+  
+
+  
+  
   const handleListProductRetailer = (event) => {
     const { name, value } = event.target;
     setListProduct((prevProduct) => ({
@@ -208,16 +338,7 @@ console.log("Retailer")
     }));
   };
 
-  const handleRawItemsChange = (e) => {
-    console.log(selectedItems)
-    const { options } = e.target;
-    alert("hello")
-    const selectedRawItems = Array.from(options)
-      .filter((option) => option.selected)
-      .map((option) => option.value);
-    setCreateProduct((prevProduct) => ({ ...prevProduct, rawItems: selectedRawItems }));
-    setSelectedItems(selectedRawItems);
-  };
+  
 
   const handleQuantityChange = (itemId, newQuantity) => {
     const updatedSelectedItems = selectedItems.map((item) => {
@@ -234,74 +355,7 @@ console.log("Retailer")
     setSelectedItems(updatedSelectedItems);
   };
 
-  // const handleFile = (event) => {
-  //   // const formData = new FormData();
-  //   alert("hello");
-  //   const selectedFile = event.target.files[0];
-  //   setFile(selectedFile);
-  //   console.log(selectedFile)
-  //   // setFile(event.target.files[0]);
-  // };
-  const handleCreateProductSubmit = async (event) => {
-    event.preventDefault();
-    const res = await API.addProduct(createProduct);
-    setcreateBatchOpen(false);
 
-    setCreateProduct({
-      name: "", price: "", quantity: "", id: myState.authUser?.user,  loggedUserType: myState.authUser?.userType == "farmer" ? "manufacturer" : myState.authUser?.userType
-    });
-  };
-
-  const handleListProductSubmit = async (event) => {
-    event.preventDefault();
-    listProduct.productId = selectedItem
-    const res = await API.listProduct(listProduct);
-    setFarmerModalOpen(false);
-    setListProduct({
-      soilType: "", climate: "",productId:"", price: "", id: myState.authUser?.user, 
-      loggedUserType: myState.authUser?.userType == "farmer" ? "manufacturer" : myState.authUser?.userType
-    });
-  };
-  const handleListProductExporterSubmit = async (event) => {
-    event.preventDefault();
-    listProductExporter.productId = selectedItem
-    const res = await API.listProduct(listProductExporter);
-    setExporterListModalOpen(false);
-    setListProductExporter({
-      packagingType: "", quantityPerPackage: "",packagingDate: 0, price:"", id: myState.authUser?.user, loggedUserType: myState.authUser?.userType == "Farmer" ? "manufacturer" : myState.authUser?.userType
-    });
-  };
-
-  const handleListProductImporterSubmit = async (event) => {
-    event.preventDefault();
-    listProduct.productId = selectedItem
-    const res = await API.listProduct(listProduct);
-    setFarmerModalOpen(false);
-    setListProduct({
-      soilType: "", climate: "",productId:"", price: "", id: myState.authUser?.user, 
-      loggedUserType: myState.authUser?.userType == "farmer" ? "manufacturer" : myState.authUser?.userType
-    });
-  };
-  const handleListProductLogisticSubmit = async (event) => {
-    event.preventDefault();
-    listProduct.productId = selectedItem
-    const res = await API.listProduct(listProduct);
-    setFarmerModalOpen(false);
-    setListProduct({
-      soilType: "", climate: "",productId:"", price: "", id: myState.authUser?.user, 
-      loggedUserType: myState.authUser?.userType == "farmer" ? "manufacturer" : myState.authUser?.userType
-    });
-  };
-  const handleListProductRetailSubmit = async (event) => {
-    event.preventDefault();
-    listProduct.productId = selectedItem
-    const res = await API.listProduct(listProduct);
-    setFarmerModalOpen(false);
-    setListProduct({
-      soilType: "", climate: "",productId:"", price: "", id: myState.authUser?.user, 
-      loggedUserType: myState.authUser?.userType == "farmer" ? "manufacturer" : myState.authUser?.userType
-    });
-  };
 
   async function getProducts() {
 
@@ -317,15 +371,24 @@ console.log("Retailer")
   }
 
   async function getLogistic() {
-    alert("hello")
-    const formData = {
-      userType: myState.authUser?.userType=='manufacturer'?'producer':myState.authUser?.userType,
-      type: 'logistic',
-      id: myState.authUser?.user
+    console.log("🚀 ~ file: user_dashboard.jsx:369 ~ getLogistic ~ logistic:", logistic)
+    if (logistic.length<=0) {
+      const formData = {
+        userType: myState.authUser?.userType === 'manufacturer' ? 'producer' : myState.authUser?.userType,
+        type: 'logistic',
+        id: myState.authUser?.user
+      };
+  
+      try {
+        const res = await UserAPI.fetchUserbyrole(formData);
+        console.log('res.data:', res.data);
+        setLogistic(res?.data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
-    const res = await UserAPI.fetchUserbyrole(formData);
-    setLogistic(res?.data?.success)
   }
+
 
   function viewChain(product) {
     dispatch(CURRENTCHAINUSER(product))
@@ -399,8 +462,8 @@ console.log("Retailer")
             <th>Product ID</th>
             <th>Farmer</th>
             <th>Exporter</th>
-            <th>Logistic</th>
             <th>Importer</th>
+            <th>Logistic</th>
             <th>Retailer</th>
             <th>test</th>
             <th>view</th>
@@ -413,82 +476,209 @@ console.log("Retailer")
      
                     <td>{product.Record.id}</td>
                     {/* <td><span className="label label-success font-weight-100" onClick={() => setFarmerModalOpen(true)}>Completed</span></td> */}
+                    
+                    {/*  for farmer and cultivation */}
+                    <td>
+  {(() => {
+    if (product.Record.producer.id) {
+      if (product.Record.producer.status === 'Complete') {
+        return (
+          <OverlayTrigger
+            placement="top"
+            delay={{ show: 250, hide: 400 }}
+            overlay={(props) => renderTooltipManufacturer({ ...props, customText: product.Record })}
+          >
+            <span className="label label-success font-weight-100">Completed</span>
+          </OverlayTrigger>
+        );
+      } else if (product.Record.status === 'Processing') {
+        return (
+          <span className="label label-warning font-weight-100" onClick={() => { setFarmerModalOpen(true); setSelectedItem(product.Record.id) }}>Processing</span>
+        );
+      } else {
+        return (
+          <span className="label label-danger font-weight-100">Not Available</span>
+        );
+      }
+    } else {
+      return (
+        <span className="label label-danger font-weight-100">Not Available</span>
+      );
+    }
+  })()}
+</td>
+{/* for exporter */}
                           <td>
-                            {product.Record.producer.id ?
-                              (product.Record.producer.status === 'Available' ?
-                               <OverlayTrigger
-                                placement="top"
-                                delay={{ show: 250, hide: 400 }}
-                                overlay={(props) => renderTooltipManufacturer({ ...props, customText:product.Record })}
-                                >
-      <span className="label label-success font-weight-100" onClick={() => setFarmerModalOpen(true)}>Completed</span>
-    </OverlayTrigger> 
-                              :
-                                (product.Record.status === 'Processing' ?
-                                  <span className="label label-warning font-weight-100" onClick={() => {setFarmerModalOpen(true); setSelectedItem(product.Record.id)}}>Processing</span> :
-                                  <span className="label label-danger font-weight-100" onClick={() => {setFarmerModalOpen(true); setSelectedItem(product.Record.id)}}>{product.Record.exporter.id}</span>
-                                )
-                              ) :
-                              <span className="label label-danger font-weight-100" onClick={() => {setFarmerModalOpen(true); setSelectedItem(product.Record.id)}}>Not Available</span>
-                            }
-                          </td> 
-                          <td>
-                            {product.Record.exporter.id ?
-                              (product.Record.exporter.status === 'Available' ?
-                              <OverlayTrigger
-                              placement="top"
-                              delay={{ show: 250, hide: 400 }}
-                              overlay={(props) => renderTooltipExporter({ ...props, customText:product.Record })}
-                              >
-                                <span className="label label-success font-weight-100" onClick={() => setExporterModalOpen(true)}>Completed</span> 
-                                </OverlayTrigger> 
-                                :
-                                (product.Record.status === 'Processing' ?
-                                  <span className="label label-warning font-weight-100" onClick={() => {setExporterListModalOpen(true); setSelectedItem(product.Record.id)}}>Processing</span> :
-                                  <span className="label label-danger font-weight-100" onClick={() => {setExporterModalOpen(true);setSelectedItem(product.Record.id)}}>{product.Record.exporter.id}</span>
-                                )
-                              ) :
-                              <span className="label label-danger font-weight-100" onClick={() => setExporterListModalOpen(true)}>Not Available</span>
-                            }
-                          </td>
+  {(() => {
+    if (product.Record.exporter.id) {
+      if (product.Record.exporter.status === 'Complete') {
+        return (
+          <OverlayTrigger
+            placement="top"
+            delay={{ show: 250, hide: 400 }}
+            overlay={(props) => renderTooltipExporter({ ...props, customText: product.Record })}
+          >
+            <span className="label label-success font-weight-100">
+              Completed
+            </span>
+          </OverlayTrigger>
+        );
+      } else if (product.Record.status === 'Processing') {
+        return (
+          <span className="label label-warning font-weight-100" onClick={() => { setExporterListModalOpen(true); setSelectedItem(product.Record.id) }}>
+            Processing
+          </span>
+        );
+      } else {
+        return (
+          <span className="label label-danger font-weight-100" onClick={() => { setExporterModalOpen(true); setSelectedItem(product.Record.id) }}>
+            {product.Record.exporter.id}
+          </span>
+        );
+      }
+    } else {
+      return (
+        <span className="label label-danger font-weight-100">
+          Not Available
+        </span>
+      );
+    }
+  })()}
+</td>
+{/* for importer */}
                          
+  <td>
+  {(() => {
+    if (product.Record.importer.id) {
+      if (product.Record.status === 'Available') {
+        return (
+          <span className="label label-success font-weight-100" onClick={() => setImporterModalOpen(true)}>
+            Available
+          </span>
+        );
+      } else if (product.Record.status === 'Processing') {
+        return (
+          <span className="label label-warning font-weight-100" onClick={() => {setSelectedItem(product.Record.id); getLogistic(); setLogisticSelectModal(true); }}>
+            Processing
+          </span>
+        );
+      } else if (product.Record.status === 'Ordered') {
+        return (
+          <span className="label label-primary font-weight-100">
+            Ordered
+          </span>
+        );
+      } else if (product.Record.importer.status === 'recieved') {
+        return (
+          <span className="label label-info font-weight-100" onClick={() => {setSelectedItem(product.Record.id);  setImporterListModalOpen(true); }}>
+            Received
+          </span>
+        );
+      } else {
+        return (
+          <span className="label label-danger font-weight-100">
+            {product.Record.exporter.id}
+          </span>
+        );
+      }
+    } else {
+      return (
+        <span className="label label-danger font-weight-100">
+          Not Available
+        </span>
+      );
+    }
+  })()}
+</td>
 
-                          <td>
-                            {product.Record.logistics.id ?
-                              (product.Record.status === 'Available' ?
-                                <span className="label label-success font-weight-100" onClick={() => setLogisticModalOpen(true)}>Completed</span> :
-                                (product.Record.status === 'Processing' ?
-                                  <span className="label label-warning font-weight-100" onClick={() => setProductDeliveryModalOpen(true)}>Processing</span> :
-                                  <span className="label label-danger font-weight-100" onClick={() =>setLogisticModalOpen(true)}>{product.Record.logistics.id}</span>
-                                )
-                              ) :
-                              <span onClick={() =>setProductPickupModalOpen(true)} className="label label-danger font-weight-100">Not Available</span>
-                            }
-                          </td>
-                          <td>
-                            {product.Record.importer.id ?
-                              (product.Record.status === 'Available' ?
-                                <span className="label label-success font-weight-100" onClick={() => setImporterModalOpen(true)}>Available</span> :
-                                (product.Record.status === 'Processing' ?
-                                  <span className="label label-warning font-weight-100" onClick={() => {getLogistic(); setImporterListModalOpen(true)}}>Processing</span> :
-                                  <span className="label label-danger font-weight-100" onClick={() => setImporterModalOpen(true)}>{product.Record.importer.id}</span>
-                                )
-                              ) :
-                              <span className="label label-danger font-weight-100" onClick={() => {getLogistic(); setImporterListModalOpen(true)}}>Not Available</span>
-                            }
-                          </td>
-                          <td>
-                            {product.Record?.retailer?.id ?
-                              (product.Record.status === 'Available' ?
-                                <span className="label label-success font-weight-100" onClick={() => setRetailerModalOpen(true)}>Completed</span> :
-                                (product.Record.status === 'Processing' ?
-                                  <span className="label label-warning font-weight-100" onClick={() => setNewRetailerProcessingStageModalOpen(true)}>Processing</span> :
-                                  <span className="label label-danger font-weight-100" onClick={() => setRetailerModalOpen(true)}>{product.Record.retailer.id}</span>
-                                )
-                              ) :
-                              <span className="label label-danger font-weight-100" onClick={() => setRetailerModalOpen(true)}>Not Available</span>
-                            }
-                          </td>
+{/* for logistic */}
+<td>
+  {(() => {
+    if (product.Record.logistic.id) {
+      if (product.Record.logistic.status === 'delivered') {
+        return (
+          <span className="label label-success font-weight-100">
+            Completed
+          </span>
+        );
+      } 
+      else if (product.Record.logistic.status === 'Processing') {
+        return (
+          <span className="label label-warning font-weight-100" onClick={() => {setSelectedItem(product.Record.id); setProductPickupModalOpen(true)}}>
+            waiting to pickup
+          </span>
+        );
+      } 
+      else if (product.Record.logistic.status === 'pickup') {
+        return (
+          <span className="label label-warning font-weight-100" onClick={() => {setSelectedItem(product.Record.id); setProductDeliveryModalOpen(true)}}>
+            Picked up
+          </span>
+        );
+      } 
+      else {
+        return (
+          <span className="label label-danger font-weight-100">
+            {product.Record.logistic.id}
+          </span>
+        );
+      }
+    } 
+    else if(product.Record.status === 'Ordered'){
+      return (
+        <span onClick={() => {setSelectedItem(product.Record.id); getLogistic(); setImporterListModalOpen(true); }} className="label label-danger font-weight-100">
+          select logistic
+        </span>
+      );
+    }
+    else {
+      return (
+        <span className="label label-danger font-weight-100">
+          select 
+        </span>
+      );
+    }
+  })()}
+</td>
+
+
+
+
+
+                            
+                        
+<td>
+  {(() => {
+    if (product.Record && product.Record.retailer && product.Record.retailer.id) {
+      if (product.Record.status === 'Available') {
+        return (
+          <span className="label label-success font-weight-100" onClick={() => setRetailerModalOpen(true)}>
+            Completed
+          </span>
+        );
+      } else if (product.Record.status === 'Processing') {
+        return (
+          <span className="label label-warning font-weight-100" onClick={() => setNewRetailerProcessingStageModalOpen(true)}>
+            Processing
+          </span>
+        );
+      } else {
+        return (
+          <span className="label label-danger font-weight-100" onClick={() => setRetailerModalOpen(true)}>
+            {product.Record.retailer.id}
+          </span>
+        );
+      }
+    } else {
+      return (
+        <span className="label label-danger font-weight-100" onClick={() => setRetailerModalOpen(true)}>
+          Not Available
+        </span>
+      );
+    }
+  })()}
+</td>
+
                           <td><Classify /></td>
                           <td onClick={() => { viewChain(product.Record) }}><FontAwesomeIcon icon={faEye} /></td>
                         </tr>
@@ -546,6 +736,7 @@ console.log("Retailer")
 
         {/* create a new batch  */}
       </Modal>
+
       <Modal show={createBatch} toggle={() => setcreateBatchOpen(false)} >
         <Modal.Header>
           <Modal.Title>Create Batch</Modal.Title>
@@ -697,6 +888,10 @@ console.log("Retailer")
 
       </Modal>
 
+      {/* importer  */}
+     
+
+            {/*  exporter */}
       <Modal show={exporterModalOpen} toggle={() => setExporterModalOpen(false)}>
         <Modal.Header>
           <Modal.Title id="exportModalTitle">Export</Modal.Title>
@@ -726,14 +921,61 @@ console.log("Retailer")
 
       </Modal>
 
-      <Modal show={importerModalOpen}>
+
+
+      {/* <Modal show={importerModalOpen}>
         <Modal.Header>
-          <Modal.Title id="farmerModelTitle">Importer</Modal.Title>
+          <Modal.Title id="logistic_selector">Importer</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <form id="farmerForm">
-            {/* your form fields here */}
-          </form>
+        <Form>
+      <Form.Group controlId="Logistic Selector">
+        <Form.Label>Logistic Selector</Form.Label>
+          <Form.Control
+            as="select" // Use "select" to create a dropdown
+            value={listProductExporter.packagingType}
+            name="packagingType"
+            onChange={handleListProductExporter}
+            required
+          >
+            <option value="">Select Logistic</option>
+            <option value="Bags">Bags</option>
+            <option value="Crate">Crate</option>
+            <option value="Cartons">Cartons</option>
+          </Form.Control>
+      </Form.Group>
+      <Form.Group controlId="packagingDate">
+        <Form.Label>Packaging Date</Form.Label>
+        <Form.Control
+          type="date"
+          name="packagingDate"
+          value={listProductExporter.packagingDate}
+          onChange={handleListProductExporter}
+          required
+          />
+      </Form.Group>
+      <Form.Group controlId="quantityPerPackage">
+        <Form.Label>Quantity per Package</Form.Label>
+        <Form.Control
+          type="number"
+          name="quantityPerPackage"
+          value={listProductExporter.quantityPerPackage}
+          onChange={handleListProductExporter}
+          required
+        />
+      </Form.Group>
+      <Form.Group controlId="packagingMaterialsUsed">
+        <Form.Label>Price</Form.Label>
+        <Form.Control
+          type="number"
+          name="price"
+          value={listProductExporter.price}
+          onChange={handleListProductExporter}
+          required
+        />
+      </Form.Group>
+  
+    </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setImporterModalOpen(false)}>
@@ -741,57 +983,76 @@ console.log("Retailer")
           </Button>
           
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
+
+
 {/* importer */}
-      <Modal show={importerListModalOpen}>
+      <Modal show={logisticSelectModal}>
         <Modal.Header>
-          <Modal.Title id="farmerModelTitle">Importer list </Modal.Title>
+          <Modal.Title id="farmerModelTitle">Shipment</Modal.Title>
         </Modal.Header>
         <Modal.Body>
         <Form>
-      <Form.Group controlId="orderQuantity">
-      <Form.Group controlId="selectedShipment">
-        <Form.Label>Select Shipment</Form.Label>
-        <Form.Control
-          as="select"
-          // value={selectedShipment}
-          // onChange={(e) => setSelectedShipment(e.target.value)}
-          required
-        >
-          <option value="">Choose...</option>
-          <option value="shipment1">Shipment 1</option>
-          <option value="shipment2">Shipment 2</option>
-          <option value="shipment3">Shipment 3</option>
-          {/* Add more shipment options as needed */}
-        </Form.Control>
-      </Form.Group>
-      </Form.Group>
-      <Form.Group controlId="deliveryAddress">
-        <Form.Label>Delivery Address</Form.Label>
-        <Form.Control
-          type="text"
-          value={deliveryAddress}
-          onChange={(e) => setDeliveryAddress(e.target.value)}
-          required
-        />
-      </Form.Group>
-      <Form.Group controlId="preferredDeliveryDate">
-        <Form.Label>Preferred Delivery Date</Form.Label>
-        <Form.Control
-          type="date"
-          value={preferredDeliveryDate}
-          onChange={(e) => setPreferredDeliveryDate(e.target.value)}
-          required
-        />
-      </Form.Group>
-      
-    </Form>
+  <Form.Group controlId="selectedShipment">
+    <Form.Label>Select Shipment</Form.Label>
+    <Form.Control
+      as="select"
+      value={logisticSelect.logistic}
+      name="logistic"
+      // onChange={(e) => setSelectedShipment(e.target.value)}
+      onChange={handleSelectLogistic}
+      required
+    >
+      <option value="">Choose...</option>
+      {logistic?.map((logistic) => (
+        <option key={logistic.Key} value={logistic.Record.User_ID}>
+          <IpfsImage hash={logistic.Record.profilePic} alt="img" />
+          {logistic.Record.Name}
+        </option>
+      ))}
+      {/* Add more shipment options as needed */}
+    </Form.Control>
+  </Form.Group>
+
+  <Form.Group controlId="preferredDeliveryDate">
+    <Form.Label>Preferred Delivery Date</Form.Label>
+    <Form.Control
+      type="date"
+      value={logisticSelect.preferredDeliveryDate}
+      name="preferredDeliveryDate"
+      onChange={handleSelectLogistic}
+      required
+    />
+  </Form.Group>
+  <Form.Group controlId="shipmentType">
+    <Form.Label>Shipment Type</Form.Label>
+
+      <Form.Check
+        type="radio"
+        id="normalDelivery"
+        label="Normal"
+        value="normal"
+        name="deliveryType"
+        checked={logisticSelect.deliveryType === 'normal'}
+        onChange={handleSelectLogistic}
+      />
+      <Form.Check
+        type="radio"
+        id="expressDelivery"
+        label="Express"
+        value="express"
+        name="deliveryType"
+        checked={logisticSelect.deliveryType === 'express'}
+        onChange={handleSelectLogistic}
+      />
+  </Form.Group>
+</Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setImporterListModalOpen(false)}>
+          <Button variant="secondary" onClick={() => setLogisticSelectModal(false)}>
             Close
           </Button>
-        <Button variant="primary" type="submit" form="fifthModalForm" >
+        <Button variant="primary" type="submit" form="fifthModalForm" onClick={handleSelectLogisticSubmit}>
             Save
           </Button>
           
@@ -799,71 +1060,108 @@ console.log("Retailer")
       </Modal>
 
 
-  {/* logistic form */}
-
-      <Modal show={productPikupModalOpen}>
+      <Modal show={importerListModalOpen}>
         <Modal.Header>
-          <Modal.Title id="forthModalTitle">Logistic Pickup</Modal.Title>
+          <Modal.Title id="exportModalTitle">List for sale</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <Form >
-      <Form.Group controlId="collectionDate">
-        <Form.Label>Collection Date</Form.Label>
+        <Form>
+      <Form.Group controlId="packagingMaterialsUsed">
+        <Form.Label>Price</Form.Label>
         <Form.Control
-          type="date"
-          value={productPickup.collectionDate}
-          onChange={(e) => setCollectionDate(e.target.value)}
+          type="number"
+          name="price"
+          value={listProductImporter.price}
+          onChange={selectListProductImporter}
           required
         />
       </Form.Group>
-      <Form.Group controlId="shipmentReference">
-        <Form.Label>Shipment Reference</Form.Label>
-        <Form.Control
-          type="text"
-          value={productPickup.shipmentReference}
-          onChange={(e) => setShipmentReference(e.target.value)}
-          required
-        />
-      </Form.Group>   
     </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setProductPickupModalOpen(false)}>
+          <Button variant="secondary" onClick={() => setImporterListModalOpen(false)}>
             Close
           </Button>
-          <Button variant="primary" type="submit" form="ForthModalForm" >
+          <Button variant="primary" type="submit" form="fifthModalForm" onClick={handleListProductImporterSubmit} >
             Save
           </Button>
         </Modal.Footer>
       </Modal>
 
 
-      <Modal show={productDeliveryModalOpen}>
-        <Modal.Header>
-          <Modal.Title id="forthModalTitle">Item Delivery Modal</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        <Form >
-      <Form.Group controlId="shipmentReference">
-        <Form.Label>Delivery Date</Form.Label>
-        <Form.Control
-          type="text"
-          value={productDelivery.deliveryDate}
-          onChange={(e) => setShipmentReference(e.target.value)}
+
+{/* importer update  */}
+
+  {/* logistic form */}
+  <Modal show={productPikupModalOpen}>
+  <Modal.Header>
+    <Modal.Title id="forthModalTitle">Logistic Pickup</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+  <div className="d-flex align-items-center mb-3">
+  <Button variant="danger" className="d-flex align-items-center">
+    Download Shipping Label <AiOutlineDownload className="ms-1" />
+  </Button>
+  <Button className="d-flex align-items-center ms-3">
+    View Shipping Label <AiOutlineDownload className="ms-1" />
+  </Button>
+</div>
+
+    <Form>
+      <Form.Group controlId="shipmentPickup">
+        <Form.Check
+          type="radio"
+          label="Shipment Picked up"
+          name="shipmentPickup"
+          value="true"
+          checked={logisticpickup.shipmentPickup === 'true'}
+          onChange={selectLogisticPickup}
           required
         />
-      </Form.Group>   
+      </Form.Group>
     </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setProductDeliveryModalOpen(false)}>
-            Close
-          </Button>
-          <Button variant="primary" type="submit" form="ForthModalForm" >
-            Save
-          </Button>
-        </Modal.Footer>
-      </Modal>
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={() => setProductPickupModalOpen(false)}>
+      Close
+    </Button>
+    <Button variant="primary" type="submit" form="ForthModalForm" onClick={handleLogisticPickup}>
+      Save
+    </Button>
+  </Modal.Footer>
+</Modal>
+
+  <Modal show={productDeliveryModalOpen}>
+  <Modal.Header>
+    <Modal.Title id="forthModalTitle">Logistic Pickup</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+
+
+    <Form>
+      <Form.Group controlId="shipmentDelivery">
+        <Form.Check
+          type="radio"
+          label="Shipment Delivery"
+          name="shipmentDelivery"
+          value="true"
+          checked={logisticDelivery.shipmentDelivery === 'true'}
+          onChange={selectLogisticDekivery}
+          required
+        />
+      </Form.Group>
+    </Form>
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={() => setProductDeliveryModalOpen(false)}>
+      Close
+    </Button>
+    <Button variant="primary" type="submit" form="ForthModalForm" onClick={handleLogisticDelivery}>
+      Save
+    </Button>
+  </Modal.Footer>
+</Modal>
+
 
 
       {/* // Fifth Modal */}
