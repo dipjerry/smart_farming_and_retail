@@ -1,13 +1,64 @@
 {
-    "$class": "com.strawberrysupplychain.system.BatchAsset",
-    "BatchId": "1234",
-    "Status": "SMARTINSPECTOR",
-    "CreatedDateTime": "2023-01-19T20:30:52.991Z",
-    "strawberryFamily": "a",
-    "TypeofSeed": "type_1",
-    "FertilizerUsed": "b",
-    "CultivatorIntime": "2023-01-19T20:30:52.991Z",
-    "FarmInspectorIntime": "2023-01-19T20:37:13.058Z",
-    "Cultivator": "resource:com.strawberrysupplychain.participant.SystemUser#0328",
-    "FarmInspector": "resource:com.strawberrysupplychain.participant.SystemUser#0330"
-  }
+  "exporter": {
+    "export_data": {
+      "export_data": 1687499952,
+      "packagingType": "box",
+      "quantityPerPackage": "5",
+      "shipping_method": "air"
+    },
+    "id": "User5",
+    "status": "Available"
+  },
+  "id": "Product3",
+  "importer": {
+    "id": "Importer1",
+    "import_data": {},
+    "import_time": "11.30",
+    "import_date": "23-6-2023",
+    "status": "Not Available"
+  },
+  "inspector": {
+    "id": "Inspector1",
+    "inspection_data": "good quality",
+    "inspection_time":"25-6-2023" ,
+    "status": " Available"
+  },
+  "invoice": {
+    "id":"invoice1",
+    "customer_invoice": "CustomerInvoice1",
+    "exporter_invoice": "Invoice1",
+    "importer_invoice": "ImporterInvoice1",
+    "logistics_invoice": "LogisticsInvoice1",
+    "producer_invoice": {}
+  },
+  "logistic": {
+    "id": "Logistic1",
+    "logistics_data": {},
+    "status": "Not Available"
+  },
+  "name": "Strawberry",
+  "payment": {
+    "exporter_amount": 300,
+    "importer_amount": 0,
+    "inspector_amount": 0,
+    "logistics_amount": 0,
+    "producer_amount": 300
+  },
+  "producer": {
+    "id": "User4",
+    "production_data": {
+      "production_date": 1687499944,
+      "quantity": "10",
+      "type": "Fresh"
+    },
+    "status": "Available"
+  },
+  "product": {
+    "availablefor": "importer",
+    "expiration_date": "2023-12-31",
+    "origin": "Country1",
+    "owner": "User5",
+    "price": 700
+  },
+  "status": "Available"
+}

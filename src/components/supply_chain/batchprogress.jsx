@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import './batchprogress.css';
-import myData from './data.json';
-import userData from './udata.json';
-import { useSelector , useDispatch } from 'react-redux';
+// import myData from './data.json';
+import userData from './data.json';
+// import { useSelector , useDispatch } from 'react-redux';
 import verified from "../../assets/plugins/images/verified.jpg"
 // import '../../assets/css/style.css';
 
 const BatchProgress = () => {
-  const myState = useSelector((state)=>state)
+  // const myState = useSelector((state)=>state)
   console.log("myState.authUser?.chain")
-  console.log(myState.authUser?.chain)
-  const [Batch_array] = useState(myState.authUser?.chain);
+  // console.log(myState.authUser?.chain)
+  const [Batch_array] = useState(userData);
   const [batchStatus, setBatchStatus] = useState(null);
   const [batchNo, setBatchNo] = useState(null);
   const [BatchId, setBatchId] = useState(null);
@@ -21,25 +21,10 @@ const BatchProgress = () => {
   const [FertilizerUsed, setFertilizerUsed] = useState(null);
     
 
-
+  console.log("Batch_array")
+  console.log(Batch_array)
   useEffect(() => {
-    // setBatchNo(() => {
-    //   return new URLSearchParams(window.location.search).get('batchNo');
-    // });
-  
-    // loadData();
-
-    // .then(response => response.json())
-    // .then(data => {
-    //   console.log(data);
-    //   populate(data);
-    // });
-
     populate()
-
-
- 
-
   });
 
 
@@ -48,6 +33,7 @@ const BatchProgress = () => {
     // console.log(myData.Status);
   //   alert("Data Loaded");
   // };
+
 
   async function ConvertDate(timestamp) {
     console.log("timestamp");
@@ -63,17 +49,31 @@ const BatchProgress = () => {
     // alert(batchStatus);
     if (Batch_array.producer.id) {
       buildCultivatorData();}
-     else if (Batch_array.Status == "HARVESTOR") {
+      if (Batch_array.exporter.id) {
+        buildexporterData();
+      }
+      if (Batch_array.importer.id) {
+        buildimporterData();
+      }
+      if (Batch_array.inspector.id) {
+        buildInspectoionData();
+      }
+      if (Batch_array.invoice.id) {
+        buildinvoiceData();
+      }
+      if (Batch_array.importer.id) {
+       buildCultivatorData();
+      }
       // buildHarvestorData(Batch_array);
-    } else if (Batch_array.Status == "EXPORTOR") {
-      // buildExportorData(Batch_array);
-    } else if (Batch_array.Status == "IMPORTOR") {
-      // buildImportorData(Batch_array);
-    } else if (Batch_array.Status == "PROCESSOR") {
-      // buildImportorData(Batch_array);
-    } else if (Batch_array.Status == "COMPLETE") {
-      // buildProcessorData(Batch_array);
-    }
+    //  else if (Batch_array.Status == "EXPORTOR") {
+    //   // buildExportorData(Batch_array);
+    // } else if (Batch_array.Status == "IMPORTOR") {
+    //   // buildImportorData(Batch_array);
+    // } else if (Batch_array.Status == "PROCESSOR") {
+    //   // buildImportorData(Batch_array);
+    // } else if (Batch_array.Status == "COMPLETE") {
+    //   // buildProcessorData(Batch_array);
+    // }
   }
 
 
@@ -85,14 +85,35 @@ const BatchProgress = () => {
       setBatchStatus(Batch_array.producer.status);
   }
 
-  async function buildInspectorData(batchinfo) {
+  async function buildexporterData() {
+      const time = await ConvertDate(Batch_array.product.exportation_date);
+      setBatchId(Batch_array.id);
+      setPackagingType(Batch_array.packagingType);
+      setExportationIntime(time);
+      setBatchStatus(Batch_array.exporter.status);
+  }
+  async function buildimporterData() {
+      const time = await ConvertDate(Batch_array.product.import_date);
+      setImporterId(Batch_array.id);
+      setImportIntime(time);
+      setBatchStatus(Batch_array.importer.status);
+  }
 
-    await buildCultivatorData(batchinfo);
-    setFarmInspectorIntime(batchinfo.FarmInspectorIntime)
-    setStrawberryFamily(batchinfo.StrawberryFamily)
+  async function buildInspectoionData(batchinfo) {
+
+    await buildInspectionData(batchinfo);
+    setFarmInspectionInData(batchinfo.Inspection_data)
+    setFarmInspectionIntime(batchinfo.Inspection_time)
+    // setStrawberryFamily(batchinfo.StrawberryFamily)
     setFertilizerUsed(batchinfo.FertilizerUsed)
     setBatchStatus(batchinfo.Status);
   }
+  async function buildinvoiceData() {
+    // const time = await ConvertDate(Batch_array.product.production_date);
+    setInvoiceId(Batch_array.id);
+    setInvoiceIntime(time);
+    // setBatchStatus(Batch_array.producer.status);
+}
 
 
 
@@ -113,10 +134,14 @@ const BatchProgress = () => {
         <div className="col-md-12">
           <div className="white-box">
             <ul className="timeline">
+
+
+
                 <li>
-                      <div className={batchStatus==="Available"||batchStatus==="FARMINSPECTOR"?"timeline-badge success":"timeline-badge danger" }>
-                        <i className={batchStatus==="Available"||batchStatus==="FARMINSPECTOR"?"fa fa-check":"fa fa-times" }></i>
+                      <div className={Batch_array.producer.id?"timeline-badge success":"timeline-badge danger" }>
+                        <i className={Batch_array.producer.id?"fa fa-check":"fa fa-times" }></i>
                       </div>
+
                       <div className="timeline-panel" id="cultivationSection">
                         <div className="timeline-heading">
                           <h4 className="timeline-title">Cultivation</h4>
@@ -141,7 +166,10 @@ const BatchProgress = () => {
                         </div>
                         <div className="verifiedImg"></div>
                       </div>
+
                     </li>
+
+
                     <li className="timeline-inverted">
                       <div className="timeline-badge danger">
                         <i className={batchStatus==="FARMINSPECTOR"?"fa fa-check":"fa fa-times"}></i>
@@ -171,27 +199,43 @@ const BatchProgress = () => {
                 <div className="verifiedImg"></div>
               </div>
             </li>
+
+
             <li>
-              <div className="timeline-badge danger">
-                <i className="fa fa-times"></i>
-              </div>
+
+            <div className={Batch_array.exporter.id?"timeline-badge success":"timeline-badge danger" }>
+                        <i className={Batch_array.producer.id?"fa fa-check":"fa fa-times" }></i>
+                      </div>
+
+
               <div className="timeline-panel" id="packingSection">
-                <div className="timeline-heading">
-                  <h4 className="timeline-title">Packing</h4>
-                  <p><small className="text-muted text-danger activityDateTime"></small></p><span
-                  className="activityQrCode"></span>
-                </div>
-                <div className="timeline-body">
-                  <table className="table activityData table-responsive" id="packerTable">
-                    <tr>
+                        <div className="timeline-heading">
+                          <h4 className="timeline-title">Packing</h4>
+                          <p><small className="text-muted text-success activityDateTime"></small></p><span
+                          className="activityQrCode"></span>
+                        </div>
+                        <div className="timeline-body">
+                          <table className="table activityData table-responsive" id="cultivatorTable">
+                          {Batch_array.exporter.id?(<>
+                            <tr><td>batchId: {BatchId} </td></tr>
+    <tr><td>Cultivated Time:{CultivatorIntime}</td></tr>
+    <tr><td><img src = {verified} className="img-circle pull-left" alt="Verified"/></td></tr>
+        </>):(
+                   
+                   <tr>
                       <td colSpan="2">
                         <p>Information Not Available</p>
                       </td>
-                    </tr>
-                  </table>
-                </div>
-                <div className="verifiedImg"></div>
-                </div>
+                    </tr>)}                  
+
+                          </table>
+                        </div>
+                        <div className="verifiedImg"></div>
+                      </div>
+
+
+
+
             </li>
             <li className="timeline-inverted">
               <div className="timeline-badge danger">
@@ -204,14 +248,21 @@ const BatchProgress = () => {
                   className="activityQrCode"></span>
                 </div>
                 <div className="timeline-body">
-                  <table className="table activityData table-responsive" id="transporterTable">
-                    <tr>
+                          <table className="table activityData table-responsive" id="cultivatorTable">
+                          {Batch_array.logistic.id?(<>
+                            <tr><td>batchId: {BatchId} </td></tr>
+    <tr><td>Cultivated Time:{CultivatorIntime}</td></tr>
+    <tr><td><img src = {verified} className="img-circle pull-left" alt="Verified"/></td></tr>
+        </>):(
+                   
+                   <tr>
                       <td colSpan="2">
                         <p>Information Not Available</p>
                       </td>
-                    </tr>
-                  </table>
-                </div>
+                    </tr>)}                  
+
+                          </table>
+                        </div>
                 <div className="verifiedImg"></div>
               </div>
             </li>
