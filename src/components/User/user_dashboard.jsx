@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import API from "../../apis/product";
 import UserAPI from "../../apis/users";
 // import Select from 'react-select';
-
+import QRCodeComponent from "./components/qrcode"
 import slide from "../../assets/plugins/images/heading-bg/farmer2.jpg";
 import userImg from "../../assets/plugins/images/users/user1.jpg";
 import Classify from "../ML/service/classify2";
@@ -60,7 +60,7 @@ function UserDashboard() {
     
 ]);
 
-
+// const text = "Hi i am Jivan !";
   const [createBatch, setcreateBatchOpen] = useState(false);
   const [farmerModalOpen, setFarmerModalOpen] = useState(false);
 
@@ -401,6 +401,8 @@ function UserDashboard() {
     getProducts();
   }, []);
 
+const text = "Hi i am Jivan !";
+const shippingDate = "2023-06-22";
 
   return (
     <Container fluid>
@@ -470,6 +472,7 @@ function UserDashboard() {
           </tr>
         </thead>
         <tbody>
+        {/* <QRCodeComponent/> */}
         {/* <tr> */}
         {product?.map((product) => (
       <tr key={product.Key}>
@@ -1201,7 +1204,16 @@ function UserDashboard() {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      {/* <QRCodeComponent text={text} shippingDate={shippingDate}  /> */}
+      <QRCodeComponent
+  price="19.99"
+  manufacturingDate="2023-06-01"
+  shippingDate="2023-06-10"
+/>
+
     </Container>
+
   );
 }
 

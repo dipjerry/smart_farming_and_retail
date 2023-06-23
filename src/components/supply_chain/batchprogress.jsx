@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import './batchprogress.css';
-import myData from './data.json';
-import userData from './udata.json';
-import { useSelector , useDispatch } from 'react-redux';
+// import myData from './data.json';
+import userData from './data.json';
+// import { useSelector , useDispatch } from 'react-redux';
 import verified from "../../assets/plugins/images/verified.jpg"
 // import '../../assets/css/style.css';
 
 const BatchProgress = () => {
-  const myState = useSelector((state)=>state)
+  // const myState = useSelector((state)=>state)
   console.log("myState.authUser?.chain")
-  console.log(myState.authUser?.chain)
-  const [Batch_array] = useState(myState.authUser?.chain);
+  // console.log(myState.authUser?.chain)
+  const [Batch_array] = useState(userData);
   const [batchStatus, setBatchStatus] = useState(null);
   const [batchNo, setBatchNo] = useState(null);
   const [BatchId, setBatchId] = useState(null);
@@ -21,7 +21,8 @@ const BatchProgress = () => {
   const [FertilizerUsed, setFertilizerUsed] = useState(null);
     
 
-
+  console.log("Batch_array")
+  console.log(Batch_array)
   useEffect(() => {
     populate()
   });
@@ -32,6 +33,7 @@ const BatchProgress = () => {
     // console.log(myData.Status);
   //   alert("Data Loaded");
   // };
+
 
   async function ConvertDate(timestamp) {
     console.log("timestamp");
@@ -48,7 +50,16 @@ const BatchProgress = () => {
     if (Batch_array.producer.id) {
       buildCultivatorData();}
       if (Batch_array.exporter.id) {
-       buildCultivatorData();
+        buildexporterData();
+      }
+      if (Batch_array.importer.id) {
+        buildimporterData();
+      }
+      if (Batch_array.inspector.id) {
+        buildInspectoionData();
+      }
+      if (Batch_array.invoice.id) {
+        buildinvoiceData();
       }
       if (Batch_array.importer.id) {
        buildCultivatorData();
@@ -75,10 +86,17 @@ const BatchProgress = () => {
   }
 
   async function buildexporterData() {
-      const time = await ConvertDate(Batch_array.product.production_date);
+      const time = await ConvertDate(Batch_array.product.exportation_date);
       setBatchId(Batch_array.id);
-      setCultivatoarIntime(time);
-      setBatchStatus(Batch_array.producer.status);
+      setPackagingType(Batch_array.packagingType);
+      setExportationIntime(time);
+      setBatchStatus(Batch_array.exporter.status);
+  }
+  async function buildimporterData() {
+      const time = await ConvertDate(Batch_array.product.import_date);
+      setImporterId(Batch_array.id);
+      setImportIntime(time);
+      setBatchStatus(Batch_array.importer.status);
   }
 
   async function buildImportData() {
@@ -116,6 +134,12 @@ const BatchProgress = () => {
     setFertilizerUsed(batchinfo.FertilizerUsed)
     setBatchStatus(batchinfo.Status);
   }
+  async function buildinvoiceData() {
+    // const time = await ConvertDate(Batch_array.product.production_date);
+    setInvoiceId(Batch_array.id);
+    setInvoiceIntime(time);
+    // setBatchStatus(Batch_array.producer.status);
+}
 
 
 
