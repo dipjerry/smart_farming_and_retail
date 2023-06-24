@@ -50,7 +50,7 @@
   "scripts": {
     "start:dev": "cross-env PORT=3006 react-scripts start",
     "start": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "serve": "vite preview"
   },
   "eslintConfig": {

@@ -9,7 +9,7 @@ const QRCodeComponent = ({ price, manufacturingDate, shippingDate }) => {
     const generateQRCode = async () => {
       try {
         const dataURL = await QRCode.toDataURL(
-          `Price: ${price}\nManufacturing Date: ${manufacturingDate}\nShipping Date: ${shippingDate}`
+          `http://localhost:5173/preview?id=Product3`
         );
         setQRCodeDataURL(dataURL);
       } catch (error) {

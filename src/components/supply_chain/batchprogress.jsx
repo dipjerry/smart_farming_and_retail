@@ -1,145 +1,120 @@
 import React, { useState, useEffect } from 'react';
 import './batchprogress.css';
-// import myData from './data.json';
-import userData from './data.json';
-// import { useSelector , useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import verified from "../../assets/plugins/images/verified.jpg"
-// import '../../assets/css/style.css';
+// import { pieData } from '../Admin/components/statistics';
 
 const BatchProgress = () => {
-  // const myState = useSelector((state)=>state)
-  console.log("myState.authUser?.chain")
-  // console.log(myState.authUser?.chain)
-  const [Batch_array] = useState(userData);
+  const myState = useSelector((state)=>state)
+  const [Batch_array] = useState(myState.authUser?.chain);
   const [batchStatus, setBatchStatus] = useState(null);
   const [batchNo, setBatchNo] = useState(null);
   const [BatchId, setBatchId] = useState(null);
   const [CultivatorIntime, setCultivatoarIntime] = useState(null);
   const [FarmInspectorIntime, setFarmInspectorIntime] = useState(null);
   const [ProcessorIntime, setUser] = useState(null);
-  const [StrawberryFamily, setStrawberryFamily] = useState(null);
+  const [packagingType, setPackagingType] = useState(null);
+  const [exporterId, setExporterId] = useState(null);
   const [FertilizerUsed, setFertilizerUsed] = useState(null);
-    
+  const [exportationIntime, setExportationIntime] = useState(null);
 
-  console.log("Batch_array")
-  console.log(Batch_array)
+  const [cultivatorIntime, setCultivatorIntime] = useState("");
+  const [quantityPerPackage, setQuantityPerPackage] = useState("");
+
+  const [importerId, setImporterId] = useState("");
+  const [importIntime, setImportIntime] = useState("");
+  const [importerStatus, setImporterStatus] = useState("");
+
+  const [logisticId, setLogisticId] = useState("");
+  const [logisticIntime, setLogisticIntime] = useState("");
+  const [date, setDate] = useState("");
+  const [deliveryDate, setDeliveryDate] = useState("");
+  const [deliveryType, setDeliveryType] = useState("");
+  const [expectedDeliveryDate, setExpectedDeliveryDate] = useState("");
+  const [pickupDate, setPickupDate] = useState("");
+  const [trackingId, setTrackingId] = useState("");
+  const [transportMethod, setTransportMethod] = useState("");
+
+  const [invoiceId, setInvoiceId] = useState("");
+  const [invoiceIntime, setInvoiceIntime] = useState("");
+
   useEffect(() => {
-    populate()
-  });
-
-
-  // const loadData = () => {
-  //   // perform your data loading logic here
-    // console.log(myData.Status);
-  //   alert("Data Loaded");
-  // };
-
+    populate();
+  }, []);
 
   async function ConvertDate(timestamp) {
-    console.log("timestamp");
-    console.log(timestamp);
     const date = new Date(timestamp * 1000);
     const options = { timeZone: 'Asia/Kolkata', timeZoneName: 'short' };
     const dateString = date.toLocaleString('en-US', options);
     return dateString;
   }
 
-  const populate = ()=>{
-    // alert(Batch_array.producer.id);
-    // alert(batchStatus);
+  const populate = () => {
     if (Batch_array.producer.id) {
-      buildCultivatorData();}
-      if (Batch_array.exporter.id) {
-        buildexporterData();
-      }
-      if (Batch_array.importer.id) {
-        buildimporterData();
-      }
-      if (Batch_array.inspector.id) {
-        buildInspectoionData();
-      }
-      if (Batch_array.invoice.id) {
-        buildinvoiceData();
-      }
-      if (Batch_array.importer.id) {
-       buildCultivatorData();
-      }
-      // buildHarvestorData(Batch_array);
-    //  else if (Batch_array.Status == "EXPORTOR") {
-    //   // buildExportorData(Batch_array);
-    // } else if (Batch_array.Status == "IMPORTOR") {
-    //   // buildImportorData(Batch_array);
-    // } else if (Batch_array.Status == "PROCESSOR") {
-    //   // buildImportorData(Batch_array);
-    // } else if (Batch_array.Status == "COMPLETE") {
-    //   // buildProcessorData(Batch_array);
-    // }
+      buildCultivatorData();
+    }
+    if (Batch_array.exporter.id) {
+      buildexporterData();
+    }
+    if (Batch_array.importer.id) {
+      buildimporterData();
+    }
+    if (Batch_array.inspector.id) {
+      buildInspectoionData();
+    }
+    if (Batch_array.invoice.id) {
+      buildinvoiceData();
+    }
+    if (Batch_array.logistic.id) {
+      buildLogisticData();
+    }
   }
 
-
-
   async function buildCultivatorData() {
-      const time = await ConvertDate(Batch_array.product.production_date);
-      setBatchId(Batch_array.id);
-      setCultivatoarIntime(time);
-      setBatchStatus(Batch_array.producer.status);
+    const time = await ConvertDate(Batch_array.product.production_date);
+    setBatchId(Batch_array.id);
+    setCultivatoarIntime(time);
+    setBatchStatus(Batch_array.producer.status);
   }
 
   async function buildexporterData() {
-      const time = await ConvertDate(Batch_array.product.exportation_date);
-      setBatchId(Batch_array.id);
-      setPackagingType(Batch_array.packagingType);
-      setExportationIntime(time);
-      setBatchStatus(Batch_array.exporter.status);
+    const time = await ConvertDate(Batch_array.exporter.export_data.exportation_date);
+    setExporterId(Batch_array.exporter.id);
+    setPackagingType(Batch_array.exporter.export_data.packagingType);
+    setExportationIntime(time);
+    setQuantityPerPackage(Batch_array.exporter.export_data.quantityPerPackage);
+    setBatchStatus(Batch_array.exporter.status);
   }
+
   async function buildimporterData() {
-      const time = await ConvertDate(Batch_array.product.import_date);
-      setImporterId(Batch_array.id);
-      setImportIntime(time);
-      setBatchStatus(Batch_array.importer.status);
-  }
-
-  async function buildImportData() {
-      const time = await ConvertDate(Batch_array.product.production_date);
-      setBatchId(Batch_array.id);
-      setCultivatoarIntime(time);
-      setBatchStatus(Batch_array.producer.status);
+    const time = await ConvertDate(Batch_array.product.import_date);
+    setImporterId(Batch_array.id);
+    setImportIntime(time);
+    setBatchStatus(Batch_array.importer.status);
   }
 
   async function buildLogisticData() {
-      const time = await ConvertDate(Batch_array.product.production_date);
-      setBatchId(Batch_array.id);
-      setCultivatoarIntime(time);
-      setBatchStatus(Batch_array.producer.status);
-  }
-  
-  async function buildLogisticData() {
-      const time = await ConvertDate(Batch_array.product.production_date);
-      setBatchId(Batch_array.id);
-      setCultivatoarIntime(time);
-      setBatchStatus(Batch_array.producer.status);
-  }
-
-  async function buildImportData() {
-      const time = await ConvertDate(Batch_array.product.production_date);
-      setBatchId(Batch_array.id);
-      setCultivatoarIntime(time);
-      setBatchStatus(Batch_array.producer.status);
+    const time = await ConvertDate(Batch_array.product.import_date);
+    const deliverydate = await ConvertDate(Batch_array.logistic.logistics_data.delivery_date);
+    const pickupdate = await ConvertDate(Batch_array.logistic.logistics_data.pickup_date);
+    setLogisticId(Batch_array.logistic.id);
+    setImportIntime(time);
+    setDate(Batch_array.logistic.logistics_data.date);
+    setDeliveryDate(deliverydate);
+    setDeliveryType(Batch_array.logistic.logistics_data.delivery_type);
+    setExpectedDeliveryDate(Batch_array.logistic.logistics_data.expected_delivery_date);
+    setPickupDate(pickupdate);
+    setTrackingId(Batch_array.logistic.logistics_data.tracking_id);
+    setTransportMethod(Batch_array.logistic.logistics_data.transport_method);
+    setBatchStatus(Batch_array.logistic.status);
   }
 
-  async function buildInspectorData(batchinfo) {
-    await buildCultivatorData(batchinfo);
-    setFarmInspectorIntime(batchinfo.FarmInspectorIntime)
-    setStrawberryFamily(batchinfo.StrawberryFamily)
-    setFertilizerUsed(batchinfo.FertilizerUsed)
-    setBatchStatus(batchinfo.Status);
-  }
   async function buildinvoiceData() {
-    // const time = await ConvertDate(Batch_array.product.production_date);
+    const time = await ConvertDate(Batch_array.product.production_date);
     setInvoiceId(Batch_array.id);
     setInvoiceIntime(time);
-    // setBatchStatus(Batch_array.producer.status);
-}
+    setBatchStatus(Batch_array.producer.status);
+  }
 
 
 
@@ -176,10 +151,10 @@ const BatchProgress = () => {
                         </div>
                         <div className="timeline-body">
                           <table className="table activityData table-responsive" id="cultivatorTable">
-                          {batchStatus==="Available" || batchStatus==="FARMINSPECTOR"?(<>
+                          {Batch_array.producer.id?(<>
                             <tr><td>batchId: {BatchId} </td></tr>
     <tr><td>Cultivated Time:{CultivatorIntime}</td></tr>
-    <tr><td><img src = {verified} className="img-circle pull-left" alt="Verified"/></td></tr>
+    <tr><td><img src = {verified} className="img-circle pull-right w-16 h-18" alt="Verified"/></td></tr>
         </>):(
                    
                    <tr>
@@ -243,9 +218,12 @@ const BatchProgress = () => {
                         <div className="timeline-body">
                           <table className="table activityData table-responsive" id="cultivatorTable">
                           {Batch_array.exporter.id?(<>
-                            <tr><td>batchId: {BatchId} </td></tr>
-    <tr><td>Cultivated Time:{CultivatorIntime}</td></tr>
-    <tr><td><img src = {verified} className="img-circle pull-left" alt="Verified"/></td></tr>
+                            {/* <tr><td>batchId: {BatchId}</td></tr>
+    <tr><td>Cultivated Time: {CultivatorIntime}</td></tr> */}
+    <tr><td>Quantity: {quantityPerPackage}</td></tr>
+    <tr><td>Packaging Type: {packagingType}</td></tr>
+    <tr><td><img src={verified} className="img-circle pull-right w-16 h-18" alt="Verified" /></td></tr>
+
         </>):(
                    
                    <tr>
@@ -276,11 +254,17 @@ const BatchProgress = () => {
                 <div className="timeline-body">
                           <table className="table activityData table-responsive" id="cultivatorTable">
                           {Batch_array.logistic.id?(<>
-                            <tr><td>batchId: {BatchId} </td></tr>
-    <tr><td>Cultivated Time:{CultivatorIntime}</td></tr>
-    <tr><td><img src = {verified} className="img-circle pull-left" alt="Verified"/></td></tr>
+                            <tr><td>Pickup: {pickupDate}</td></tr>
+    <tr><td>Logistic ID: {logisticId}</td></tr>
+    {/* <tr><td>Import Time: {importIntime}</td></tr> */}
+    {/* <tr><td>Date: {date}</td></tr> */}
+    <tr><td>Pickup Date: {pickupDate}</td></tr>
+    <tr><td>Tracking ID: {trackingId}</td></tr>
+    <tr><td>Transport Method: {transportMethod}</td></tr>
+    <tr><td>Batch Status: {batchStatus}</td></tr>
+    <tr><td><img src={verified} className="img-circle pull-left w-16 h-18" alt="Verified" /></td></tr>
         </>):(
-                   
+          
                    <tr>
                       <td colSpan="2">
                         <p>Information Not Available</p>
@@ -292,7 +276,39 @@ const BatchProgress = () => {
                 <div className="verifiedImg"></div>
               </div>
             </li>
-            <li>
+            <li >
+              <div className="timeline-badge danger">
+                <i className="fa fa-times"></i>
+              </div>
+              <div className="timeline-panel" id="deliverySection">
+                <div className="timeline-heading">
+                  <h4 className="timeline-title">Delivery</h4>
+                  <p><small className="text-muted text-danger activityDateTime"></small></p><span
+                  className="activityQrCode"></span>
+                </div>
+                <div className="timeline-body">
+                <table className="table activityData table-responsive" id="cultivatorTable">
+                          {Batch_array.logistic.id?(<>
+                          <tr><td>Expected Delivery Date: {expectedDeliveryDate}</td></tr>
+    <tr><td>Delivery Date: {deliveryDate}</td></tr>
+    <tr><td>Delivery Type: {deliveryType}</td></tr>
+                            {/* <tr><td>batchId: {BatchId} </td></tr> */}
+    {/* <tr><td>Cultivated Time:{CultivatorIntime}</td></tr> */}
+    <tr><td><img src = {verified} className="img-circle pull-left" alt="Verified"/></td></tr>
+        </>):(
+                   
+                   <tr>
+                      <td colSpan="2">
+                        <p>Information Not Available</p>
+                      </td>
+                    </tr>)}                  
+
+                          </table>
+                </div>
+                <div className="verifiedImg"></div>
+              </div>
+            </li>
+            <li className="timeline-inverted">
               <div className="timeline-badge danger">
                 <i className="fa fa-times"></i>
               </div>
@@ -314,28 +330,8 @@ const BatchProgress = () => {
                 <div className="verifiedImg"></div>
               </div>
             </li>
-            <li className="timeline-inverted">
-              <div className="timeline-badge danger">
-                <i className="fa fa-times"></i>
-              </div>
-              <div className="timeline-panel" id="deliverySection">
-                <div className="timeline-heading">
-                  <h4 className="timeline-title">Delivery</h4>
-                  <p><small className="text-muted text-danger activityDateTime"></small></p><span
-                  className="activityQrCode"></span>
-                </div>
-                <div className="timeline-body">
-                  <table className="table activityData table-responsive" id="deliveryTable">
-                    <tr>
-                      <td colSpan="2">
-                      <p>Information Not Available</p>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-                <div className="verifiedImg"></div>
-              </div>
-            </li>
+            
+
             <li>
               <div className="timeline-badge danger">
                 <i className="fa fa-times"></i>

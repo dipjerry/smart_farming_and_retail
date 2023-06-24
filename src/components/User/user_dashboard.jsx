@@ -629,7 +629,7 @@ const shippingDate = "2023-06-22";
     } 
     else if(product.Record.status === 'Ordered'){
       return (
-        <span onClick={() => {setSelectedItem(product.Record.id); getLogistic(); setImporterListModalOpen(true); }} className="label label-danger font-weight-100">
+        <span onClick={() => {setSelectedItem(product.Record.id); getLogistic(); setLogisticSelectModal(true); }} className="label label-danger font-weight-100">
           select logistic
         </span>
       );
