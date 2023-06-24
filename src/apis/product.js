@@ -15,8 +15,11 @@ async function checkLogin() {
   }
 }
 
+const headers = {
+  "ngrok-skip-browser-warning": "true"
+};
 
-export default class startup{
+export default class Startup {
     
     static addProduct = async (data) => {
         try {
@@ -30,17 +33,15 @@ export default class startup{
 
     static action = async (data) => {
         try {
-console.log("approved");
+          console.log("approved");
           const res = await axios.post(endpoint + `v1/startup/action`, data);
           console.log(res);
           return res.data;
         } catch (error) {
           console.log(error.data)
-            return error.data;
-
+          return error.data;
         } 
       }; 
-   
 
     static delete = async (data) => {
         try {
@@ -48,8 +49,7 @@ console.log("approved");
           return res.data;
         } catch (error) {
           console.log(error.data)
-            return error.data;
-
+          return error.data;
         }
       };
 
@@ -59,58 +59,61 @@ console.log("approved");
           return res.data;
         } catch (error) {
           console.log(error.data)
-            return error.data;
-
+          return error.data;
         }
       };
+
     static loginAdmin = async (data) => {
         try {
           const res = await axios.post(endpoint + `/user/signin/manufacturer`, data);
           return res.data;
         } catch (error) {
           console.log(error.data)
-            return error.data;
-
+          return error.data;
         }
       };
 
-    static fetchbyrole = async (data) => {
+    static fetchByRole = async (data) => {
         try {
-          console.log("boom go")
+          console.log("boom go");
           const res = await axios.get(endpoint + `/product/productsbyRole`, {
-            params:data
+            params: data,
+            headers: headers
           });
           return res.data;
         } catch (error) {
           console.log(error.data)
-            return error.data;
+          return error.data;
         }
       };
-      
-      static fetchRawProduct = async (data) => {
+
+    static fetchRawProduct = async (data) => {
         try {
           const res = await axios.get(endpoint + `/product/raw_products`, {
-            params:data
+            params: data,
+            headers: headers
           });
           return res.data;
         } catch (error) {
           console.log(error.data)
-            return error.data;
+          return error.data;
         }
       };
-      static fetchInventory = async (data) => {
+
+    static fetchInventory = async (data) => {
         try {
           const res = await axios.get(endpoint + `/user/inventory`, {
-            params:data
+            params: data,
+            headers: headers
           });
           return res.data;
         } catch (error) {
           console.log(error.data)
-            return error.data;
-
+          return error.data;
         }
       };
-      static buyProduct = async (data) => {
+
+    static buyProduct = async (data) => {
         try {
           const res = await axios.post(endpoint + `/transact/buyProduct`, data);
           return res.data;
@@ -119,8 +122,8 @@ console.log("approved");
           return error.data;
         }
       };
-      static selectLogistic = async (data) => {
-        // console.log("🚀 ~ file: product.js:123 ~ startup ~ selectLogistic= ~ data:", data)
+
+    static selectLogistic = async (data) => {
         try {
           const res = await axios.post(endpoint + `/transact/selectLogistic`, data);
           return res.data;
@@ -129,77 +132,4 @@ console.log("approved");
           return error.data;
         }
       };
-      static selectLogistic = async (data) => {
-        // console.log("🚀 ~ file: product.js:123 ~ startup ~ selectLogistic= ~ data:", data)
-        try {
-          const res = await axios.post(endpoint + `/transact/selectLogistic`, data);
-          return res.data;
-        } catch (error) {
-          console.log(error.data)
-          return error.data;
-        }
-      };
-      static productPickup = async (data) => {
-        try {
-          const res = await axios.post(endpoint + `/transact/productPickup`, data);
-          return res.data;
-        } catch (error) {
-          console.log(error.data)
-          return error.data;
-        }
-      };
-      static productDelivery = async (data) => {
-        try {
-          const res = await axios.post(endpoint + `/transact/productDelivery`, data);
-          return res.data;
-        } catch (error) {
-          console.log(error.data)
-          return error.data;
-        }
-      };
-
-      // static buyProduct = async (data) => {
-      //   try {
-      //     const res = await axios.post(endpoint + `/transact/buyProduct`, data);
-      //     return res.data;
-      //   } catch (error) {
-      //     console.log(error.data)
-      //     return error.data;
-      //   }
-      // };
-
-      static fetchShopProduct = async (data) => {
-        try {
-          const res = await axios.get(endpoint + `/product/shopProduct`, {
-            params:data
-          });
-          console.log('res Api');
-          console.log(res);
-          return res.data;
-        } catch (error) {
-          console.log(error.data)
-            return error.data;
-
-        }
-      };
-      static buyRawProduct = async (data) => {
-        try {
-          const res = await axios.post(endpoint + `/product/raw_products`, data);
-          return res.data;
-        } catch (error) {
-          console.log(error.data)
-            return error.data;
-
-        }
-      };
-      static listProduct = async (data) => {
-        try {
-          const res = await axios.post(endpoint + `/transact/listItem`, data);
-          return res.data;
-        } catch (error) {
-          console.log(error.data)
-            return error.data;
-
-        }
-      };
-}
+    }

@@ -82,20 +82,25 @@ console.log("approved");
             return error.data;
         }
       }; 
-    static fetchTransaction = async (data) => {
+      static fetchTransaction = async (data) => {
         try {
-          const res = await axios.get(endpoint + `/transact/listInvoice`, {params:data});
+          const res = await axios.get(endpoint + `/transact/listInvoice`, {
+            params: data,
+            headers: { "ngrok-skip-browser-warning": "true" }
+          });
           return res.data;
         } catch (error) {
           console.log(error.data)
-            return error.data;
-
+          return error.data;
         }
       }; 
-      static fetchUserbyrole = async (data) => {
+
+    static fetchUserByRole = async (data) => {
         try {
-          // const params = { role }; // Create an object with the role parameter
-          const res = await axios.get(`${endpoint}/user/userbytype`, { params : data });
+          const res = await axios.get(`${endpoint}/user/userbytype`, {
+            params: data,
+            headers: { "ngrok-skip-browser-warning": "true" }
+          });
           console.log('Response:', res.data);
           return res.data;
         } catch (error) {
@@ -103,10 +108,13 @@ console.log("approved");
           return error.data;
         }
       };
-      static fetchUserbyById = async (data) => {
+
+    static fetchUserById = async (data) => {
         try {
-          // const params = { role }; // Create an object with the role parameter
-          const res = await axios.get(`${endpoint}/user/userbyid`, { params : data });
+          const res = await axios.get(`${endpoint}/user/userbyid`, {
+            params: data,
+            headers: { "ngrok-skip-browser-warning": "true" }
+          });
           console.log('Response:', res.data);
           return res.data;
         } catch (error) {
