@@ -468,6 +468,7 @@ const shippingDate = "2023-06-22";
             <th>Logistic</th>
             <th>Retailer</th>
             <th>test</th>
+            <th>label</th>
             <th>view</th>
           </tr>
         </thead>
@@ -683,6 +684,11 @@ const shippingDate = "2023-06-22";
 </td>
 
                           <td><Classify /></td>
+                          <td>    <QRCodeComponent
+  price="19.99"
+  manufacturingDate= {product.Record.product.production_date}
+  shippingDate={product.Record.product.production_date}
+/></td>
                           <td onClick={() => { viewChain(product.Record) }}><FontAwesomeIcon icon={faEye} /></td>
                         </tr>
                       ))}
@@ -1206,11 +1212,7 @@ const shippingDate = "2023-06-22";
       </Modal>
 
       {/* <QRCodeComponent text={text} shippingDate={shippingDate}  /> */}
-      <QRCodeComponent
-  price="19.99"
-  manufacturingDate="2023-06-01"
-  shippingDate="2023-06-10"
-/>
+  
 
     </Container>
 

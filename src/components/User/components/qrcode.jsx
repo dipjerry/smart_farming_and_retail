@@ -4,12 +4,18 @@ import Button from 'react-bootstrap/Button';
 
 const QRCodeComponent = ({ price, manufacturingDate, shippingDate }) => {
   const [qrCodeDataURL, setQRCodeDataURL] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [mfTime, setmfTime] = useState(false);
+
+  const toggleModal = (action) => {
+    setShowModal(action);
+  };
 
   useEffect(() => {
     const generateQRCode = async () => {
       try {
         const dataURL = await QRCode.toDataURL(
-          `http://localhost:5173/preview?id=Product3`
+          `https://smart-farming-and-retail.vercel.app/preview?id=Product3`
         );
         setQRCodeDataURL(dataURL);
       } catch (error) {
@@ -18,7 +24,13 @@ const QRCodeComponent = ({ price, manufacturingDate, shippingDate }) => {
     };
 
     generateQRCode();
-  }, [price, manufacturingDate, shippingDate]);
+  }, []);
+  async function ConvertDate(timestamp) {
+    const date = new Date(timestamp * 1000);
+    const options = { timeZone: 'Asia/Kolkata', timeZoneName: 'short' };
+    const dateString = date.toLocaleString('en-US', options);
+    return dateString;
+  }
 
   const handlePrint = () => {
     const printContent = document.querySelector('.border-solid');
@@ -53,21 +65,30 @@ const QRCodeComponent = ({ price, manufacturingDate, shippingDate }) => {
   };
 
   return (
-    <div>
-      <div className="border-solid border-2 border-black ...">
-        <div style={{ display: 'flex' }}>
-          <div>
-            {qrCodeDataURL && <img src={qrCodeDataURL} alt="QR Code" />}
-          </div>
-          <div style={{ margin: '20px' }}>
-            <p>Price: {price}</p>
-            <p>Manufacturing Date: {manufacturingDate}</p>
-            <p>Shipping Date: {shippingDate}</p>
+    <>
+      <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" onClick={() => toggleModal(true)}>View Label</Button>
+      {showModal && (
+        <div className="justify-center items-center flex fixed inset-0 z-50 outline-none focus:outline-none">
+          <div className="bg-white border-solid border-2 border-black ...">
+          {/* <button className="close-button">
+              <span>&times;</span>
+            </button> */}
+            <div style={{ display: 'flex' }}>
+              <div>
+                {qrCodeDataURL && <img src={qrCodeDataURL} alt="QR Code" />}
+              </div>
+              <div style={{ margin: '20px' }}>
+                <p>Price: {'₹ 50'}</p>
+                <p>Manufacturing Date: {mfTime}</p>
+                <p>Shipping Date: {shippingDate}</p>
+              </div>
+            </div>
+            <Button variant="primary" size="sm" style={{ margin: '10px' }} onClick={handlePrint}>Print</Button>
+            <Button variant="primary" size="sm" style={{ margin: '10px' }}  onClick={() => toggleModal(false)}>Close</Button>
           </div>
         </div>
-      <Button variant="primary" size="sm" style={{ margin: '10px' }} onClick={handlePrint}>Print</Button>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 
