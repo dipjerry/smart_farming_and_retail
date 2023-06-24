@@ -685,6 +685,7 @@ const shippingDate = "2023-06-22";
 
                           <td><Classify /></td>
                           <td>    <QRCodeComponent
+  procduct={product.Key}
   price="19.99"
   manufacturingDate= {product.Record.product.production_date}
   shippingDate={product.Record.product.production_date}

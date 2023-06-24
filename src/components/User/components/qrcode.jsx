@@ -5,11 +5,14 @@ import Button from 'react-bootstrap/Button';
 const QRCodeComponent = ({ price, manufacturingDate, shippingDate }) => {
   const [qrCodeDataURL, setQRCodeDataURL] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [mfTime, setmfTime] = useState(false);
+  const [mfTime, setmfTime] = useState(null);
+  const [shipTime, setShipTime] = useState(null);
 
   const toggleModal = (action) => {
     setShowModal(action);
   };
+
+  
 
   useEffect(() => {
     const generateQRCode = async () => {
@@ -22,14 +25,23 @@ const QRCodeComponent = ({ price, manufacturingDate, shippingDate }) => {
         console.error(error);
       }
     };
-
+    
+    timeConverter();
     generateQRCode();
   }, []);
   async function ConvertDate(timestamp) {
+    console.log("🚀 ~ file: qrcode.jsx:33 ~ ConvertDate ~ timestamp:", timestamp)
     const date = new Date(timestamp * 1000);
     const options = { timeZone: 'Asia/Kolkata', timeZoneName: 'short' };
     const dateString = date.toLocaleString('en-US', options);
     return dateString;
+  }
+  async function timeConverter() {
+    const maf = await ConvertDate(manufacturingDate);
+    const ship = await ConvertDate(shippingDate);
+    setmfTime(maf);
+    setShipTime(ship);
+    
   }
 
   const handlePrint = () => {
@@ -80,7 +92,7 @@ const QRCodeComponent = ({ price, manufacturingDate, shippingDate }) => {
               <div style={{ margin: '20px' }}>
                 <p>Price: {'₹ 50'}</p>
                 <p>Manufacturing Date: {mfTime}</p>
-                <p>Shipping Date: {shippingDate}</p>
+                <p>Shipping Date: {shipTime}</p>
               </div>
             </div>
             <Button variant="primary" size="sm" style={{ margin: '10px' }} onClick={handlePrint}>Print</Button>
