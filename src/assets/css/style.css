@@ -1,7 +1,8 @@
 @charset "UTF-8";
-@import url(https://fonts.googleapis.com/css?family=Open + Sans:400, 300, 500, 600, 700, 800);
-@import url(https://fonts.googleapis.com/css?family=Roboto:100, 300, 400, 500, 700, 900);
-@import url(https://fonts.googleapis.com/css?family=Poppins:400, 500, 300, 600, 700);
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,300,500,600,700,800');
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,300,600,700');
+
 @import "spinners.css";
 .preloader {
     width: 100%;
@@ -3688,12 +3689,13 @@ table.focus-on tbody tr.focused th {
     width: 100%;
 }
 .select2-container-multi .select2-choices {
-    border: 1px solid #border !important;
+    border: 1px solid black !important;
     box-shadow: none !important;
     background-image: none !important;
     border-radius: 0 !important;
     min-height: 38px;
 }
+
 .select2-container-multi .select2-choices .select2-search-choice {
     padding: 4px 7px 4px 18px;
     margin: 5px 0 3px 5px;
@@ -4837,10 +4839,11 @@ ul.list-icons li i {
     color: #fff;
 }
 .editable-table + input.error {
-    border: 1px solid #danger;
+    border: 1px solid red; /* Replace "red" with your desired color */
     outline: 0;
     outline-offset: 0;
 }
+
 #editable-datatable_wrapper + input:focus,
 .editable-table + input,
 .editable-table + input:focus {
