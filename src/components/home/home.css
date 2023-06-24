@@ -1,19 +1,24 @@
+.glassmorphism {
+  background: linear-gradient(to right, #fffeff, #e0d6d7);
+  padding: 20px;
+  border-color: red;
+  max-width: 500px; /* Set a maximum width for the container */
+  margin: 0 auto; /* Center the container horizontally */
+  border-radius: 10px;
+}
 
-  .glassmorphism {
-    /* display: flex;
+
+.login-register {
+  display: flex;
   align-items: center;
-  justify-content: center; */
-    
-    background: linear-gradient(to right, #fffeff, #e0d6d7);
-    /* background-image: url("glass-texture.png"); */
-    background-size:auto;
-    padding: 2px;
-    background-blend-mode: multiply;
-    
-   /* width: fit-content; */
-    padding: 20px;
-    /* height: fit-content;
-    width: fit-content;  */
-    /* border-radius: 10px; */
-    border-color: red;
-  }
+  justify-content: center;
+  height: 100vh;
+}
+
+.login-box {
+  max-width: 500px;
+  width: 100%;
+  padding: 30px;
+  margin: 20px;
+  border-radius: 10px;
+}
