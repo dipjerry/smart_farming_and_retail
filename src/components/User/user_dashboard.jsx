@@ -365,7 +365,7 @@ function UserDashboard() {
       id: myState.authUser?.user
     }
 
-    const res = await API.fetchbyrole(formData);
+    const res = await API.fetchByRole(formData);
    
     setProducts(res.data?.success)
   }
