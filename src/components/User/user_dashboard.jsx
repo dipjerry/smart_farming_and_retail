@@ -701,7 +701,6 @@ const shippingDate = "2023-06-22";
           </Card>
         </Col></Row>
 
-
       <Modal show={farmerModalOpen} toggle={() => setFarmerModalOpen(false)} >
         <Modal.Header>
           <Modal.Title>list Item for sell</Modal.Title>
