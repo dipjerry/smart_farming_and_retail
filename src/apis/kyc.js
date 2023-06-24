@@ -1,6 +1,6 @@
 import axios from 'axios';
 // const API = require('./apis');
-const endpoint = `https://5156-2409-40e6-b-365f-5957-6c25-1e79-1342.ngrok-free.app`;
+const endpoint = `https://dfab-2409-40e6-b-365f-5957-6c25-1e79-1342.ngrok-free.app`;
 
 let token = null;
 const config = {
