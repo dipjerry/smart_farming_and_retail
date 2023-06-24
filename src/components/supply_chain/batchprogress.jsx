@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './batchprogress.css';
 import { useSelector } from 'react-redux';
 import verified from "../../assets/plugins/images/verified.jpg"
+import samplePic from "../../assets/plugins/images/orange.jpg"
 // import { pieData } from '../Admin/components/statistics';
 
 const BatchProgress = () => {
@@ -172,30 +173,31 @@ const BatchProgress = () => {
 
 
                     <li className="timeline-inverted">
-                      <div className="timeline-badge danger">
-                        <i className={batchStatus==="FARMINSPECTOR"?"fa fa-check":"fa fa-times"}></i>
+                    <div className={Batch_array.producer.id?"timeline-badge success":"timeline-badge danger" }>
+                        <i className={Batch_array.producer.id?"fa fa-check":"fa fa-times" }></i>
                       </div>
                       <div className="timeline-panel" id="farmInspectionSection">
                 <div className="timeline-heading">
-                  <h4 className="timeline-title">Farm-Inspector</h4>
+                  <h4 className="timeline-title">Quality Check</h4>
                   <p><small className="text-muted text-danger activityDateTime"></small></p><span
                   className="activityQrCode"></span>
                 </div>
                 <div className="timeline-body">
-                  <table className="table activityData table-responsive" id="inspectorTable">
-                   {batchStatus==="FARMINSPECTOR"?(<>
-                    <tr><td>Inspector In Time:{FarmInspectorIntime}</td></tr>
-    <tr><td>StrawberryFamily: {StrawberryFamily}</td></tr>
-    <tr><td>Fertilizer Used : {FertilizerUsed}</td></tr>
-    <tr><td><img src = {require("../../assets/plugins/images/verified.jpg")} className="img-circle pull-left" alt="Verified"/></td></tr>
-    </>):(
+                <table className="table activityData table-responsive" id="cultivatorTable">
+                          {Batch_array.producer.id?(<>
+    <tr><td>Inspection time:{CultivatorIntime}</td></tr>
+    <tr><td>Inspection Result:{"99.8% fresh"}</td></tr>
+    <tr><td className="w-16 h-18"><img src = {samplePic} className="img-circle pull-right w-16 h-18" alt="Verified"/></td></tr>
+    <tr><td><img src = {verified} className="img-circle pull-right w-16 h-18" alt="Verified"/></td></tr>
+        </>):(
                    
                    <tr>
                       <td colSpan="2">
                         <p>Information Not Available</p>
                       </td>
-                    </tr>)}
-                  </table>
+                    </tr>)}                  
+
+                          </table>
                 </div>
                 <div className="verifiedImg"></div>
               </div>
@@ -242,9 +244,9 @@ const BatchProgress = () => {
 
             </li>
             <li className="timeline-inverted">
-              <div className="timeline-badge danger">
-                <i className="fa fa-times"></i>
-              </div>
+            <div className={Batch_array.logistic.id?"timeline-badge success":"timeline-badge danger" }>
+                        <i className={Batch_array.logistic.id?"fa fa-check":"fa fa-times" }></i>
+                      </div>
               <div className="timeline-panel" id="transportationSection">
                 <div className="timeline-heading">
                   <h4 className="timeline-title">Transportation</h4>
@@ -277,9 +279,9 @@ const BatchProgress = () => {
               </div>
             </li>
             <li >
-              <div className="timeline-badge danger">
-                <i className="fa fa-times"></i>
-              </div>
+            <div className={Batch_array.logistic.id?"timeline-badge success":"timeline-badge danger" }>
+                        <i className={Batch_array.logistic.id?"fa fa-check":"fa fa-times" }></i>
+                      </div>
               <div className="timeline-panel" id="deliverySection">
                 <div className="timeline-heading">
                   <h4 className="timeline-title">Delivery</h4>
