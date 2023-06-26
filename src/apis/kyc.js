@@ -18,7 +18,7 @@ async function checkLogin() {
 export default class kyc{
     static pan = async (data) => {
         try {
-          const res = await axios.post(endpoint + `/v1/kyc/verify_and_add_pan`, data);
+          const res = await axios.post(endpoint + `/user/kyc/verify_and_add_pan`, data);
           console.log(res);
           return res.data;
         } catch (error) {
@@ -49,9 +49,9 @@ export default class kyc{
         }
       };
 
-    static other = async (data) => {
+    static profile = async (data) => {
         try {
-          const res = await axios.post(endpoint + `/v1/kyc/add_other`, data);
+          const res = await axios.post(endpoint + `/user/profile`, data);
           return res.data;
         } catch (error) {
           console.log(error.data)

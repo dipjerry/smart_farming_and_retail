@@ -13,16 +13,6 @@ import { ToastContainer, toast } from "react-toastify";
 const Profile = () => {
   const navigate = useNavigate();
   const myState = useSelector((state)=>state)
-  const initialvalue = {
-    Name: "",
-    phone: "",
-    email: "",
-    address: "",
-    city: "",
-    state: "",
-    pincode: "",
-    country: "",
-  };
   const location = useLocation();
   const country = ["India", "NRI"];
   const states = {
@@ -60,7 +50,17 @@ const Profile = () => {
   };
   const [selectcountry, setSelectcountry] = useState("");
   //  console.log(selectcountry)
-  const [formData, setFormData] = useState(initialvalue);
+  const [formData, setFormData] = useState({
+    Name: "",
+    phone: "",
+    email: "",
+    address: "",
+    city: "",
+    state: "",
+    pincode: "",
+    mobile: "",
+    country: "",
+  });
 
   const registerMethod2 = localStorage.getItem("loginMethod2");
   const registerMethod = localStorage.getItem("loginMethod");
@@ -85,7 +85,7 @@ const Profile = () => {
     newField = { id:myState.authUser?.user , userType:myState.authUser?.userType == "farmer" ? "manufacturer" : myState.authUser?.userType };
     const newFormData = { ...formData, ...newField };
     console.log(newFormData);
-    const res = await API.signupComplete(newFormData);
+    const res = await API.profile(newFormData);
     console.log(res);
     if (res.code == 200) {
       toast.success("Profile Completed");
@@ -115,7 +115,7 @@ const Profile = () => {
   }
   useEffect(() => {
     async function fetchData() { 
-        const res = await userApi.fetchUserbyById( {id:myState.authUser?.user , userType:myState.authUser?.userType == "farmer" ? "manufacturer" : myState.authUser?.userType});
+        const res = await userApi.fetchUserById( {id:myState.authUser?.user , userType:myState.authUser?.userType == "farmer" ? "manufacturer" : myState.authUser?.userType});
         console.log("🚀 ~ file: Profile.jsx:134 ~ fetchData ~ res:", res.data)
         if(res && res.data.status==200){
           // alert('hello');
@@ -172,7 +172,7 @@ const Profile = () => {
                   <input
                     className="appearance-none block  text-gray-700 border  border-gray-200  rounded w-full py-[10px] px-4 mb-3 leading-tight  bg-white focus:outline-none focus:border-gray-500"
                     type="text"
-                    defaultValue={formData.Name}
+                    value={formData.Name}
                     placeholder="Enter your name here "
                     onChange={handleInputChange}
                     name="firstName"
@@ -194,7 +194,7 @@ const Profile = () => {
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-[10px] px-4 mb-3 leading-tight focus:outline-none bg-white focus:border-gray-500"
                     id="grid-password"
                     type="email"
-                    defaultValue={formData.email}
+                    value={formData.email}
                     placeholder="Enter your email id here "
                     onChange={handleInputChange}
                     name="email"
@@ -213,12 +213,12 @@ const Profile = () => {
                     className=" inputs  appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-[10px] px-4 mb-3 leading-tight focus:outline-none bg-white focus:border-gray-500"
                     id="grid-password"
                     type="number"
-                    defaultValue={formData.phone}
+                    value={formData.mobile}
                     placeholder="Enter your mobile Number Here "
                     onChange={handleInputChange}
                     // disabled={!editmode && formData.phone !== ""}
                     disabled={editmode}
-                    name="phone"
+                    name="mobile"
                   />
                 </div>
               </div>
@@ -253,7 +253,7 @@ const Profile = () => {
                     type="text"
                     placeholder="Enter your city Here "
                     // disabled={!formData.city}
-                    defaultValue={formData.city}
+                    value={formData.city}
                     onChange={handleInputChange}
                     // disabled={!editmode && formData.city !== ""}
                     disabled={editmode}
@@ -266,7 +266,9 @@ const Profile = () => {
                       <label className="block uppercase tracking-wide text-[#828F99] font-[400] leading-[11.72px] text-[10px] mb-[5px]">
                         State
                       </label>
-                      <select className=" appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-[10px] px-4 leading-tight focus:outline-none bg-white focus:border-gray-500">
+                      <select  value={formData.country}
+                    name="state"
+                    onChange={handleInputChange} className=" appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-[10px] px-4 leading-tight focus:outline-none bg-white focus:border-gray-500">
                         {states[selectcountry].map((state) => {
                           return <option>{state}</option>;
                         })}
@@ -278,7 +280,7 @@ const Profile = () => {
                     id="grid-last-name"
                     type="text"
                     placeholder="Enter your state Here "
-                    defaultValue={formData.state}
+                    value={formData.state}
                     name="state"
                   /> */}
                 </div>
@@ -292,7 +294,7 @@ const Profile = () => {
                     className="inputs appearance-none block w-full  text-gray-700 border  border-gray-200  rounded py-[10px] px-4 mb-3 leading-tight  bg-white focus:outline-none focus:border-gray-500"
                     type="number"
                     placeholder="Enter your pincode Here "
-                    defaultValue={formData.pincode}
+                    value={formData.pincode}
                     onChange={handleInputChange}
                     // disabled={!editmode && formData.pincode !== ""}
                     disabled={editmode}
@@ -306,9 +308,12 @@ const Profile = () => {
                   <select
                     className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-[10px] px-4 leading-tight focus:outline-none bg-white focus:border-gray-500"
                     disabled={editmode}
-                    onChange={(e) => {
-                      setSelectcountry(e.target.value);
-                    }}
+                    value={formData.country}
+                    name="country"
+                    onChange={handleInputChange}
+                    // onChange={(e) => {
+                    //   setSelectcountry(e.target.value);
+                    // }}
                   >
                     {country.map((countrys) => {
                       return <option>{countrys}</option>;
@@ -318,7 +323,7 @@ const Profile = () => {
               </div>
               <div className="w-[100%] flex md:justify-end  justify-center pr-[20px] pt-[5px]">
               <button
-                    onClick={(e) => addKyc(e)}
+                    onClick={(e) => registerComplete(e)}
                     className="bg-[#62f392] text-[#ffffff] md:px-4 md:py-[8px] py-[9px] px-12 rounded-[10px] hover:bg-[#44a665] duration-200"
                   >
                     <h4 className="px-[20px]"> Confirm</h4>

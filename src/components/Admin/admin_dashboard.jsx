@@ -247,7 +247,7 @@ async function getProducts()
     </Row>
   <Row>
   <Col md={12} lg={12} sm={12} xs={12}>
-      <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" onClick={createCultivation}>Create Batch</Button>
+      {/* <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" onClick={createCultivation}>Create Batch</Button> */}
     <div className="white-box">
       <h3 className="box-title">Batches Overview</h3>
       <div className="table-responsive">

@@ -12,6 +12,9 @@ function ControlledTabsExample() {
   const [key, setKey] = useState('statistics');
   const [data, setData] = useState([]);
   const [showInvoice, setShowInvoice] = useState(false);
+  const [invoiceData, setShowInvoiceData] = useState(null);
+  const [invoiceDate, setShowInvoiceDate] = useState(null);
+
   const myState = useSelector((state)=>state)
   const tableProps = {
     // ... other table properties
@@ -22,6 +25,14 @@ function ControlledTabsExample() {
     },
   };
   
+  async function ConvertDate(timestamp) {
+    const date = new Date(timestamp * 1000);
+    const options = { timeZone: 'Asia/Kolkata', timeZoneName: 'short' };
+    const dateString = date.toLocaleString('en-US', options);
+    return dateString;
+  }
+
+
 //   const data = [
 //     {Key:"Transaction 1",Record:
 //     {To:"Jivan", From:"Dipjyoti",Price:"200"}
@@ -176,18 +187,31 @@ function ControlledTabsExample() {
     },
     {
       Header: 'View',
-      Cell: () => (
+      Cell: ({ row }) => (
         <Button
           className="text-red-600"
-          onClick={() => setShowInvoice(true)}
+          onClick={() => { generateInvoice(row.original.Record); setShowInvoice(true);  }}
           value="View Invoice"
         >
-         Save
-      </Button>
+          View Invoice
+        </Button>
       )
     },
   ];
-  async function getTransaction()
+  async function generateInvoice(data) {
+    // Convert the invoice date to the desired format
+    const updatedDate = await ConvertDate(data.invoiceDate);
+    console.log("🚀 ~ file: details.jsx:204 ~ generateInvoice ~ updatedDate:", updatedDate)
+  
+    // Create an updated data object with the modified invoice date
+    const updatedData = { ...data, invoiceDate: updatedDate };
+  
+    console.log("🚀 ~ file: details.jsx:209 ~ generateInvoice ~ updatedData:", invoiceData)
+    // Set the updated data object
+    setShowInvoiceData(updatedData);
+  }
+
+async function getTransaction()
 {
   const formData={ 
     id:myState.authUser?.user,
@@ -222,90 +246,72 @@ useEffect(() => {
       </Tab>
     </Tabs>
 
-     <Modal size="lg" show={showInvoice}>
-     <Modal.Header >
-       <Modal.Title id="fifthModalTitle">Invoice</Modal.Title>
-     </Modal.Header>
-     <Modal.Body>
-     <Container className="py-5">
+    <Modal size="lg" show={showInvoice}>
+  <Modal.Header>
+    <Modal.Title id="fifthModalTitle">Invoice</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    {/* <Container className="py-5"> */}
       <Card className="p-4">
         <Card.Body>
-          <Container className="mb-2 mt-3">
-            <div className="d-flex align-items-baseline">
-              <div className="col-xl-9">
-                <p style={{ color: "#7e8d9f", fontSize: "20px" }}>
-                  Invoice &gt; &gt; <strong>ID: #123-123</strong>
+          <Container className="mb-4 mt-3">
+            <div className="flex items-baseline justify-between">
+              <div className="col-span-8">
+                <p className="text-blue-700 text-xl">
+                  Invoice &gt; &gt;{" "}
+                  <strong>ID: {invoiceData?.invoiceNumber}</strong>
                 </p>
               </div>
-              <div className="col-xl-3 float-end">
-                <Button variant="light" className="text-capitalize border-0" href="javascript:void(0);" onClick={() => window.print()}>
+              <div className="col-span-4 flex justify-end">
+                <Button variant="light" className="text-capitalize border-0" onClick={() => window.print()}>
                   Print
                 </Button>
-                <Button
-                  variant="light"
-                  className="text-capitalize border-0 ms-2"
-                >
+                <Button variant="light" className="text-capitalize border-0 ms-2">
                   Export
                 </Button>
-                <hr />
               </div>
             </div>
           </Container>
           <Container>
             <div className="text-center">
-              <i
-                className="fab fa-mdb"
-                style={{ fontSize: "4rem", color: "#5d9fc5" }}
-              />
+              <i className="fab fa-mdb text-4xl text-blue-500"></i>
             </div>
           </Container>
-          <div className="row">
-            <div className="col-xl-8">
-              <ul className="list-unstyled text-muted">
-                <li>
-                  To: <span style={{ color: "#5d9fc5" }}>John Lorem</span>
-                </li>
-                <li>Street, City</li>
-                <li>State, Country</li>
-                <li>
-                  <i className="fas fa-phone-alt" /> 123-456-789
-                </li>
-              </ul>
-            </div>
-            <div className="col-xl-4">
-              <p className="text-muted">Invoice</p>
-              <ul className="list-unstyled text-muted">
-                <li>
-                  <i
-                    className="fas fa-circle"
-                    style={{ color: "#84B0CA" }}
-                  ></i>
-                  <span className="fw-bold ms-1">ID:</span>#123-456
-                </li>
-                <li>
-                  <i
-                    className="fas fa-circle"
-                    style={{ color: "#84B0CA" }}
-                  ></i>
-                  <span className="fw-bold ms-1">Creation Date: </span>Jun
-                  23,2021
-                </li>
-                <li>
-                  <i
-                    className="fas fa-circle"
-                    style={{ color: "#84B0CA" }}
-                  ></i>
-                  <span className="fw-bold ms-1">Status:</span>
-                  <span className="badge bg-warning text-black fw-bold ms-1">
-                    Unpaid
-                  </span>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="my-2 mx-1 justify-content-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+  <div className="col-span-1 md:col-span-1">
+    <ul className="text-gray-600">
+      <li>
+        To: <span className="text-blue-500">John Lorem</span>
+      </li>
+      <li>Street, City</li>
+      <li>State, Country</li>
+      <li>
+        <i className="fas fa-phone-alt"></i> 123-456-789
+      </li>
+    </ul>
+  </div>
+  <div className="col-span-1 md:col-span-1">
+    <p className="text-gray-600">Invoice</p>
+    <ul className="text-gray-600">
+      <li>
+        <span className="font-semibold">ID:</span> {invoiceData?.invoiceNumber}
+      </li>
+      <li>
+        <span className="font-semibold">Creation Date:</span> {invoiceData?.invoiceDate}
+      </li>
+      <li>
+        <span className="font-semibold">Status:</span>
+        <span className="badge bg-warning text-black font-semibold">
+          Unpaid
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+          <div className="my-2 mx-1">
             <table className="table table-striped table-borderless">
-              <thead className="text-white" style={{ backgroundColor: "#84B0CA" }}>
+              <thead className="text-white bg-blue-500">
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Description</th>
@@ -315,77 +321,60 @@ useEffect(() => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Pro Package</td>
-                  <td>4</td>
-                  <td>$200</td>
-                  <td>$800</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Web hosting</td>
-                  <td>1</td>
-                  <td>$10</td>
-                  <td>$10</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>Consulting</td>
-                  <td>1 year</td>
-                  <td>$300</td>
-                  <td>$300</td>
-                </tr>
+                {invoiceData?.products.map((item, index) => (
+                  <tr key={index}>
+                    <th scope="row">{index + 1}</th>
+                    <td>{item.name}</td>
+                    <td>{item.quantity}</td>
+                    <td>₹{item.price}</td>
+                    <td>₹{item.quantity * item.price}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
-          <div className="row">
-            <div className="col-xl-8">
-              
-              <textarea className="ms-3">Add additional notes and payment information</textarea>
-            </div>
-            <div className="col-xl-3">
-              <ul className="list-unstyled">
+          <div className="grid grid-cols-2 gap-4 mt-6">
+           
+            <div className="col-span-4">
+              <ul className="text-gray-600">
                 <li className="text-black me-4">
-                  <span className="text-black me-4">SubTotal</span>$1110
+                  <span className="text-black me-4">SubTotal</span>₹{invoiceData?.subTotal}
                 </li>
                 <li className="text-black me-4 mt-2">
-                  <span className="text-black me-4">Tax(15%)</span>$111
+                  <span className="text-black me-4">Tax(15%)</span>₹{invoiceData?.taxAmount}
                 </li>
               </ul>
-              <p className="text-black float-start">
-                <span className="text-black me-3"> Total Amount</span>
-                <span style={{ fontSize: "25px" }}>$1221</span>
+              <p className="text-black">
+                <span className="text-black me-2 font-semibold">Total Amount</span>
+                <span className="text-2xl">₹{invoiceData?.totalPrice}</span>
               </p>
             </div>
           </div>
-          <hr />
-          <div className="row">
-            <div className="col-xl-10">
+          <hr className="my-6" />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="col-span-10">
               <p>Thank you for your purchase</p>
             </div>
-            <div className="col-xl-2">
-              <Button
-                className="text-capitalize"
-                style={{ backgroundColor: "#60bdf3" }}
-              >
-                Pay Now
-              </Button>
-            </div>
+            {/* <div className="col-span-2">
+              <Button className="text-capitalize bg-blue-500">Pay Now</Button>
+            </div> */}
           </div>
         </Card.Body>
       </Card>
-    </Container>
-     </Modal.Body>
-     <Modal.Footer>
-       <Button variant="secondary" onClick={() => setShowInvoice(false)}>
-         Close
-       </Button>
-       <Button variant="primary" type="submit" form="fifthModalForm" >
-         Save
-       </Button>
-     </Modal.Footer>
-   </Modal>
+    {/* </Container> */}
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={() => setShowInvoice(false)}>
+      Close
+    </Button>
+    <Button variant="primary" type="submit" form="fifthModalForm">
+      Pay Now
+    </Button>
+  </Modal.Footer>
+</Modal>
+
+
+
    </>
   );
 }

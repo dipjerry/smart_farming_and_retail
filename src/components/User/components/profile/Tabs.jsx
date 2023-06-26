@@ -43,7 +43,8 @@ function Tabs() {
       const formData = {
         panNo:pan, 
         userType:myState.authUser?.userType == "farmer" ? "manufacturer" : myState.authUser?.userType , 
-        id:myState.authUser?.user
+        id:myState.authUser?.user,
+        name:myState.authUser?.userName
       }  
       console.log(formData);
       const res = await API.pan(formData);

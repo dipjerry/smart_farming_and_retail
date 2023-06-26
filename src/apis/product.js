@@ -132,4 +132,67 @@ export default class Startup {
           return error.data;
         }
       };
+      static productPickup = async (data) => {
+        try {
+          const res = await axios.post(endpoint + `/transact/productPickup`, data);
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+          return error.data;
+        }
+      };
+      static productDelivery = async (data) => {
+        try {
+          const res = await axios.post(endpoint + `/transact/productDelivery`, data);
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+          return error.data;
+        }
+      };
+
+      // static buyProduct = async (data) => {
+      //   try {
+      //     const res = await axios.post(endpoint + `/transact/buyProduct`, data);
+      //     return res.data;
+      //   } catch (error) {
+      //     console.log(error.data)
+      //     return error.data;
+      //   }
+      // };
+
+      static fetchShopProduct = async (data) => {
+        try {
+          const res = await axios.get(endpoint + `/product/shopProduct`, {
+            params:data
+          });
+          console.log('res Api');
+          console.log(res);
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+            return error.data;
+
+        }
+      };
+      static buyRawProduct = async (data) => {
+        try {
+          const res = await axios.post(endpoint + `/product/raw_products`, data);
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+            return error.data;
+
+        }
+      };
+      static listProduct = async (data) => {
+        try {
+          const res = await axios.post(endpoint + `/transact/listItem`, data);
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+            return error.data;
+
+        }
+      };
     }
