@@ -25,7 +25,9 @@ const MODEL_PATH = '/model/model3/transfer_learning/model.json';
 const IMAGE_SIZE = 150;
 const CANVAS_SIZE = 224;
 const TOPK_PREDICTIONS = 3;
-const Classify = () => {
+const Classify = ({callback , product}) => {
+  
+  
   const noWebCam = useRef("noWebCam");
   const yesWebCam = useRef("yesWebCam");
   const refcanvas = useRef("canvas");
@@ -55,8 +57,8 @@ const Classify = () => {
       if (('indexedDB' in window)) {
         try {
           const modelTemp = await tf.loadLayersModel('indexeddb://' + INDEXEDDB_KEY);
-          console.log("modelTemp");
-          console.log(modelTemp);
+          
+          
           setModel(modelTemp);
           // Safe to assume tensorflowjs database and related object store exists.
           // Get the date when the model was saved.
@@ -67,9 +69,9 @@ const Classify = () => {
                                  .get(INDEXEDDB_KEY);
             const dateSaved = new Date(item.modelArtifactsInfo.dateSaved);
             await getModelInfo();
-            console.log(modelLastUpdated.current);
+            
             if (!modelLastUpdated.current  || dateSaved >= new Date(modelLastUpdated.current).getTime()) {
-              console.log('Using saved model');
+              
             }
             else {
               setModelUpdateAvailable(true);
@@ -77,18 +79,18 @@ const Classify = () => {
             }
           }
           catch (error) {
-            console.warn(error);
-            console.warn('Could not retrieve when model was saved.');
+            
+            
           }
         }
         // If error here, assume that the object store doesn't exist and the model currently isn't
         // saved in IndexedDB.
         catch (error) {
-          console.log('Not found in IndexedDB. Loading and saving...');
-          console.log(error);
+          
+          
           const modelTemp = await tf.loadLayersModel(MODEL_PATH);
-          console.log('modelTemp');
-          console.log(modelTemp);
+          
+          
           setModel(modelTemp);
           // model.current = await tf.loadLayersModel(MODEL_PATH);
           await modelTemp.save('indexeddb://' + INDEXEDDB_KEY);
@@ -96,7 +98,7 @@ const Classify = () => {
       }
       // If no IndexedDB, then just download like normal.
       else {
-        console.warn('IndexedDB not supported.');
+        
         const modelTemp = await tf.loadLayersModel(MODEL_PATH);
         setModel(modelTemp);
         // model.current = await tf.loadLayersModel(MODEL_PATH);
@@ -129,7 +131,7 @@ const Classify = () => {
   setIsCameraActive(false);
   setState({});
       } catch (error) {
-        console.warn(error);
+        
       }
       // setModelLoaded(false);
       // setShowModelUpdateAlert(false);
@@ -151,13 +153,13 @@ const Classify = () => {
           videoTrack: stream_temp.getVideoTracks()[0],
         }
       );
-      console.log("cam")
-      console.log(cam)
+      
+      
       setWebcam(cam);
       cam.start();
     } catch (e) {
-      console.log("error");
-      console.log(e);
+      
+      
       // const nocam = document.getElementById("no-webcam");
       noWebCam.current.style.display = "block";
     }
@@ -168,60 +170,60 @@ const Classify = () => {
       navigator.getUserMedia({audio: false, video: true},
         async function(stream) {
                 // can also use getAudioTracks() or getVideoTracks()
-                console.log("stream");
-                console.log(stream);
+                
+                
                 // webcamConfig
                 const track = stream.getTracks()[0];  // if only one media track
-                // console.log("track");yes
-                // console.log(track);
+                // yes
+                // 
                 // ...
                 track.stop();
                 track.enabled=false;
-                // console.log(track);
+                // 
         },
         function(error){
-            console.log('getUserMedia() error', error);
+            
         });
-      // console.log("cam")
-      // console.log(cam)
+      // 
+      // 
       setWebcam("");
       // cam.stop();
       model.dispose();
 
     } catch (e) {
-      console.log("error");
-      console.log(e);
+      
+      
       // const nocam = document.getElementById("no-webcam");
       noWebCam.current.style.display = "block";
     }
   };
   const startWebcam = async () => {
-    console.log("here");
+    
     initWebcam();
   };
   // const stopWebcam = async () => {
-  //   console.log("here");
-  //   console.log(webcam);
+  //   
+  //   
   //   if (webcam) {
-  //     console.log(webcam);
+  //     
   //     webcam.stop();
   //     webcam.stream.getTracks().forEach((track) => track.stop());
   //   }
   // };
   const stopWebcam = async () => {
     if (webcam) {
-      console.log("yes");
-      console.log(webcam);
-      console.log(webcam.webcamConfig.videoTrack.enabled);
+      
+      
+      
       // webcam.stop();
       webcam.webcamConfig.videoTrack.enabled=false;
-      console.log(webcam.webcamConfig.videoTrack.enabled);
+      
       await webcam.stop();
     // webcam.dispose();
     // yesWebCam.current.video.srcObject = null;
     setWebcam(null);
       if (stream) {
-        console.log(stream);
+        
         stream.getTracks().forEach((track) => track.stop());
         setStream(null);
       }
@@ -245,11 +247,11 @@ const Classify = () => {
   };
  
   const toggleModel = async (action) => {
-    console.log("setShowModal");
-    console.log(showModal);
+    
+    
     setShowModal(action);
     if (showModal) {
-      console.log("Stop");
+      
       // await stopWebcam();
       // await unInitWebcam();
       // uninit();
@@ -258,7 +260,7 @@ const Classify = () => {
       uninit();
 
     } else {
-      console.log("Start");
+      
       init();
       initWebcam();
       startWebcam();
@@ -278,16 +280,16 @@ const Classify = () => {
             modelLastUpdated.current = data.last_updated;
           })
           .catch((err) => {
-            console.log('Unable to get parse model info.');
+            
           });
       })
       .catch((err) => {
-        console.log('Unable to get model info');
+        
       });
   };
   const updateModel = async () => {
     // Get the latest model from the server and refresh the one saved in IndexedDB.
-    console.log('Updating the model: ' + INDEXEDDB_KEY);
+    
     setIsDownloadingModel(true);
     // model.current = await tf.loadLayersModel(MODEL_PATH);
     const modelTemp = await tf.loadLayersModel(MODEL_PATH);
@@ -338,46 +340,72 @@ const Classify = () => {
 //       webcam = null;
 //     }
 //   }
+
+function dataURLtoBlob(dataURL) {
+  const arr = dataURL.split(',');
+  const mime = arr[0].match(/:(.*?);/)[1];
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new Blob([u8arr], { type: mime });
+}
+
+
+
+// Usage: Pass your Tensor object to the tensorToImage function
+
+
+
   const classifyWebcamImage = async () => {
     // let isClassifying = true;
     setIsClassifying(true);
     const canvas = document.getElementById('canvas');
     // const photoSettingsOpen = !document.getElementById('photo-settings').classList.contains('show');
-    // console.log(webcam);
-    console.log("webcam")
-    console.log(webcam)
+    // 
+    
+    
     const imageCapture = await webcam.capture();
+    // 
     const resized = tf.image.resizeBilinear(imageCapture, [IMAGE_SIZE, IMAGE_SIZE]);
+    // 
     const imageData = await processImage(resized);
+    // 
     const logits = model.predict(imageData);
     const probabilities = await logits.data();
     const preds = await getTopKClasses(probabilities, TOPK_PREDICTIONS);
-    console.log("preds");
-    console.log(preds);
+    
+    
+
+    // const imageDataUrl = canvas.toDataURL(); // Convert canvas to base64 data URL
+    // const blob = dataURLtoBlob(imageData);
+    // saveAs(blob, 'image.png');
+
     // const predictions = preds;
     setPredictions(preds);
     // isClassifying = false;
     setIsClassifying(false);
     // Draw thumbnail to UI.
     const tensorData = tf.tidy(() => imageCapture.toFloat().div(255));
+    // 
     await tf.browser.toPixels(tensorData, canvas);
+    callback(product , preds , tensorData)
     // Dispose of tensors we are finished with.
     resized.dispose();
     imageCapture.dispose();
     imageData.dispose();
     logits.dispose();
     tensorData.dispose();
+    handlePanelClick()
     return { predictions, isClassifying, photoSettingsOpen };
   }
   const processImage = async (image) => {
     return tf.tidy(() => image.expandDims(0).toFloat().div(127).sub(1));
   }
-  /**
-   * Computes the probabilities of the topK classes given logits by computing
-   * softmax to get probabilities and then sorting the probabilities.
-   * @param values Array of logits
-   * @param topK The number of top predictions to show.
-   */
+  
+
   const getTopKClasses = (values, topK) => {
     const valuesAndIndices = [];
     for (let i = 0; i < values.length; i++) {
@@ -401,6 +429,7 @@ const Classify = () => {
     }
     return topClassesAndProbs;
   }
+
   const handlePanelClick = () => {
     setPhotoSettingsOpen(!photoSettingsOpen);
     if (photoSettingsOpen) {
@@ -539,10 +568,10 @@ const Classify = () => {
                            </Webcam>
                   </div>
                 </div>
-                <button onClick={handleCamStop}>pause</button>
+                {/* <button onClick={handleCamStop}>pause</button>
                 <button onClick={handleCamRestart}>Restart</button>
                 <button onClick={stopWebcam}>Stop</button>
-                <button onClick={startWebcam}>Start</button>
+                <button onClick={startWebcam}>Start</button> */}
                 <div className="button-container">
                   <LoadButton
                     variant="primary"
@@ -596,8 +625,8 @@ const Classify = () => {
             </div>
   }
           {/* </Collapse> */}
-          {console.log("predictions.length")}
-          {console.log(predictions.length)}
+          {/* {}
+          {} */}
           { 
           predictions.length > 0 &&
             <div className="classification-results" id="photo-settings">
@@ -606,7 +635,7 @@ const Classify = () => {
               <br />
               <ListGroup>
               {predictions.map((category) => {
-                console.log(category);
+                
                   if (category.className === 'Fresh Apple' || category.className === 'Fresh Orange' || category.className === 'Fresh Banana') {
                     return (
                       <div>

@@ -1,10 +1,31 @@
 import axios from "axios";
-const endpoint = `https://8fdb-2409-40e6-2d-3b86-a0c1-15ef-a3da-83dd.ngrok-free.app`;
-
+const endpoint = `http://localhost:4007`;
+import NodeGeocoder from 'node-geocoder';
 let token = null;
 const config = {
   headers: { "content-type": "multipart/form-data" },
 };
+
+
+async function geocodeLocation(location) {
+  try {
+    const geocoderOptions = {
+      provider: 'openstreetmap', // Replace with your desired provider (e.g., 'nominatim', 'google', etc.)
+    };
+
+    const geocoder = NodeGeocoder(geocoderOptions);
+
+    const res = await geocoder.geocode(location);
+    if (res && res.length > 0) {
+      const { latitude, longitude } = res[0];
+      console.log('Geocoding result:', latitude, longitude);
+    } else {
+      console.log('No geocoding results found.');
+    }
+  } catch (error) {
+    console.error('Error geocoding location:', error);
+  }
+}
 
 async function checkLogin() {
   const authToken = sessionStorage.getItem("token");
@@ -95,7 +116,7 @@ console.log("approved");
         }
       }; 
 
-    static fetchUserByRole = async (data) => {
+    static fetchUserbyrole = async (data) => {
         try {
           const res = await axios.get(`${endpoint}/user/userbytype`, {
             params: data,
@@ -122,4 +143,19 @@ console.log("approved");
           return error.data;
         }
       };
+
+      static fetchWeather = async (pincode) => {
+        const API_KEY = 'dd1e27a390ca256e81a8c89f52255c58'; 
+        const url = `https://api.openweathermap.org/data/2.5/weather?zip=${pincode},IN&appid=${API_KEY}`;
+        geocodeLocation('Assam');
+        return axios.get(url)
+          .then(response => {
+            console.log("🚀 ~ file: users.js:139 ~ startup ~ fetchWeather= ~ response:", response)
+            response.data
+          })
+          .catch(error => {
+            console.error('Error fetching weather data:', error);
+            return null;
+          });
+      }
 }

@@ -12,10 +12,13 @@ import QRCodeComponent from "./components/qrcode"
 import slide from "../../assets/plugins/images/heading-bg/farmer2.jpg";
 import userImg from "../../assets/plugins/images/users/user1.jpg";
 import Classify from "../ML/service/classify2";
+import axios from 'axios';
 import {
   LOGOUTUSER,
   LOGINUSER, CURRENTCHAINUSER
 } from '../../reducer/authUser';
+import { FaCheck } from 'react-icons/fa';
+
 import Navbar from "./components/nav";
 import { IpfsImage } from 'react-ipfs-image';
 import {FcInspection} from "react-icons/fc";
@@ -78,6 +81,11 @@ function UserDashboard() {
   const [logistic, setLogistic] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+
+
+  const [weatherData, setWeatherData] = useState(null);
+  const [backgroundStyle, setBackgroundStyle] = useState({});
+
 // exporter
   const renderTooltipManufacturer = (props) => (
     <Popover id="popover-basic" {...props}>
@@ -163,6 +171,50 @@ function UserDashboard() {
     });
   };
 
+  const [blobUrl, setBlobUrl] = useState('');
+  const tensorToImage = async (tensor, filename , peds , item) => {
+    const data = tensor.dataSync();
+    const uint8Array = new Uint8Array(data);
+  
+    const blob = new Blob([uint8Array], { type: 'image/png' });
+    const blobUrl = URL.createObjectURL(blob);
+  
+    const formData = new FormData();
+    formData.append('file', blob, filename);
+    formData.append('peds', peds);
+    formData.append('item', item);
+  
+    try {
+      const response = await axios.post('http://localhost:4007/product/testing', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+       
+      console.log('File upload successful:', response.data);
+  
+      // Display the blob in an <img> element
+      const imageElement = document.createElement('img');
+      imageElement.src = blobUrl;
+      console.log("🚀 ~ file: user_dashboard.jsx:197 ~ tensorToImage ~ blobUrl:", blobUrl)
+      console.log("🚀 ~ file: user_dashboard.jsx:197 ~ tensorToImage ~ imageElement:", imageElement)
+      setBlobUrl(blobUrl);
+      document.getElementById('testing').appendChild(imageElement);
+    } catch (error) {
+      console.error('File upload failed:', error);
+    }
+  };
+  
+  // classify
+  const handleProductResultSubmit = async (item , peds , image ) => {
+    console.log("🚀 ~ file: user_dashboard.jsx:177 ~ handleProductResultSubmit ~ image:", image)
+    console.log("🚀 ~ file: user_dashboard.jsx:177 ~ handleProductResultSubmit ~ peds:", peds)
+    console.log("🚀 ~ file: user_dashboard.jsx:177 ~ handleProductResultSubmit ~ item:", item)
+    tensorToImage(image , image.png , peds , item);
+    // event.preventDefault();
+    
+  };
+
 
 
 
@@ -184,6 +236,7 @@ function UserDashboard() {
     event.preventDefault();
     listProduct.productId = selectedItem
     const res = await API.listProduct(listProduct);
+    console.log("🚀 ~ file: user_dashboard.jsx:187 ~ handleListProductSubmit ~ res:", res)
     setFarmerModalOpen(false);
     getProducts()
     setListProduct({
@@ -395,9 +448,15 @@ function UserDashboard() {
     navigate("/preview")
   }
 
-
+  async function getWeather(weather){
+    const res = await UserAPI.fetchWeather(weather);
+    console.log("🚀 ~ file: user_dashboard.jsx:403 ~ getWeather ~ res:", res)
+    // console.log()
+  }
+  console.log("🚀 ~ file: user_dashboard.jsx:467 ~ UserDashboard ~ blobUrl:", blobUrl)
 
   useEffect(() => {
+    // getWeather("781020");
     getProducts();
   }, []);
 
@@ -406,6 +465,10 @@ const shippingDate = "2023-06-22";
 
   return (
     <Container fluid>
+      <div>
+      {blobUrl && <img src={blobUrl} alt="Blob Image" />}
+    </div>
+
       {/* <Navbar data={myState.authUser} /> */}
       <Row>
         <Col md={12}>
@@ -421,12 +484,23 @@ const shippingDate = "2023-06-22";
               <Image src={slide} alt="user" fluid />
               <div className="overlay-box">
                 <div className="user-content">
-                  <div className='flex justify-center'>
-                    {myState.authUser?.profilePic ?
-                      <IpfsImage hash={myState.authUser?.profilePic} onClick={()=>navigate('profile')} style={{ width: "6vw", height: "auto" , cursor:"pointer" }} className="img-fluid thumb-lg img-circle" alt="img" /> :
-                      <Image src={userImg} id="userImage" style={{ width: "6vw", height: "auto" }} className="img-fluid thumb-lg img-circle" alt="img" />
-                    }
-                  </div>
+
+                <div className='flex justify-center'>
+  <div className="relative h-auto cursor-pointer">
+    {myState.authUser?.profilePic ? (
+      <div className="relative">
+        <IpfsImage hash={myState.authUser?.profilePic} onClick={() => navigate('profile')} style={{ width: "6vw", height: "auto", cursor: "pointer" }} className="img-fluid thumb-lg img-circle" alt="img" />
+        <FaCheck className="absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2 w-6 h-auto text-green-500 bg-white rounded-full p-1" />
+      </div>
+    ) : (
+      <Image src={userImg} id="userImage" style={{ width: "6vw", height: "auto" }} className="img-fluid thumb-lg img-circle" alt="img" />
+    )}
+  </div>
+</div>
+
+
+
+
                   <h4 className="text-white" id="userName">{myState.authUser?.userName}</h4>
                   <h5 className="text-white" id="currentUserAddress">{myState.authUser?.userName}</h5>
                 </div>
@@ -451,9 +525,9 @@ const shippingDate = "2023-06-22";
                   </Col> */}
                 <Col md={6} sm={12} xs={12} className="text-center">
                 <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" onClick={() => navigate("explorar")}>Explorar</Button>
-                <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" onClick={() => setcreateBatchOpen(true)}>Create Batch</Button>
+                {myState.authUser?.userType==="manufacturer"?<Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" onClick={() => setcreateBatchOpen(true)}>Create Batch</Button>:null}
                 <Button className="btn btn-info pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light" onClick={()=>{navigate('details')}}>View Details</Button>
-                <Classify/>
+                {/* <Classify/> */}
                   </Col>
                   </Row>
                   <Row>
@@ -468,7 +542,7 @@ const shippingDate = "2023-06-22";
             <th>Logistic</th>
             <th>Retailer</th>
             <th>test</th>
-            <th>label</th>
+            {myState.authUser?.userType==="logistic"?<th>label</th>:null}
             <th>view</th>
           </tr>
         </thead>
@@ -630,7 +704,7 @@ const shippingDate = "2023-06-22";
     } 
     else if(product.Record.status === 'Ordered'){
       return (
-        <span onClick={() => {setSelectedItem(product.Record.id); getLogistic(); setLogisticSelectModal(true); }} className="label label-danger font-weight-100">
+        <span onClick={() => {alert("hello");getLogistic(); setSelectedItem(product.Record.id);  setLogisticSelectModal(true); }} className="label label-danger font-weight-100">
           select logistic
         </span>
       );
@@ -683,13 +757,13 @@ const shippingDate = "2023-06-22";
   })()}
 </td>
 
-                          <td><Classify /></td>
-                          <td>    <QRCodeComponent
+                          <td><Classify callback={handleProductResultSubmit} product={product.Key} /></td>
+                          {myState.authUser?.userType==="logistic"?         <td>    <QRCodeComponent
   procduct={product.Key}
   price="19.99"
   manufacturingDate= {product.Record.product.production_date}
   shippingDate={product.Record.product.production_date}
-/></td>
+/></td> :null}
                           <td onClick={() => { viewChain(product.Record) }}><FontAwesomeIcon icon={faEye} /></td>
                         </tr>
                       ))}

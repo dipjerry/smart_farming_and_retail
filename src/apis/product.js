@@ -1,5 +1,5 @@
 import axios from "axios";
-const endpoint = `https://8fdb-2409-40e6-2d-3b86-a0c1-15ef-a3da-83dd.ngrok-free.app`;
+const endpoint = `http://localhost:4007`;
 
 let token = null;
 const config = {
@@ -130,6 +130,69 @@ export default class Startup {
         } catch (error) {
           console.log(error.data)
           return error.data;
+        }
+      };
+      static productPickup = async (data) => {
+        try {
+          const res = await axios.post(endpoint + `/transact/productPickup`, data);
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+          return error.data;
+        }
+      };
+      static productDelivery = async (data) => {
+        try {
+          const res = await axios.post(endpoint + `/transact/productDelivery`, data);
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+          return error.data;
+        }
+      };
+
+      // static buyProduct = async (data) => {
+      //   try {
+      //     const res = await axios.post(endpoint + `/transact/buyProduct`, data);
+      //     return res.data;
+      //   } catch (error) {
+      //     console.log(error.data)
+      //     return error.data;
+      //   }
+      // };
+
+      static fetchShopProduct = async (data) => {
+        try {
+          const res = await axios.get(endpoint + `/product/shopProduct`, {
+            params:data
+          });
+          console.log('res Api');
+          console.log(res);
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+            return error.data;
+
+        }
+      };
+      static buyRawProduct = async (data) => {
+        try {
+          const res = await axios.post(endpoint + `/product/raw_products`, data);
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+            return error.data;
+
+        }
+      };
+      static listProduct = async (data) => {
+        try {
+          const res = await axios.post(endpoint + `/transact/listItem`, data);
+          return res.data;
+        } catch (error) {
+          console.log(error.data)
+            return error.data;
+
         }
       };
     }

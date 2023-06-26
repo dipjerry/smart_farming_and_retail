@@ -1,5 +1,5 @@
 import axios from "axios";
-const endpoint = `https://8fdb-2409-40e6-2d-3b86-a0c1-15ef-a3da-83dd.ngrok-free.app`;
+const endpoint = `http://localhost:4007`;
 
 let token = null;
 const config = {
