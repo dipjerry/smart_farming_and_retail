@@ -480,23 +480,23 @@ const shippingDate = "2023-06-22";
       <Row>
         <Col md={12} xs={12}>
           <Card className="white-box" >
-            <div className="user-bg" style={{ height: "fit-content" }}>
-              <Image src={slide} alt="user" fluid />
-              <div className="overlay-box">
+            <div className="user-bg bg-gradient-to-r from-cyan-500 to-blue-500" style={{ height: "auto" }}>
+              {/* <Image src={slide} alt="user" fluid /> */}
+              <div >
                 <div className="user-content">
 
                 <div className='flex justify-center'>
-  <div className="relative h-auto cursor-pointer">
-    {myState.authUser?.profilePic ? (
-      <div className="relative">
-        <IpfsImage hash={myState.authUser?.profilePic} onClick={() => navigate('profile')} style={{ width: "6vw", height: "auto", cursor: "pointer" }} className="img-fluid thumb-lg img-circle" alt="img" />
-        <FaCheck className="absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2 w-6 h-auto text-green-500 bg-white rounded-full p-1" />
-      </div>
-    ) : (
-      <Image src={userImg} id="userImage" style={{ width: "6vw", height: "auto" }} className="img-fluid thumb-lg img-circle" alt="img" />
-    )}
-  </div>
-</div>
+                  <div className="relative h-auto cursor-pointer">
+                    {myState.authUser?.profilePic ? (
+                      <div className="relative">
+                        <IpfsImage hash={myState.authUser?.profilePic} onClick={() => navigate('profile')} style={{ width: "6vw", height: "auto", cursor: "pointer" }} className="img-fluid thumb-lg img-circle" alt="img" />
+                        {myState.authUser?.kyc=="verified" ? (<FaCheck className="absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2 w-6 h-auto text-green-500 bg-white rounded-full p-1" />):null}
+                      </div>
+                    ) : (
+                      <Image src={userImg} id="userImage" style={{ width: "6vw", height: "auto" }} className="img-fluid thumb-lg img-circle" alt="img" />
+                    )}
+                  </div>
+                </div>
 
 
 

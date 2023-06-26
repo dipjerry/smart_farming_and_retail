@@ -458,6 +458,33 @@ function dataURLtoBlob(dataURL) {
       default:
     }
   };
+
+  function renderPredictionResult(predictions) {
+    const highestProbabilityCategory = predictions.reduce((prevCategory, currentCategory) => {
+      return prevCategory.probability > currentCategory.probability ? prevCategory : currentCategory;
+    });
+  
+    if (
+      highestProbabilityCategory.className === 'Fresh Apple' ||
+      highestProbabilityCategory.className === 'Fresh Orange' ||
+      highestProbabilityCategory.className === 'Fresh Banana'
+    ) {
+      return (
+        <div>
+          <p>This is most likely <strong>{highestProbabilityCategory.className}</strong> with {highestProbabilityCategory.probability}% probability!</p>
+          <p>You can eat it safely!</p>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <p>Oh no! This is <strong>{highestProbabilityCategory.className}</strong> with {highestProbabilityCategory.probability}% probability!</p>
+          <p>You shouldn't eat it!</p>
+        </div>
+      );
+    }
+  }
+  
 //   render() {
     return (
       <>
@@ -634,24 +661,8 @@ function dataURLtoBlob(dataURL) {
               <canvas id="canvas" ref={refcanvas} width={CANVAS_SIZE} height={CANVAS_SIZE} />
               <br />
               <ListGroup>
-              {predictions.map((category) => {
-                
-                  if (category.className === 'Fresh Apple' || category.className === 'Fresh Orange' || category.className === 'Fresh Banana') {
-                    return (
-                      <div>
-                        <p>This most likely <strong>{category.className}</strong> with {category.probability}% probability!</p>
-                        <p>You can eat it safely!</p>
-                      </div>
-                    );
-                  }
-                  return (
-                      <div>
-                        <p>Oh no! This is <strong>{category.className}</strong> with {category.probability}% probability!</p>
-                        <p>You shouldn't eat it!</p>
-                      </div>
-                    );
-              })}
-              </ListGroup>
+  {renderPredictionResult(predictions)}
+</ListGroup>
             </div>
           }
           </Fragment>

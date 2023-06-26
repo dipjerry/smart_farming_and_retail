@@ -18,6 +18,8 @@ export const authUserSlice = createSlice({
         state.userType= action.payload.User_Type;
         state.userToken= action.payload.accessToken;
         state.profilePic= action.payload.profilePic;
+        state.kyc= action.payload.kyc;
+        state.Address= action.payload.Address;
         state.inventory= action.payload.inventory;
         state.isUserAuthenticated= true
     },

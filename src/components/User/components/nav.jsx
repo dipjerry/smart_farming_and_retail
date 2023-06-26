@@ -16,7 +16,7 @@ const Navbar = (props) => {
   return (
     <Row className="bg-title px-5">
   <Col lg={4} md={4} sm={4} xs={12} className="justify-content-center d-flex align-items-center">
-    <h4 className="page-title mb-0">Dashboard of {props?.data?.userName}</h4>
+    <h4 className="page-title mb-0">Dashboard of {myState.authUser?.user}</h4>
   </Col>
   <Col lg={4} md={4} sm={4} xs={6} className="d-flex justify-content-center align-items-center">
     <Button
